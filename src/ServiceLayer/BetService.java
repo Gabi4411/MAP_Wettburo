@@ -8,11 +8,11 @@ import java.util.List;
 
 public class BetService{
 
-    private final inMemoryRepo<Bet> betRepo;
-    private final inMemoryRepo<EventOdds> eventOddsRepo;
+    private final repo<Bet> betRepo;
+    private final repo<EventOdds> eventOddsRepo;
 
 
-    public BetService(inMemoryRepo<Bet> betRepo, inMemoryRepo<EventOdds> eventOddsRepo) {
+    public BetService(repo<Bet> betRepo, repo<EventOdds> eventOddsRepo) {
         this.betRepo = betRepo;
         this.eventOddsRepo = eventOddsRepo;
     }
