@@ -79,7 +79,10 @@ public class BetService{
         EventOdds eventOdds = eventOddsRepo.get(betID);
         if (!eventOdds.getStatus()) {
             System.out.println("Event Odd failed, Bet Lost");
-            return false;
+        }else{
+            Bet bet = betRepo.get(betID);
+            double amount = calculatePotentialWinning(betID);
+            bet.getPlayer().setBalance(bet.getPlayer().getBalance()+amount);
         }
     }
 
@@ -96,4 +99,6 @@ public class BetService{
     public void removeEvent(int eventID) {
         eventRepo.delete(eventID);
     }
+
+
 }
