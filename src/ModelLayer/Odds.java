@@ -1,52 +1,36 @@
 package ModelLayer;
+import java.util.List;
 import java.util.EnumMap;
 
-enum Team{
-    TEAM1,TEAM2
-}
 
 public abstract class Odds {
-    private String odd_id;
-    private double odd_value;
-    EnumMap<Team, Double> team_odds;
-    Event event;
+    private int event_id;
+    private List<Double> odd_value;
+    private String eventType;
 
-    public Odds(String odd_id, double odd_value, EnumMap<Team, Double> team_odds, Event event) {
-        this.odd_id = odd_id;
+    public Odds(int odd_id, List<Double> odd_value, String eventType) {
+        this.event_id = odd_id;
         this.odd_value = odd_value;
-        this.team_odds = team_odds;
-        this.event = event;
+        this.eventType = eventType;
     }
 
-    public double getOdd_value() {
+    public List<Double> getOdd_value() {
         return odd_value;
     }
 
-    public String getOdd_id() {
-        return odd_id;
+    public int getOdd_id() {
+        return event_id;
     }
 
-    public EnumMap<Team, Double> getTeam_odds() {
-        return team_odds;
+    public void setOdd_id(String event_id) {
+        this.event_id = this.event_id;
     }
 
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setOdd_id(String odd_id) {
-        this.odd_id = odd_id;
-    }
-
-    public void setOdd_value(double odd_value) {
+    public void setOdd_value(List<Double> odd_value) {
         this.odd_value = odd_value;
     }
 
-    public void setTeam_odds(EnumMap<Team, Double> team_odds) {
-        this.team_odds = team_odds;
-    }
+    public String getEventType() { return eventType; }
 
-    public void setEvent(Event event) {
-        this.event = event;
-    }
+    public void setEventType(String eventType) { this.eventType = eventType; }
 }

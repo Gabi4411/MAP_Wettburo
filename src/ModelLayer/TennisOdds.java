@@ -7,8 +7,8 @@ public class TennisOdds extends Odds {
     private Map<String,Double> most_aces;
     private Map<String,Double> Setcast;
 
-    public TennisOdds(String odd_id, double odd_value, EnumMap<Team, Double> team_odds, Event event, Map<String, Double> most_aces, Map<String, Double> setcast) {
-        super(odd_id, odd_value, team_odds, event);
+    public TennisOdds(String odd_id, double odd_value, String eventType, Map<String, Double> most_aces, Map<String, Double> setcast) {
+        super(odd_id, odd_value, eventType);
         this.most_aces = most_aces;
         Setcast = setcast;
     }

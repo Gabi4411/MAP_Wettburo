@@ -8,8 +8,8 @@ public class FootballOdds extends Odds {
     private Map<String , Double> goal_scorer;
     private Map<String , Double> correct_score ;
 
-    public FootballOdds(String odd_id, double odd_value, EnumMap<Team, Double> team_odds, Event event, Map<String, Double> goal_scorer, Map<String, Double> correct_score, int odd_draw) {
-        super(odd_id, odd_value, team_odds, event);
+    public FootballOdds(String odd_id, double odd_value, String eventType, Map<String, Double> goal_scorer, Map<String, Double> correct_score, int odd_draw) {
+        super(odd_id, odd_value, eventType);
         this.goal_scorer = goal_scorer;
         this.correct_score = correct_score;
         this.odd_draw = odd_draw;
