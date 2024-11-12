@@ -1,14 +1,17 @@
 package ModelLayer;
 
+import java.util.List;
+
 public class PlayerBet {
     private Player player;
-    private Bet bet;
-    private int total_bets;
+    private List<Bet> bet;
+    private List<String> status;
 
-    public PlayerBet(Player player, Bet bet, int total_bets) {
+
+    public PlayerBet(Player player, List<Bet> bet, List<String> status) {
         this.player = player;
         this.bet = bet;
-        this.total_bets = total_bets;
+        this.status = status;
     }
 
     public Player getPlayer() {
@@ -19,19 +22,28 @@ public class PlayerBet {
         this.player = player;
     }
 
-    public Bet getBet() {
+    public List<Bet> getBet() {
         return bet;
     }
 
-    public void setBet(Bet bet) {
+    public void setBet(List<Bet> bet) {
         this.bet = bet;
     }
 
-    public int getTotal_bets() {
-        return total_bets;
+    public List<String> getStatus() {
+        return status;
     }
 
-    public void setTotal_bets(int total_bets) {
-        this.total_bets = total_bets;
+    public void setStatus(List<String> status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerBet{" +
+                "player=" + player +
+                ", bet=" + bet +
+                ", status=" + status +
+                '}';
     }
 }
