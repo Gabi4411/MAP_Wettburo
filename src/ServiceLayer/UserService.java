@@ -5,7 +5,6 @@ import RepoLayerInterface.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.time.LocalDateTime;
 
 public class UserService {
@@ -48,37 +47,30 @@ public class UserService {
     public boolean addPlayer(String username, String password, String email) {
         for (Player player : playerRepo.getAll()) {
             if (player.getUser_name().equals(username) &&  player.getEmail().equals(email)) {
-                int lastPlayerId = playerRepo.getAll().getLast().getUser_id();
-                List<Bet> emptyList = new ArrayList<>();
-                Player newPlayer = new Player(lastPlayerId + 1, username, password, email, 0, emptyList, 0, "Active");
-                playerRepo.create(newPlayer);
-                return true;
+                return false;
             }
         }
-        return false;
+        int lastPlayerId = playerRepo.getAll().getLast().getUser_id();
+        List<Bet> emptyList = new ArrayList<>();
+        Player newPlayer = new Player(lastPlayerId + 1, username, password, email, 0, emptyList, 0, "Active");
+        playerRepo.create(newPlayer);
+        return true;
     }
 
-    public boolean removePlayer(String username, String password) {
-        for (Player player : playerRepo.getAll()) {
-            if (player.getUser_name().equals(username) && player.getPassword().equals(password)) {
-                int idPlayer = 1;
-                playerRepo.delete(idPlayer);
-                return true;
-            }
-        }
-        return false;
+    public void removePlayer(int playerId) {
+        playerRepo.delete(playerId);
     }
 
     public boolean addAdmin(String username, String password, String email) {
         for (Admin admin : adminRepo.getAll()) {
             if (admin.getUser_name().equals(username) &&  admin.getEmail().equals(email)) {
-                int lastAdminId = adminRepo.getAll().getLast().getUser_id();
-                Admin newAdmin = new Admin(lastAdminId, username, password,email,1000, "Standard", "Suport");
-                adminRepo.create(newAdmin);
-                return true;
+                return false;
             }
         }
-        return false;
+        int lastAdminId = adminRepo.getAll().getLast().getUser_id();
+        Admin newAdmin = new Admin(lastAdminId, username, password,email,1000, "Standard", "Suport");
+        adminRepo.create(newAdmin);
+        return true;
     }
 
     public List<Transactions> getAllTransactions() {

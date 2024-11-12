@@ -1,5 +1,6 @@
 package ModelLayer;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -10,9 +11,9 @@ public class Bet {
     private Player player;
     private int amount;
     private double total_odd;
-    private Date bet_date;
+    private LocalDateTime bet_date;
 
-    public Bet(int bet_id, List<EventOdds> event_odds, Player player, int amount, double total_odd, Date bet_date) {
+    public Bet(int bet_id, List<EventOdds> event_odds, Player player, int amount, double total_odd, LocalDateTime bet_date) {
         this.bet_id = bet_id;
         this.event_odds = event_odds;
         this.player = player;
@@ -61,11 +62,11 @@ public class Bet {
         this.total_odd = total_odd;
     }
 
-    public Date getBet_date() {
+    public LocalDateTime getBet_date() {
         return bet_date;
     }
 
-    public void setBet_date(Date bet_date) {
+    public void setBet_date(LocalDateTime bet_date) {
         this.bet_date = bet_date;
     }
 }
