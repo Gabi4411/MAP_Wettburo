@@ -25,7 +25,7 @@ public class Admin extends User{
      * @param department   the department of the admin
      */
 
-    public Admin(int user_id, String user_name, String password, String email, int salary, String access_level, String department) {
+    public Admin(int user_id, String user_name, String password, String email, int salary, int access_level, String department) {
         super(user_id, user_name, password, email);
         this.salary = salary;
         this.access_level = access_level;
