@@ -3,26 +3,25 @@ import ModelLayer.*;
 import RepoLayerInterface.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 
 public class BetService{
 
     private final repo<Bet> betRepo;
-    private final repo<EventOdds> eventOddsRepo;
     private final repo<Event> eventRepo;
+    private final repo<Odds> oddsRepo;
 
 
-    public BetService(repo<Bet> betRepo, repo<EventOdds> eventOddsRepo , repo<Event> eventRepo) {
+    public BetService(repo<Bet> betRepo, repo<Event> eventRepo, repo<Odds> oddsRepo) {
         this.betRepo = betRepo;
-        this.eventOddsRepo = eventOddsRepo;
         this.eventRepo = eventRepo;
+        this.oddsRepo = oddsRepo;
     }
     /**
      * calculeaza cota biletului dupa ce au fost introduse eventuri cu cote specifice
     */
-    public void calculateOdd(Integer betID){
+    public double calculateOdd(Integer betID){
         Bet bet = betRepo.get(betID);
         if (bet == null){
             System.out.println("Bet Not Found");
@@ -30,12 +29,13 @@ public class BetService{
 
         double totalOdds = 1.0;
 
-        for(EventOdds eventOdds : bet.getEvent_odds()){
-            double odd = eventOdds.getOdds();
-            totalOdds *= odd;
+        for(Event event : bet.getEvent()){
+            List<Double> odds = event.getOdds();
+            for(double odd : odds){
+                totalOdds *= odd;
+            }
         }
-        bet.setTotal_odd(totalOdds);
-        betRepo.update(bet);
+        return totalOdds;
     }
 
 
@@ -46,7 +46,7 @@ public class BetService{
             System.out.println("Bet Not Found");
         }
 
-        double potentialWin = bet.getTotal_odd() * bet.getAmount();
+        double potentialWin = calculateOdd(betID) * bet.getAmount();
         return potentialWin;
 
     }
@@ -61,16 +61,6 @@ public class BetService{
             return false;
         }
 
-        for (EventOdds eventOdds : bet.getEvent_odds()){
-            Event event = eventOdds.getEvent();
-            LocalDateTime event_date = event.getEvent_date();
-            LocalDateTime current_date = LocalDateTime.now();
-             if(event_date.isBefore(current_date)){
-                 System.out.println("Event has already started");
-                 return false;
-             }
-        }
-
         return true;
 
     }
@@ -83,22 +73,34 @@ public class BetService{
             Bet bet = betRepo.get(betID);
             double amount = calculatePotentialWinning(betID);
             bet.getPlayer().setBalance(bet.getPlayer().getBalance()+amount);
+
         }
     }
 
-    public void addBet() {
 
+//    public void createOdds (int event_id, List<Double> odd_value, String eventType) {
+//        int lastOdds = oddsRepo.getAll().getLast().getOdd_id();
+//        Odds newOdd = new Odds(lastOdds + 1, odd_value, eventType);
+//        oddsRepo.create(newOdd);
+//    }
+
+    public void addBet(List<Event> event, int amount) {
+        int lastBet = betRepo.getAll().getLast().getBet_id();
+        Bet newBet = new Bet(lastBet + 1, event, amount, LocalDateTime.now());
+        betRepo.create(newBet);
     }
 
-    public void addEvent(String eventName, List<Odds> odds, String type) {
+    public void addEvent(String eventName, String eventType) {
         int lastEvent = eventRepo.getAll().getLast().getEvent_id();
-        Event newEvent = new Event(lastEvent + 1, eventName, odds, LocalDateTime.now(), type);
+        Odds odds = null;
+        for (Odds odd : oddsRepo.getAll()){
+            if (odd.getEventType().equals(eventType)){
+                odds = odd;
+            }
+        }
+        List<Double> oddList = odds.getOdd_value();
+        Event newEvent = new Event(lastEvent + 1, eventName, oddList, LocalDateTime.now(), eventType);
         eventRepo.create(newEvent);
     }
-
-    public void removeEvent(int eventID) {
-        eventRepo.delete(eventID);
-    }
-
 
 }

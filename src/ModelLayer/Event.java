@@ -1,17 +1,16 @@
 package ModelLayer;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 public class Event {
     public int event_id;
     public String event_name;
-    public List<Odds> odds;
+    public List<Double> odds;
     public LocalDateTime event_date;
     private String sports_type;
 
-    public Event(int event_id, String event_name,List<Odds> odds, LocalDateTime event_date,String sports_type) {
+    public Event(int event_id, String event_name, List<Double> odds, LocalDateTime event_date, String sports_type) {
         this.event_id = event_id;
         this.event_name = event_name;
         this.odds = odds;
@@ -47,10 +46,10 @@ public class Event {
         this.event_date = event_date;
     }
 
-    public List<Odds> getOdds () {
+    public List<Double> getOdds () {
         return odds;
     }
-    public void setOdds(List<Odds> odds) {
+    public void setOdds(List<Double> odds) {
         this.odds = odds;
     }
 
