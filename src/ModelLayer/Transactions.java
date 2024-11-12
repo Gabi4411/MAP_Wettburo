@@ -1,16 +1,17 @@
 package ModelLayer;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Transactions {
     private int transaction_id;
-    private User user;
+    private Player user;
     private int amount;
-    private Date transcation_date;
+    private LocalDateTime transcation_date;
     private String transaction_type;
     private String transaction_status;
 
-    public Transactions(int transaction_id, User user, int amount, Date transcation_date, String transaction_type, String transaction_status) {
+    public Transactions(int transaction_id, Player user, int amount, LocalDateTime transcation_date, String transaction_type, String transaction_status) {
         this.transaction_id = transaction_id;
         this.user = user;
         this.amount = amount;
@@ -27,11 +28,11 @@ public class Transactions {
         this.transaction_id = transaction_id;
     }
 
-    public User getUser() {
+    public Player getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Player user) {
         this.user = user;
     }
 
@@ -43,11 +44,11 @@ public class Transactions {
         this.amount = amount;
     }
 
-    public Date getTranscation_date() {
+    public LocalDateTime getTranscation_date() {
         return transcation_date;
     }
 
-    public void setTranscation_date(Date transcation_date) {
+    public void setTranscation_date(LocalDateTime transcation_date) {
         this.transcation_date = transcation_date;
     }
 

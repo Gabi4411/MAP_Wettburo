@@ -6,6 +6,7 @@ import RepoLayerInterface.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDateTime;
 
 public class UserService {
     private final repo<Player> playerRepo;
@@ -85,37 +86,40 @@ public class UserService {
     }
 
     public boolean deposit(String username, String password, int amount) {
-        Player thePlayer;
-        boolean find = false;
-        for (Player player : playerRepo.getAll()) {
-            if (player.getUser_name().equals(username) && player.getPassword().equals(password)) {
-                thePlayer = player;
-                find = true;
+        Player user = null;
+        for (Transactions transaction : transactionsRepo.getAll()) {
+            if(transaction.getUser().getUser_name().equals(username) && transaction.getUser().getPassword().equals(password)) {
+                user = transaction.getUser();
                 break;
             }
         }
-        if (!find) {
+        if (user == null) {
             return false;
         }
+        int lastTransactions = transactionsRepo.getAll().getLast().getTransaction_id();
+        Transactions transactions = new Transactions(lastTransactions + 1, user, amount, LocalDateTime.now(), "Deposit", "Done");
+        transactionsRepo.create(transactions);
+        user.setBalance(user.getBalance() + amount);
 
 
         return true;
     }
 
     public boolean withdraw(String username, String password, int amount) {
-        Player thePlayer;
-        boolean find = false;
-        for (Player player : playerRepo.getAll()) {
-            if (player.getUser_name().equals(username) && player.getPassword().equals(password)) {
-                thePlayer = player;
-                find = true;
+        Player user = null;
+        for (Transactions transaction : transactionsRepo.getAll()) {
+            if(transaction.getUser().getUser_name().equals(username) && transaction.getUser().getPassword().equals(password)) {
+                user = transaction.getUser();
                 break;
             }
         }
-        if (!find) {
+        if (user == null) {
             return false;
         }
-
+        int lastTransactions = transactionsRepo.getAll().getLast().getTransaction_id();
+        Transactions transactions = new Transactions(lastTransactions + 1, user, amount, LocalDateTime.now(), "Withdraw", "Done");
+        transactionsRepo.create(transactions);
+        user.setBalance(user.getBalance() - amount);
 
         return true;
     }
