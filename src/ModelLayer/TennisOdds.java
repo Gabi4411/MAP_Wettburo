@@ -1,13 +1,14 @@
 package ModelLayer;
 
+import java.util.EnumMap;
 import java.util.Map;
 
 public class TennisOdds extends Odds {
     private Map<String,Double> most_aces;
     private Map<String,Double> Setcast;
 
-    public TennisOdds(int odd_team1, String odd_id, int odd_team2, Event event, double odd_value, Map<String, Double> most_aces, Map<String, Double> setcast) {
-        super(odd_team1, odd_id, odd_team2, event, odd_value);
+    public TennisOdds(String odd_id, double odd_value, EnumMap<Team, Double> team_odds, Event event, Map<String, Double> most_aces, Map<String, Double> setcast) {
+        super(odd_id, odd_value, team_odds, event);
         this.most_aces = most_aces;
         Setcast = setcast;
     }

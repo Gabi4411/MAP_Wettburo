@@ -1,22 +1,19 @@
 package ModelLayer;
 
+import java.util.EnumMap;
 import java.util.Map;
 
 public class BasketOdds extends Odds {
     private int odd_draw;
+    private Map<String,Double> most_3p;
+    private Map<String,Double> most_reb;
 
-    public BasketOdds(int odd_team1, String odd_id, int odd_team2, Event event, double odd_value, int odd_draw, Map<String, Double> most_3p, Map<String, Double> most_reb) {
-        super(odd_team1, odd_id, odd_team2, event, odd_value);
+    public BasketOdds(String odd_id, double odd_value, EnumMap<Team, Double> team_odds, Event event, int odd_draw, Map<String, Double> most_3p, Map<String, Double> most_reb) {
+        super(odd_id, odd_value, team_odds, event);
         this.odd_draw = odd_draw;
         this.most_3p = most_3p;
         this.most_reb = most_reb;
     }
-
-    private Map<String,Double> most_3p;
-    private Map<String,Double> most_reb;
-
-
-
 
     public int getOdd_draw() {
         return odd_draw;
