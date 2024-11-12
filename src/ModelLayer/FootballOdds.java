@@ -1,5 +1,6 @@
 package ModelLayer;
 
+import java.util.EnumMap;
 import java.util.Map;
 
 public class FootballOdds extends Odds {
@@ -7,11 +8,11 @@ public class FootballOdds extends Odds {
     private Map<String , Double> goal_scorer;
     private Map<String , Double> correct_score ;
 
-    public FootballOdds(int odd_tream1, int id, int odd_tream2, Event event, int odd_draw, Map<String, Double> goal_scorer, Map<String, Double> correct_score) {
-        super(odd_tream1, id, odd_tream2, event);
-        this.odd_draw = odd_draw;
+    public FootballOdds(String odd_id, double odd_value, EnumMap<Team, Double> team_odds, Event event, Map<String, Double> goal_scorer, Map<String, Double> correct_score, int odd_draw) {
+        super(odd_id, odd_value, team_odds, event);
         this.goal_scorer = goal_scorer;
         this.correct_score = correct_score;
+        this.odd_draw = odd_draw;
     }
 
     public int getOdd_draw() {

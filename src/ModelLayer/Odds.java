@@ -1,44 +1,49 @@
 package ModelLayer;
+import java.util.EnumMap;
+
+enum Team{
+    TEAM1,TEAM2
+}
 
 public abstract class Odds {
-    private int id;
-    private int odd_tream1;
-    private  int odd_tream2;
+    private String odd_id;
+    private double odd_value;
+    EnumMap<Team, Double> team_odds;
     Event event;
 
-    public Odds(int odd_tream1, int id, int odd_tream2, Event event) {
-        this.odd_tream1 = odd_tream1;
-        this.id = id;
-        this.odd_tream2 = odd_tream2;
+    public Odds(String odd_id, double odd_value, EnumMap<Team, Double> team_odds, Event event) {
+        this.odd_id = odd_id;
+        this.odd_value = odd_value;
+        this.team_odds = team_odds;
         this.event = event;
     }
 
-    public int getId() {
-        return id;
+    public double getOdd_value() {
+        return odd_value;
     }
 
-    public int getOdd_tream1() {
-        return odd_tream1;
+    public String getOdd_id() {
+        return odd_id;
     }
 
-    public int getOdd_tream2() {
-        return odd_tream2;
+    public EnumMap<Team, Double> getTeam_odds() {
+        return team_odds;
     }
 
     public Event getEvent() {
         return event;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setOdd_id(String odd_id) {
+        this.odd_id = odd_id;
     }
 
-    public void setOdd_tream1(int odd_tream1) {
-        this.odd_tream1 = odd_tream1;
+    public void setOdd_value(double odd_value) {
+        this.odd_value = odd_value;
     }
 
-    public void setOdd_tream2(int odd_tream2) {
-        this.odd_tream2 = odd_tream2;
+    public void setTeam_odds(EnumMap<Team, Double> team_odds) {
+        this.team_odds = team_odds;
     }
 
     public void setEvent(Event event) {

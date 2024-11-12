@@ -1,18 +1,20 @@
 package ModelLayer;
 
 import java.util.Date;
+import java.util.List;
 
 public class Bet {
     private int bet_id;
-    private Event event;
+
+    private List<EventOdds> event_odds;
     private Player player;
     private int amount;
-    private int total_odd;
+    private double total_odd;
     private Date bet_date;
 
-    public Bet(int bet_id, Event event, Player player, int amount, int total_odd, Date bet_date) {
+    public Bet(int bet_id, List<EventOdds> event_odds, Player player, int amount, double total_odd, Date bet_date) {
         this.bet_id = bet_id;
-        this.event = event;
+        this.event_odds = event_odds;
         this.player = player;
         this.amount = amount;
         this.total_odd = total_odd;
@@ -27,12 +29,12 @@ public class Bet {
         this.bet_id = bet_id;
     }
 
-    public Event getEvent() {
-        return event;
+    public List<EventOdds> getEvent_odds() {
+        return event_odds;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEvent_odds(List<EventOdds> event_odds) {
+        this.event_odds = event_odds;
     }
 
     public Player getPlayer() {
@@ -51,11 +53,11 @@ public class Bet {
         this.amount = amount;
     }
 
-    public int getTotal_odd() {
+    public double getTotal_odd() {
         return total_odd;
     }
 
-    public void setTotal_odd(int total_odd) {
+    public void setTotal_odd(double total_odd) {
         this.total_odd = total_odd;
     }
 

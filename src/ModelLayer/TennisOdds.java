@@ -6,8 +6,8 @@ public class TennisOdds extends Odds {
     private Map<String,Double> most_aces;
     private Map<String,Double> Setcast;
 
-    public TennisOdds(int odd_tream1, int id, int odd_tream2, Event event, Map<String, Double> most_aces, Map<String, Double> setcast) {
-        super(odd_tream1, id, odd_tream2, event);
+    public TennisOdds(int odd_team1, String odd_id, int odd_team2, Event event, double odd_value, Map<String, Double> most_aces, Map<String, Double> setcast) {
+        super(odd_team1, odd_id, odd_team2, event, odd_value);
         this.most_aces = most_aces;
         Setcast = setcast;
     }
