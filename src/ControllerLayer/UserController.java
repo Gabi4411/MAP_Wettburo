@@ -84,4 +84,9 @@ public class UserController {
         betService.addEvent(name, eventType);
         System.out.println("New Bet Event for " + eventType + ": " + name + " will be available for betting soon!");
     }
+
+    public void playerWithdraw(String username, String password, int amount) {
+        userService.addPlayersNow();
+        userService.withdraw(username, password, amount);
+    }
 }

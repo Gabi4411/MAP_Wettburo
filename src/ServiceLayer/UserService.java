@@ -258,4 +258,14 @@ public class UserService {
 
         return true;
     }
+
+    public void addPlayersNow() {
+        List<Bet> activeBets = new ArrayList<>();
+        Bet newBet1 = null;
+        Bet newBet2 = null;
+        activeBets.add(newBet1);
+        activeBets.add(newBet2);
+        Player player1 = new Player(1, "Lapa", "1234", "lapa@yahoo.com", 100.00, activeBets, 0,"Active");
+        playerRepo.create(player1);
+    }
 }
