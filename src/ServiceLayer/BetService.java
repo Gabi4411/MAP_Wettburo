@@ -95,6 +95,10 @@ public class BetService{
 
     public void addEvent(String eventName, String eventType) {
         int lastEvent = eventRepo.getAll().getLast().getEvent_id();
+        System.out.println(lastEvent);
+        if(lastEvent == 1){
+            lastEvent = 0;
+        }
         Odds odds = null;
         for (Odds odd : oddsRepo.getAll()){
             if (odd.getEventType().equals(eventType)){

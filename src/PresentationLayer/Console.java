@@ -79,7 +79,6 @@ public class Console {
         UserController userController1 = new UserController(betService,userService);
         Console console = new Console(userController1);
 
-
         console.displayMenu();
 
 
