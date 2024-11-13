@@ -68,6 +68,12 @@ public class UserController {
         System.out.println(output);
     }
 
+    public void view_Bet_Odd(Integer betID){
+        StringBuilder output = new StringBuilder(" Bets Odds: ");
+        betService.calculateOdd(betID);
+        System.out.println(output);
+    }
+
     /**
      * Creates a new bet event and adds it to the system.
      *

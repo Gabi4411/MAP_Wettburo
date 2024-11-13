@@ -36,7 +36,8 @@ public class Console {
             System.out.println("2. Update Admin Access Level");
             System.out.println("3. View Player Bets");
             System.out.println("4. Create New Bet Event");
-            System.out.println("5. Exit");
+            System.out.println("5. View BetOdd");
+            System.out.println("6. Exit");
             System.out.print("Select an option: ");
 
             int choice = scanner.nextInt();
@@ -47,7 +48,8 @@ public class Console {
                 case 2 -> userController.updateAdmin(getAdminId(scanner), getAccessLevel(scanner));
                 case 3 -> userController.viewPlayerBets(getPlayerId(scanner));
                 case 4 -> userController.new_betEvent(getEventID(scanner), getEventType(scanner));
-                case 5 -> {
+                case 5-> userController.view_Bet_Odd(getBetID(scanner));
+                case 6 -> {
                     System.out.println("Exiting... Goodbye!");
                     return;
                 }
@@ -76,6 +78,12 @@ public class Console {
     private static String getEventID(Scanner scanner) {
         System.out.print("Enter Event ID: ");
         return scanner.nextLine();
+    }
+
+
+    private static Integer getBetID(Scanner scanner) {
+        System.out.print("Enter Bet ID: ");
+        return Integer.parseInt(scanner.nextLine());
     }
 
     /**
