@@ -126,6 +126,7 @@ public class BetService {
      */
     public void addEvent(String eventName, String eventType) {
         int lastEvent;
+
         if (eventRepo.getAll().size() == 0) {
             lastEvent = 0;
         } else {
