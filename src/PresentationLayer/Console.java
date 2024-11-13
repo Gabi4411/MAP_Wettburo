@@ -152,5 +152,6 @@ public class Console {
 
         // Start the console menu
         console.displayMenu();
+
     }
 }
