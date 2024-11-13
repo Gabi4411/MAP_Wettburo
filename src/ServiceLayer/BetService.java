@@ -79,6 +79,7 @@ public class BetService{
     }
 
 
+//    public void updateBalance(int playerID) {}
 
 //    public void createOdds (int event_id, List<Double> odd_value, String eventType) {
 //        int lastOdds = oddsRepo.getAll().getLast().getOdd_id();
