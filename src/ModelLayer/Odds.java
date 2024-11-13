@@ -8,8 +8,8 @@ public abstract class Odds {
     private List<Double> odd_value;
     private String eventType;
 
-    public Odds(int odd_id, List<Double> odd_value, String eventType) {
-        this.event_id = odd_id;
+    public Odds(int event_id, List<Double> odd_value, String eventType) {
+        this.event_id = event_id;
         this.odd_value = odd_value;
         this.eventType = eventType;
     }
