@@ -18,11 +18,11 @@ public abstract class Odds {
         return odd_value;
     }
 
-    public int getOdd_id() {
+    public int getEvent_id() {
         return event_id;
     }
 
-    public void setOdd_id(String event_id) {
+    public void setEvent_id(String event_id) {
         this.event_id = this.event_id;
     }
 
