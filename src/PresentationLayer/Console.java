@@ -37,7 +37,8 @@ public class Console {
             System.out.println("3. View Player Bets");
             System.out.println("4. Create New Bet Event");
             System.out.println("5. View BetOdd");
-            System.out.println("6. Exit");
+            System.out.println("6. Player withdraw");
+            System.out.println("7. Exit");
             System.out.print("Select an option: ");
 
             int choice = scanner.nextInt();
@@ -49,7 +50,8 @@ public class Console {
                 case 3 -> userController.viewPlayerBets(getPlayerId(scanner));
                 case 4 -> userController.new_betEvent(getEventID(scanner), getEventType(scanner));
                 case 5-> userController.view_Bet_Odd(getBetID(scanner));
-                case 6 -> {
+                case 6-> userController.playerWithdraw("Lapa","1234",50);
+                case 7 -> {
                     System.out.println("Exiting... Goodbye!");
                     return;
                 }
@@ -65,6 +67,11 @@ public class Console {
      * @return The entered Player ID.
      */
     private static int getPlayerId(Scanner scanner) {
+        System.out.println("Enter Player ID: ");
+        return Integer.parseInt(scanner.nextLine());
+    }
+
+    private static int get_username(Scanner scanner) {
         System.out.println("Enter Player ID: ");
         return Integer.parseInt(scanner.nextLine());
     }
