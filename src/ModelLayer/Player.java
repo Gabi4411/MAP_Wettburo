@@ -17,7 +17,7 @@ public class Player extends User {
     /** The player's bonus balance. */
     private int bonus_balance;
 
-    /** The status of the player's account (e.g., active, suspended, etc.). */
+    /** The status of the player's account.*/
     private String account_status;
 
     /**
