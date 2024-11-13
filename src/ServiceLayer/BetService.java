@@ -118,7 +118,22 @@ public class BetService {
         betRepo.create(newBet);
     }
 
-   
+
+    /**
+     * Adds a new event to the repository.
+     *
+     * @param eventName The name of the event.
+     * @param eventType The type of the event.
+     */
+    public void addEvent(String eventName, String eventType) {
+        int lastEvent;
+
+        if (eventRepo.getAll().size() == 0) {
+            lastEvent = 0;
+        } else {
+            lastEvent = eventRepo.getAll().getLast().getEvent_id();
+        }
+
         Odds odds = null;
         for (Odds odd : oddsRepo.getAll()) {
             if (odd.getEventType().equals(eventType)) {
