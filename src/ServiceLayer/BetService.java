@@ -11,13 +11,16 @@ public class BetService{
     private final repo<Bet> betRepo;
     private final repo<Event> eventRepo;
     private final repo<Odds> oddsRepo;
+    private final repo<PlayerBet> playerBetrepo;
 
 
-    public BetService(repo<Bet> betRepo, repo<Event> eventRepo, repo<Odds> oddsRepo) {
+    public BetService(repo<Bet> betRepo, repo<Event> eventRepo, repo<Odds> oddsRepo, repo<PlayerBet> playerBetrepo) {
         this.betRepo = betRepo;
         this.eventRepo = eventRepo;
         this.oddsRepo = oddsRepo;
+        this.playerBetrepo = playerBetrepo;
     }
+
     /**
      * calculeaza cota biletului dupa ce au fost introduse eventuri cu cote specifice
     */
@@ -51,6 +54,16 @@ public class BetService{
 
     }
 
+//    public void betWon(Integer player_id){
+//        PlayerBet playerBet = playerBetrepo.get(player_id);
+//        int sum = 0;
+//        for(Player player : playerBet.getPlayer()){
+//            List<String>status = playerBet.getStatus();
+//        }
+//
+//
+//    }
+
     public List<Bet> getAvailableBets(){return betRepo.getAll();}
 
     public boolean isValidBet(Integer betID){
@@ -64,6 +77,7 @@ public class BetService{
         return true;
 
     }
+
 
 //    public void updateBalance(int playerID) {}
 

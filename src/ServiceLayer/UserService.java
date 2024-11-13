@@ -60,6 +60,24 @@ public class UserService {
     public void removePlayer(int playerId) {
         playerRepo.delete(playerId);
     }
+    public void  removeAdmin(int adminId){
+        adminRepo.delete(adminId);
+    }
+
+    public void updateAccesLevelAdmin(Integer adminId,int accessLevel){
+        Admin admin = adminRepo.get(adminId);
+        if(adminId == null){
+            System.out.println("Admin not found");
+        }
+
+        if(accessLevel <= admin.getAccess_level()){
+            System.out.println("Admin access level must be higher");
+        }
+        admin.setAccess_level(accessLevel);
+        adminRepo.update(admin);
+        System.out.println("Admin access level has been updated");
+
+    }
 
     public boolean addAdmin(String username, String password, String email) {
         for (Admin admin : adminRepo.getAll()) {
@@ -68,7 +86,7 @@ public class UserService {
             }
         }
         int lastAdminId = adminRepo.getAll().getLast().getUser_id();
-        Admin newAdmin = new Admin(lastAdminId, username, password,email,1000, "Standard", "Suport");
+        Admin newAdmin = new Admin(lastAdminId, username, password,email,1000, 3, "Suport");
         adminRepo.create(newAdmin);
         return true;
     }

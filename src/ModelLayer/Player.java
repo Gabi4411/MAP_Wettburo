@@ -4,12 +4,12 @@ import java.util.List;
 
 public class Player extends User{
 
-    private int balance;
+    private double balance;
     private List<Bet> activeBets;
     private int bonus_balance;
     private String account_status;
 
-    public Player(int user_id, String user_name, String password, String email, int balance, List<Bet> activeBets,int bonus_balance, String account_status) {
+    public Player(int user_id, String user_name, String password, String email, double balance, List<Bet> activeBets,int bonus_balance, String account_status) {
         super(user_id, user_name, password, email);
         this.balance = balance;
         this.activeBets = activeBets;
@@ -17,7 +17,7 @@ public class Player extends User{
         this.account_status = account_status;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 

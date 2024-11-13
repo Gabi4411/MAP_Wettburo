@@ -10,7 +10,7 @@ public class Admin extends User{
 
 
     private int salary;
-    private String access_level;
+    private int access_level;
     private String department;
 
     /**
@@ -25,7 +25,7 @@ public class Admin extends User{
      * @param department   the department of the admin
      */
 
-    public Admin(int user_id, String user_name, String password, String email, int salary, String access_level, String department) {
+    public Admin(int user_id, String user_name, String password, String email, int salary, int access_level, String department) {
         super(user_id, user_name, password, email);
         this.salary = salary;
         this.access_level = access_level;
@@ -57,7 +57,7 @@ public class Admin extends User{
      *
      * @return the access level of the admin
      */
-    public String getAccess_level() {
+    public int getAccess_level() {
         return access_level;
     }
 
@@ -66,7 +66,7 @@ public class Admin extends User{
      *
      * @param access_level the access level to be set
      */
-    public void setAccess_level(String access_level) {
+    public void setAccess_level(int access_level) {
         this.access_level = access_level;
     }
 
