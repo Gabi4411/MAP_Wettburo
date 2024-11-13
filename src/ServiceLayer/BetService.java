@@ -65,18 +65,7 @@ public class BetService{
 
     }
 
-    public void betWon(Integer betID) {
-        EventOdds eventOdds = eventOddsRepo.get(betID);
-        if (!eventOdds.getStatus()) {
-            System.out.println("Event Odd failed, Bet Lost");
-        }else{
-            Bet bet = betRepo.get(betID);
-            double amount = calculatePotentialWinning(betID);
-            bet.getPlayer().setBalance(bet.getPlayer().getBalance()+amount);
-
-        }
-    }
-
+//    public void updateBalance(int playerID) {}
 
 //    public void createOdds (int event_id, List<Double> odd_value, String eventType) {
 //        int lastOdds = oddsRepo.getAll().getLast().getOdd_id();
