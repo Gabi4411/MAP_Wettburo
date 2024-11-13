@@ -88,5 +88,6 @@ public class UserController {
     public void playerWithdraw(String username, String password, int amount) {
         userService.addPlayersNow();
         userService.withdraw(username, password, amount);
+        System.out.println("Player " + username + " has withdrawn."+amount);
     }
 }
