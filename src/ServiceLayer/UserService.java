@@ -230,7 +230,7 @@ public class UserService {
      * @param amount   the amount to withdraw
      * @return true if the withdrawal was successful, false if the player is not found or if he doesn't have enough money
      */
-    public boolean withdraw(String username, String password, int amount) {
+    public boolean withdraw(String username, String password, int  amount) {
         Player user = null;
         for (Transactions transaction : transactionsRepo.getAll()) {
             if (transaction.getUser().getUser_name().equals(username) && transaction.getUser().getPassword().equals(password)) {
@@ -248,7 +248,7 @@ public class UserService {
 
         user.setBalance(user.getBalance() - amount);
         int lastTransactions;
-        if (transactionsRepo.getAll().size() == 0) {
+        if (transactionsRepo.getAll().isEmpty()) {
             lastTransactions = 0;
         } else {
             lastTransactions = transactionsRepo.getAll().getLast().getTransaction_id();
@@ -257,15 +257,5 @@ public class UserService {
         transactionsRepo.create(transactions);
 
         return true;
-    }
-
-    public void addPlayersNow() {
-        List<Bet> activeBets = new ArrayList<>();
-        Bet newBet1 = null;
-        Bet newBet2 = null;
-        activeBets.add(newBet1);
-        activeBets.add(newBet2);
-        Player player1 = new Player(1, "Lapa", "1234", "lapa@yahoo.com", 100.00, activeBets, 0,"Active");
-        playerRepo.create(player1);
     }
 }

@@ -4,8 +4,8 @@ import ModelLayer.*;
 import RepoLayerInterface.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Service class to manage betting operations.
@@ -19,24 +19,25 @@ public class BetService {
     private final repo<Event> eventRepo;
 
     /** Repository for Odds objects. */
-    private final repo<Odds> oddsRepo;
+    private final repo<FootballOdds> footballOddsRepo;
 
-    /** Repository for PlayerBet objects. */
-    private final repo<PlayerBet> playerBetrepo;
+    private final repo<TennisOdds> tennisOddsRepo;
+
+    private final repo<BasketOdds> basketOddsRepo;
 
     /**
      * Constructs a new BetService object.
      *
      * @param betRepo      Repository for Bet objects.
      * @param eventRepo    Repository for Event objects.
-     * @param oddsRepo     Repository for Odds objects.
-     * @param playerBetrepo Repository for PlayerBet objects.
+     * @param footballOddsRepo    Repository for Odds objects.
      */
-    public BetService(repo<Bet> betRepo, repo<Event> eventRepo, repo<Odds> oddsRepo, repo<PlayerBet> playerBetrepo) {
+    public BetService(repo<Bet> betRepo, repo<Event> eventRepo, repo<FootballOdds> footballOddsRepo, repo<TennisOdds> tennisOddsRepo, repo<BasketOdds> basketOddsRepo) {
         this.betRepo = betRepo;
         this.eventRepo = eventRepo;
-        this.oddsRepo = oddsRepo;
-        this.playerBetrepo = playerBetrepo;
+        this.footballOddsRepo = footballOddsRepo;
+        this.tennisOddsRepo = tennisOddsRepo;
+        this.basketOddsRepo = basketOddsRepo;
     }
 
     /**
@@ -110,7 +111,7 @@ public class BetService {
      */
     public void addBet(List<Event> event, int amount) {
         int lastBet;
-        if (betRepo.getAll().size() == 0) {
+        if (betRepo.getAll().isEmpty()) {
             lastBet = 0;
         } else {
             lastBet = betRepo.getAll().getLast().getBet_id();
@@ -129,23 +130,61 @@ public class BetService {
     public void addEvent(String eventName, String eventType) {
         int lastEvent;
 
-        if (eventRepo.getAll().size() == 0) {
+        if (eventRepo.getAll().isEmpty()) {
             lastEvent = 0;
         } else {
             lastEvent = eventRepo.getAll().getLast().getEvent_id();
         }
 
-        Odds odds = null;
-        for (Odds odd : oddsRepo.getAll()) {
-            if (odd.getEventType().equals(eventType)) {
-                odds = odd;
-            }
-        }
-        if (odds != null) {
-            List<Double> oddList = odds.getOdd_value();
+        if (Objects.equals(eventType, "Football")) {
+            FootballOdds footballOdds = footballOddsRepo.getAll().getFirst();
+            List<Double> oddList = footballOdds.getOdd_value();
             Event newEvent = new Event(lastEvent + 1, eventName, oddList, LocalDateTime.now(), eventType);
             eventRepo.create(newEvent);
         }
+        else if (Objects.equals(eventType, "Tennis")) {
+            TennisOdds tennisOdds = tennisOddsRepo.getAll().getFirst();
+            List<Double> oddList = tennisOdds.getOdd_value();
+            Event newEvent = new Event(lastEvent + 1, eventName, oddList, LocalDateTime.now(), eventType);
+            eventRepo.create(newEvent);
+        }
+        else if (Objects.equals(eventType, "Basket")) {
+            BasketOdds basketOdds = basketOddsRepo.getAll().getFirst();
+            List<Double> oddList = basketOdds.getOdd_value();
+            Event newEvent = new Event(lastEvent + 1, eventName, oddList, LocalDateTime.now(), eventType);
+            eventRepo.create(newEvent);
+        }
+    }
+
+    public void addOdds(List<Double> odds, String eventType, String type) {
+        if (Objects.equals(type, "Football")) {
+            FootballOdds FootballOdd = new FootballOdds(odds, eventType);
+            footballOddsRepo.create(FootballOdd);
+        }
+        else if (Objects.equals(type, "Tennis")) {
+            TennisOdds TennisOdd = new TennisOdds(odds, eventType);
+            tennisOddsRepo.create(TennisOdd);
+        }
+        else if (Objects.equals(type, "Basket")) {
+            BasketOdds BasketOdd = new BasketOdds(odds, eventType);
+            basketOddsRepo.create(BasketOdd);
+        }
+    }
+
+    public List<Event> getAvailableEvents() {
+        return eventRepo.getAll();
+    }
+
+    public List<FootballOdds> getFootballOdds() {
+        return footballOddsRepo.getAll();
+    }
+
+    public List<TennisOdds> getTennisOdds() {
+        return tennisOddsRepo.getAll();
+    }
+
+    public List<BasketOdds> getBasketOdds() {
+        return basketOddsRepo.getAll();
     }
 }
 
