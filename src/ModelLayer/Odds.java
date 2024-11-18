@@ -1,4 +1,4 @@
-package Model;
+package ModelLayer;
 
 import java.util.List;
 

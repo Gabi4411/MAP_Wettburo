@@ -1,7 +1,7 @@
-package Service;
+package ServiceLayer;
 
-import Model.*;
-import Repository.*;
+import ModelLayer.*;
+import RepoLayerInterface.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,16 +12,16 @@ import java.util.List;
 public class BetService {
 
     /** Repository for Bet objects. */
-    private final IRepository<Bet> betRepo;
+    private final repo<Bet> betRepo;
 
     /** Repository for Event objects. */
-    private final IRepository<Event> eventRepo;
+    private final repo<Event> eventRepo;
 
     /** Repository for Odds objects. */
-    private final IRepository<Odds> oddsRepo;
+    private final repo<Odds> oddsRepo;
 
     /** Repository for PlayerBet objects. */
-    private final IRepository<PlayerBet> playerBetrepo;
+    private final repo<PlayerBet> playerBetrepo;
 
     /**
      * Constructs a new BetService object.
@@ -31,7 +31,7 @@ public class BetService {
      * @param oddsRepo     Repository for Odds objects.
      * @param playerBetrepo Repository for PlayerBet objects.
      */
-    public BetService(IRepository<Bet> betRepo, IRepository<Event> eventRepo, IRepository<Odds> oddsRepo, IRepository<PlayerBet> playerBetrepo) {
+    public BetService(repo<Bet> betRepo, repo<Event> eventRepo, repo<Odds> oddsRepo, repo<PlayerBet> playerBetrepo) {
         this.betRepo = betRepo;
         this.eventRepo = eventRepo;
         this.oddsRepo = oddsRepo;

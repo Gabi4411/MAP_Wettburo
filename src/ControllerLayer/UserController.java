@@ -1,14 +1,14 @@
-package Controller;
+package ControllerLayer;
 
-import Service.BetService;
-import Service.UserService;
+import ServiceLayer.BetService;
+import ServiceLayer.UserService;
 
 /**
  * Controller class responsible for handling user-related actions such as viewing players, updating admin access levels,
  * viewing player bets, and creating new bet events.
  * It acts as an intermediary between the service layer and the user interface (or external input).
  */
-public class Controller {
+public class UserController {
     /**
      * Service for handling betting-related operations.
      */
@@ -25,7 +25,7 @@ public class Controller {
      * @param betService the BetService used for handling bets and events
      * @param userService the UserService used for handling user operations
      */
-    public Controller(BetService betService, UserService userService) {
+    public UserController(BetService betService, UserService userService) {
         this.betService = betService;
         this.userService = userService;
     }

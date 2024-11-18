@@ -1,11 +1,11 @@
-package Presentation;
+package PresentationLayer;
 
 import java.util.Scanner;
 
-import Model.*;
-import Repository.*;
-import Service.*;
-import Controller.*;
+import ModelLayer.*;
+import RepoLayerInterface.*;
+import ServiceLayer.*;
+import ControllerLayer.*;
 
 /**
  * A console interface for interacting with the betting system.
@@ -14,14 +14,14 @@ import Controller.*;
 public class Console {
 
     /** The controller that manages user-related actions. */
-    private final Controller userController;
+    private final UserController userController;
 
     /**
      * Constructs a new Console object with the specified UserController.
      *
      * @param userController The UserController that manages user operations.
      */
-    public Console(Controller userController) {
+    public Console(UserController userController) {
         this.userController = userController;
     }
 
@@ -135,21 +135,21 @@ public class Console {
      */
     public static void main(String[] args) {
         // Repositories for different models
-        inMemoryRepository<Bet> betRepo = new inMemoryRepository<>();
-        inMemoryRepository<Event> eventRepo = new inMemoryRepository<>();
-        inMemoryRepository<Odds> oddsRepo = new inMemoryRepository<>();
-        inMemoryRepository<PlayerBet> playerbetRepo = new inMemoryRepository<>();
-        inMemoryRepository<Admin> adminRepo = new inMemoryRepository<>();
-        inMemoryRepository<Transactions> transactionsRepo = new inMemoryRepository<>();
-        inMemoryRepository<Player> playerRepo = new inMemoryRepository<>();
+        inMemoryRepo<Bet> betRepo = new inMemoryRepo<>();
+        inMemoryRepo<Event> eventRepo = new inMemoryRepo<>();
+        inMemoryRepo<Odds> oddsRepo = new inMemoryRepo<>();
+        inMemoryRepo<PlayerBet> playerbetRepo = new inMemoryRepo<>();
+        inMemoryRepo<Admin> adminRepo = new inMemoryRepo<>();
+        inMemoryRepo<Transactions> transactionsRepo = new inMemoryRepo<>();
+        inMemoryRepo<Player> playerRepo = new inMemoryRepo<>();
 
         // Create service objects
         BetService betService = new BetService(betRepo, eventRepo, oddsRepo, playerbetRepo);
         UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo);
 
         // Create UserController and Console objects
-        Controller userController1 = new Controller(betService, userService);
-        Console console = new Console(userController1);
+        UserController userUserController1 = new UserController(betService, userService);
+        Console console = new Console(userUserController1);
 
         // Start the console menu
         console.displayMenu();

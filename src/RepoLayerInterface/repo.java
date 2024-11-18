@@ -1,4 +1,4 @@
-package Repository;
+package RepoLayerInterface;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * @param <T> the type of objects stored in the repository
  */
 
-public interface IRepository<T> {
+public interface repo<T> {
 
     /**
      * Creates a new entry in the repository.

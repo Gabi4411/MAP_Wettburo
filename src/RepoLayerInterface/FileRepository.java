@@ -1,4 +1,4 @@
-package Repository;
+package RepoLayerInterface;
 
 import  java.io.*;
 import  java.util.*;
@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 
-public class FileRepository  <T extends  Serializable> implements  IRepository<T>{
+public class FileRepository  <T extends  Serializable> implements repo<T> {
 
     private final String filePath;
     private final Map<Integer, T> storage;

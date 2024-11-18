@@ -1,4 +1,4 @@
-package Model;
+package ModelLayer;
 
 /**
  * Represents an Admin user in the system, extending the base User class.
