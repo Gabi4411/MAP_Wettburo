@@ -2,7 +2,6 @@ package PresentationLayer;
 
 import java.util.Scanner;
 import RepoLayerInterface.*;
-import ModelLayer.*;
 import ServiceLayer.*;
 import ControllerLayer.*;
 
@@ -10,18 +9,18 @@ import ControllerLayer.*;
  * A console interface for interacting with the betting system.
  * This class displays a menu and processes user input to perform various actions related to betting.
  */
-public class Console {
+public class PlayerConsole {
 
     /** The controller that manages user-related actions. */
-    private final UserController userController;
+    private final PlayerController playerController;
 
     /**
      * Constructs a new Console object with the specified UserController.
      *
-     * @param userController The UserController that manages user operations.
+     * @param playerController The UserController that manages user operations.
      */
-    public Console(UserController userController) {
-        this.userController = userController;
+    public PlayerConsole(PlayerController playerController) {
+        this.playerController = playerController;
     }
 
     /**
@@ -37,21 +36,19 @@ public class Console {
             System.out.println("3. View Player Bets");
             System.out.println("4. Create New Bet Event");
             System.out.println("5. View BetOdd");
-            System.out.println("6. Player withdraw");
-            System.out.println("7. Exit");
+            System.out.println("6. Exit");
             System.out.print("Select an option: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
             switch (choice) {
-                case 1 -> userController.viewPlayers(getPlayerId(scanner));
-                case 2 -> userController.updateAdmin(getAdminId(scanner), getAccessLevel(scanner));
-                case 3 -> userController.viewPlayerBets(getPlayerId(scanner));
-                case 4 -> userController.new_betEvent(getEventID(scanner), getEventType(scanner));
-                case 5-> userController.view_Bet_Odd(getBetID(scanner));
-                case 6-> userController.playerWithdraw("Lapa","1234",50);
-                case 7 -> {
+                case 1 -> playerController.viewPlayers(getPlayerId(scanner));
+                case 2 -> playerController.updateAdmin(getAdminId(scanner), getAccessLevel(scanner));
+                case 3 -> playerController.viewPlayerBets(getPlayerId(scanner));
+                case 4 -> playerController.new_betEvent(getEventID(scanner), getEventType(scanner));
+                case 5-> playerController.view_Bet_Odd(getBetID(scanner));
+                case 6 -> {
                     System.out.println("Exiting... Goodbye!");
                     return;
                 }
@@ -67,11 +64,6 @@ public class Console {
      * @return The entered Player ID.
      */
     private static int getPlayerId(Scanner scanner) {
-        System.out.println("Enter Player ID: ");
-        return Integer.parseInt(scanner.nextLine());
-    }
-
-    private static int get_username(Scanner scanner) {
         System.out.println("Enter Player ID: ");
         return Integer.parseInt(scanner.nextLine());
     }
@@ -147,11 +139,10 @@ public class Console {
         UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo);
 
         // Create UserController and Console objects
-        UserController userController1 = new UserController(betService, userService);
-        Console console = new Console(userController1);
+        PlayerController playerController1 = new PlayerController(betService, userService);
+        PlayerConsole playerConsole = new PlayerConsole(playerController1);
 
         // Start the console menu
-        console.displayMenu();
-
+        playerConsole.displayMenu();
     }
 }
