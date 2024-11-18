@@ -1,10 +1,9 @@
-package ServiceLayer;
+package Service;
 
-import ModelLayer.*;
-import RepoLayerInterface.*;
+import Model.*;
+import Repository.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,16 +12,16 @@ import java.util.List;
 public class BetService {
 
     /** Repository for Bet objects. */
-    private final repo<Bet> betRepo;
+    private final IRepository<Bet> betRepo;
 
     /** Repository for Event objects. */
-    private final repo<Event> eventRepo;
+    private final IRepository<Event> eventRepo;
 
     /** Repository for Odds objects. */
-    private final repo<Odds> oddsRepo;
+    private final IRepository<Odds> oddsRepo;
 
     /** Repository for PlayerBet objects. */
-    private final repo<PlayerBet> playerBetrepo;
+    private final IRepository<PlayerBet> playerBetrepo;
 
     /**
      * Constructs a new BetService object.
@@ -32,7 +31,7 @@ public class BetService {
      * @param oddsRepo     Repository for Odds objects.
      * @param playerBetrepo Repository for PlayerBet objects.
      */
-    public BetService(repo<Bet> betRepo, repo<Event> eventRepo, repo<Odds> oddsRepo, repo<PlayerBet> playerBetrepo) {
+    public BetService(IRepository<Bet> betRepo, IRepository<Event> eventRepo, IRepository<Odds> oddsRepo, IRepository<PlayerBet> playerBetrepo) {
         this.betRepo = betRepo;
         this.eventRepo = eventRepo;
         this.oddsRepo = oddsRepo;
@@ -147,5 +146,7 @@ public class BetService {
             eventRepo.create(newEvent);
         }
     }
+
+
 }
 

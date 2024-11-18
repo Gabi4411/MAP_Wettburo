@@ -1,4 +1,4 @@
-package ModelLayer;
+package Model;
 
 import java.time.LocalDateTime;
 import java.util.List;

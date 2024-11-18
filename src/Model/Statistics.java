@@ -1,4 +1,4 @@
-package ModelLayer;
+package Model;
 
 /**
  * Represents statistics for an event, including team statistics, head-to-head data, and recent form.

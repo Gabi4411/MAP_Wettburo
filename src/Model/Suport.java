@@ -1,4 +1,4 @@
-package ModelLayer;
+package Model;
 
 /**
  * Represents a support request submitted by a user, with details about the request's subject, date, and status.

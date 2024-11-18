@@ -1,4 +1,4 @@
-package ModelLayer;
+package Model;
 
 /**
  * Represents an abstract user with basic information such as ID, name, password, and email.

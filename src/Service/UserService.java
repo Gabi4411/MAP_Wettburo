@@ -1,7 +1,7 @@
-package ServiceLayer;
+package Service;
 
-import ModelLayer.*;
-import RepoLayerInterface.*;
+import Model.*;
+import Repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +15,17 @@ public class UserService {
     /**
      * Repository for managing player data.
      */
-    private final repo<Player> playerRepo;
+    private final IRepository<Player> playerRepo;
 
     /**
      * Repository for managing admin data.
      */
-    private final repo<Admin> adminRepo;
+    private final IRepository<Admin> adminRepo;
 
     /**
      * Repository for managing transaction data.
      */
-    private final repo<Transactions> transactionsRepo;
+    private final IRepository<Transactions> transactionsRepo;
 
     /**
      * Constructs a UserService object with the specified repositories for players, admins, and transactions.
@@ -34,7 +34,7 @@ public class UserService {
      * @param adminRepo      the repository for admin data
      * @param transactionsRepo the repository for transaction data
      */
-    public UserService(repo<Player> playerRepo, repo<Admin> adminRepo, repo<Transactions> transactionsRepo) {
+    public UserService(IRepository<Player> playerRepo, IRepository<Admin> adminRepo, IRepository<Transactions> transactionsRepo) {
         this.playerRepo = playerRepo;
         this.adminRepo = adminRepo;
         this.transactionsRepo = transactionsRepo;

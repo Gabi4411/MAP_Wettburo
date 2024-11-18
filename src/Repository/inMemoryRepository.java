@@ -1,4 +1,4 @@
-package RepoLayerInterface;
+package Repository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @param <T> the type of objects stored in the repository
  */
-public class inMemoryRepo<T> implements repo<T> {
+public class inMemoryRepository<T> implements IRepository<T> {
     private final Map<Integer, T> data = new HashMap<>();
     private int current_id=1;
 
