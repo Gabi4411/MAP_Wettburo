@@ -170,7 +170,7 @@ public class UserService {
             }
         }
         int lastAdminId;
-        if (adminRepo.getAll().size() == 0) {
+        if (adminRepo.getAll().isEmpty()) {
             lastAdminId = 0;
         }
         else {
