@@ -36,7 +36,9 @@ public class AdminController {
         System.out.println("New Bet Event for " + eventType + ": " + eventName + " will be available for betting soon!");
     }
 
-    public void createOdds(List<Double> odds, String eventType, String type) {}
+    public void createOdds(List<Double> odds, String eventType, String type) {
+
+    }
 
     public void viewPlayers() {
         StringBuilder output = new StringBuilder("Available Players: ");
