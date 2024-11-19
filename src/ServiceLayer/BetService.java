@@ -6,6 +6,7 @@ import RepoLayerInterface.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Service class to manage betting operations.
@@ -185,6 +186,17 @@ public class BetService {
 
     public List<BasketOdds> getBasketOdds() {
         return basketOddsRepo.getAll();
+    }
+
+
+
+
+    public List<Event> filterbySportsType(List<Event> events, String type) {
+        return events.stream().filter(event -> event.getSports_type().equals(type)).collect(Collectors.toList());
+    }
+
+    public List<Odds> filterbyOdds(List<Odds> odds, double value) {
+            return odds.stream().filter(odd -> odd.getOdd_value().equals(value)).collect(Collectors.toList());
     }
 }
 

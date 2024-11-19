@@ -53,7 +53,6 @@ public class PlayerController {
         System.out.println(output);
     }
 
-    public void createBet() {}
 
     public void withdraw(String username, String password, Integer amount) {
         if(userService.withdraw(username, password, amount)) {
@@ -96,4 +95,12 @@ public class PlayerController {
         userService.getAllTransactions().forEach(transaction -> output.append(transaction.toString()).append("/n"));
         System.out.println(output);
     }
+
+    public void viewBetHistory(){
+        StringBuilder output = new StringBuilder("Bet History: ");
+        betService.getPlayerBetHistory().forEach
+
+    }
+
+
 }
