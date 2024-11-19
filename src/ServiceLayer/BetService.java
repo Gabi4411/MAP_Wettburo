@@ -240,5 +240,25 @@ public class BetService {
     public List<FootballOdds> filterbyOdds(List<FootballOdds> odds, double value) {
             return odds.stream().filter(odd -> odd.getOdd_value().equals(value)).collect(Collectors.toList());
     }
+
+    public List<Event> sortEventsByDate(List<Event> events, boolean ascending) {
+        if (ascending) {
+            events.sort((event1, event2) -> event1.getEvent_date().compareTo(event2.getEvent_date()));
+        } else {
+            events.sort((event1, event2) -> event2.getEvent_date().compareTo(event1.getEvent_date()));
+        }
+
+        return events;
+    }
+
+    public List<Player> sortPlayersByName(List<Player> players, boolean ascending) {
+        if (ascending) {
+            players.sort((player1, player2) -> player1.getUser_name().compareTo(player2.getUser_name()));
+        } else {
+            players.sort((player1, player2) -> player2.getUser_name().compareTo(player1.getUser_name()));
+        }
+
+        return players;
+    }
 }
 

@@ -1,6 +1,9 @@
 package ControllerLayer;
 
 import java.util.List;
+
+import ModelLayer.Event;
+import ModelLayer.Player;
 import ServiceLayer.BetService;
 import ServiceLayer.UserService;
 
@@ -80,5 +83,21 @@ public class AdminController {
     public void updateAdmin(Integer adminId, int accesLevel) {
         userService.updateAccesLevelAdmin(adminId, accesLevel);
         System.out.println("Admin " + adminId + " updated to access level: " + accesLevel);
+    }
+
+    public void sortEventsByDateController() {
+        List<Event> events = betService.getAvailableEvents();
+        boolean ascending = true;
+        List<Event> events1 = betService.sortEventsByDate(events, ascending);
+        System.out.println("Events sorted by date (" + (ascending ? "earliest to latest" : "latest to earliest") + "):");
+        events.forEach(event1 -> System.out.println(event1.getEvent_date() + " - " + event1.getEvent_name()));
+    }
+
+    public void sortPlayersByNameController() {
+        List<Player> players = userService.getAllPlayers();
+        boolean ascending = true;
+        List<Player> players1 = betService.sortPlayersByName(players, ascending);
+        System.out.println("Players sorted by name (" + (ascending ? "A-Z" : "Z-A") + "):");
+        players.forEach(player1 -> System.out.println(player1.getUser_name() + " - " + player1.getUser_name()));
     }
 }
