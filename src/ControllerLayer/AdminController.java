@@ -22,12 +22,14 @@ public class AdminController {
         }
     }
 
-    public void createAdminAccount(String username, String password, String email) {
+    public boolean createAdminAccount(String username, String password, String email) {
         if(userService.addAdmin(username, password, email)) {
             System.out.println("Admin account created!");
+            return true;
         }
         else {
             System.out.println("Couldn't create new account, because one already exist with this username or email. Please try again!");
+            return false;
         }
     }
 

@@ -159,17 +159,18 @@ public class PlayerConsole {
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
-        // Repositories for different models
+        //Repositories for inMemory
         inMemoryRepo<ModelLayer.Bet> betRepo = new inMemoryRepo<>();
         inMemoryRepo<ModelLayer.Event> eventRepo = new inMemoryRepo<>();
-        inMemoryRepo<ModelLayer.Odds> oddsRepo = new inMemoryRepo<>();
-        inMemoryRepo<ModelLayer.PlayerBet> playerbetRepo = new inMemoryRepo<>();
-        inMemoryRepo<ModelLayer.Admin> adminRepo = new inMemoryRepo<>();
-        inMemoryRepo<ModelLayer.Transactions> transactionsRepo = new inMemoryRepo<>();
         inMemoryRepo<ModelLayer.Player> playerRepo = new inMemoryRepo<>();
+        inMemoryRepo<ModelLayer.FootballOdds> footballOddsRepo = new inMemoryRepo<>();
+        inMemoryRepo<ModelLayer.TennisOdds> tennisOddsRepo = new inMemoryRepo<>();
+        inMemoryRepo<ModelLayer.BasketOdds> basketOddsRepo = new inMemoryRepo<>();
+        inMemoryRepo<ModelLayer.Transactions> transactionsRepo = new inMemoryRepo<>();
+        inMemoryRepo<ModelLayer.Admin> adminRepo = new inMemoryRepo<>();
 
-        // Create service objects
-        BetService betService = new BetService(betRepo, eventRepo, oddsRepo, playerbetRepo);
+        //Create service objects
+        BetService betService = new BetService(betRepo, eventRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, playerRepo);
         UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo);
 
         // Create UserController and Console objects

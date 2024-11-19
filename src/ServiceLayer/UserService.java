@@ -176,7 +176,7 @@ public class UserService {
         else {
             lastAdminId = adminRepo.getAll().getLast().getUser_id();
         }
-        Admin newAdmin = new Admin(lastAdminId, username, password, email, 1000, 3, "Suport");
+        Admin newAdmin = new Admin(lastAdminId, username, password, email, 1000, 3, "Support");
         adminRepo.create(newAdmin);
         return true;
     }
