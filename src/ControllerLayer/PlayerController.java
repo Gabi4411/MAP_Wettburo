@@ -1,6 +1,7 @@
 package ControllerLayer;
 
 import ModelLayer.Event;
+import ModelLayer.FootballOdds;
 import ModelLayer.Odds;
 import ModelLayer.Player;
 import ServiceLayer.BetService;
@@ -107,14 +108,18 @@ public class PlayerController {
         System.out.println(bethistory);
     }
 
-    public void oddFilter(List<String> odds, double value){
-        List<Odds> filteredOdds = betService.filterbyOdds(odds,value);
+    public void oddFilter(){
+        List<FootballOdds> odds = betService.getFootballOdds();
+        double value = 2.0;
+        List<FootballOdds> filteredOdds = betService.filterbyOdds(odds,value);
         StringBuilder output = new StringBuilder("Filtered Odds: ");
         filteredOdds.forEach(odd -> output.append(odd.toString()).append("/n"));
         System.out.println(output);
     }
 
-    public void SportTypeFilter(List<Event> events, String type){
+    public void SportTypeFilter(){
+        List<Event> events = betService.getAvailableEvents();
+        String type = "Football";
         StringBuilder output = new StringBuilder("SportsType: ");
         List<Event> filteredSportstype = betService.filterbySportsType(events,type);
         filteredSportstype.forEach(event -> output.append(event.getEvent_name().toString())
@@ -123,4 +128,8 @@ public class PlayerController {
 
     }
 
+    public void placeBet(int playerID, List<Event> events, int amount) {
+        betService.createBet(playerID, events, amount);
+        System.out.println("Bet has been created. You can see it from now on in your Bet History! Thank you for your Bet!");
+    }
 }

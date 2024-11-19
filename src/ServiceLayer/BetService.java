@@ -113,7 +113,7 @@ public class BetService {
      * @param event  The list of events associated with the bet.
      * @param amount The amount of the bet.
      */
-    public void addBet(List<Event> event, int amount) {
+    public void createBet(Integer playerId, List<Event> event, int amount) {
         int lastBet;
         if (betRepo.getAll().isEmpty()) {
             lastBet = 0;
@@ -122,6 +122,12 @@ public class BetService {
         }
         Bet newBet = new Bet(lastBet + 1, event, amount, LocalDateTime.now());
         betRepo.create(newBet);
+
+        Player player = playerRepo.get(playerId);
+        player.setBalance(player.getBalance() - amount);
+        player.getActiveBets().add(newBet);
+        player.getAllBets().add(newBet);
+        playerRepo.update(player);
     }
 
 
@@ -231,7 +237,7 @@ public class BetService {
         return events.stream().filter(event -> event.getSports_type().equals(type)).collect(Collectors.toList());
     }
 
-    public List<Odds> filterbyOdds(List<Odds> odds, double value) {
+    public List<FootballOdds> filterbyOdds(List<FootballOdds> odds, double value) {
             return odds.stream().filter(odd -> odd.getOdd_value().equals(value)).collect(Collectors.toList());
     }
 }
