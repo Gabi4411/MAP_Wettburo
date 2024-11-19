@@ -1,6 +1,10 @@
 package PresentationLayer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import ModelLayer.Odds;
 import RepoLayerInterface.*;
 import ServiceLayer.*;
 import ControllerLayer.*;
@@ -31,24 +35,26 @@ public class PlayerConsole {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("\n-- Betting Console Menu --");
-            System.out.println("1. View Players");
-            System.out.println("2. Update Admin Access Level");
-            System.out.println("3. View Player Bets");
-            System.out.println("4. Create New Bet Event");
-            System.out.println("5. View BetOdd");
-            System.out.println("6. Exit");
+            System.out.println("1. View Events");
+            System.out.println("2. View Bet History");
+            System.out.println("3. View Player active Bets");
+            System.out.println("4. View BetOdd");
+            System.out.println("5. Filter Odd");
+            System.out.println("6. Filter Event by date");
+            System.out.println("7. Exit");
             System.out.print("Select an option: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
             switch (choice) {
-                case 1 -> playerController.viewPlayers(getPlayerId(scanner));
-                case 2 -> playerController.updateAdmin(getAdminId(scanner), getAccessLevel(scanner));
+                case 1 -> playerController.viewEvents();
+                case 2 -> playerController.viewBetHistory(getPlayerId(scanner));
                 case 3 -> playerController.viewPlayerBets(getPlayerId(scanner));
-                case 4 -> playerController.new_betEvent(getEventID(scanner), getEventType(scanner));
-                case 5-> playerController.view_Bet_Odd(getBetID(scanner));
-                case 6 -> {
+                case 4 -> playerController.SportTypeFilter();
+                case 5 -> playerController.view_Bet_Odd(getBetID(scanner));
+                case 6 -> playerController.oddFilter();
+                case 7-> {
                     System.out.println("Exiting... Goodbye!");
                     return;
                 }
@@ -79,6 +85,32 @@ public class PlayerConsole {
         return scanner.nextLine();
     }
 
+//    private List<Odds> getOdds(Scanner scanner){
+//        List<String> odds = new ArrayList<>();
+//        odds.add(1,"GG");
+//        odds.add(2,"Correct Score");
+//    }
+
+//    private void getEvent(Scanner scanner) {
+//         List<> events = new ArrayList<>();
+//         events.add(1,"Football");
+//         events.add(2,"Football");
+//         events.add(3,"Basketball");
+//         events.add(4,"Tennis");
+//
+//
+//    }
+
+    private String getSportType(Scanner scanner) {
+        System.out.println("Enter Sport: ");
+        return scanner.nextLine();
+    }
+
+
+    private double getValue(Scanner scanner) {
+        System.out.println("Enter Value: ");
+        return Double.parseDouble(scanner.nextLine());
+    }
 
     private static Integer getBetID(Scanner scanner) {
         System.out.print("Enter Bet ID: ");
@@ -117,6 +149,8 @@ public class PlayerConsole {
         System.out.print("Enter New Access Level: ");
         return Integer.parseInt(scanner.nextLine());
     }
+
+
 
     /**
      * The main method that initializes the application and starts the console menu.

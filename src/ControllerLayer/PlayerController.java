@@ -1,7 +1,13 @@
 package ControllerLayer;
 
+import ModelLayer.Event;
+import ModelLayer.Odds;
+import ModelLayer.Player;
 import ServiceLayer.BetService;
 import ServiceLayer.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller class responsible for handling user-related actions such as viewing players, updating admin access levels,
@@ -96,11 +102,25 @@ public class PlayerController {
         System.out.println(output);
     }
 
-    public void viewBetHistory(){
-        StringBuilder output = new StringBuilder("Bet History: ");
-        betService.getPlayerBetHistory().forEach
-
+    public void viewBetHistory(int playerID){
+        String bethistory = betService.getPlayerBetHistory(playerID);
+        System.out.println(bethistory);
     }
 
+    public void oddFilter(List<String> odds, double value){
+        List<Odds> filteredOdds = betService.filterbyOdds(odds,value);
+        StringBuilder output = new StringBuilder("Filtered Odds: ");
+        filteredOdds.forEach(odd -> output.append(odd.toString()).append("/n"));
+        System.out.println(output);
+    }
+
+    public void SportTypeFilter(List<Event> events, String type){
+        StringBuilder output = new StringBuilder("SportsType: ");
+        List<Event> filteredSportstype = betService.filterbySportsType(events,type);
+        filteredSportstype.forEach(event -> output.append(event.getEvent_name().toString())
+                .append(event.getSports_type())
+                .append("/n"));
+
+    }
 
 }
