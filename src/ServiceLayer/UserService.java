@@ -105,14 +105,14 @@ public class UserService {
             }
         }
         int lastPlayerId;
-        if (playerRepo.getAll().size() == 0) {
+        if (playerRepo.getAll().isEmpty()) {
             lastPlayerId = 0;
         }
         else {
             lastPlayerId = playerRepo.getAll().getLast().getUser_id();
         }
         List<Bet> emptyList = new ArrayList<>();
-        Player newPlayer = new Player(lastPlayerId + 1, username, password, email, 0, emptyList, 0, "Active");
+        Player newPlayer = new Player(lastPlayerId + 1, username, password, email, 0, emptyList, emptyList, 0, "Active");
         playerRepo.create(newPlayer);
         return true;
     }
@@ -210,7 +210,7 @@ public class UserService {
             return false;
         }
         int lastTransactions;
-        if (transactionsRepo.getAll().size() == 0) {
+        if (transactionsRepo.getAll().isEmpty()) {
             lastTransactions = 0;
         } else {
             lastTransactions = transactionsRepo.getAll().getLast().getTransaction_id();

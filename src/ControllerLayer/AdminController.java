@@ -37,7 +37,8 @@ public class AdminController {
     }
 
     public void createOdds(List<Double> odds, String eventType, String type) {
-
+        betService.addOdds(odds, eventType, type);
+        System.out.println("Odds created for: " + eventType + " in the category: " + type);
     }
 
     public void viewPlayers() {
