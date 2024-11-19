@@ -5,6 +5,7 @@ import RepoLayerInterface.inMemoryRepo;
 import ServiceLayer.BetService;
 import ServiceLayer.UserService;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -80,7 +81,9 @@ public class AdminConsole {
         System.out.println("6. View Admins");
         System.out.println("7. View Bets");
         System.out.println("8. Update Admin Access Level");
-        System.out.println("9. Exit");
+        System.out.println("9. Sorted Events By Date");
+        System.out.println("10. Sorted Players By Name");
+        System.out.println("11. Exit");
         System.out.print("Enter your choice: ");
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -111,6 +114,12 @@ public class AdminConsole {
                 updateAdminAccesLevel(scanner);
                 break;
             case 9:
+                sortedEventsbyDate(scanner);
+                break;
+            case 10:
+                sortedPlayersByName(scanner);
+                break;
+            case 11:
                 return;
             default:
                 System.out.println("Invalid choice, try another one!");
@@ -191,6 +200,16 @@ public class AdminConsole {
         System.out.println("Enter admin access level(1, 2, 3): ");
         int accessLevel = Integer.parseInt(scanner.nextLine());
         adminController.updateAdmin(adminId, accessLevel);
+        showMenu(scanner);
+    }
+
+    private void sortedEventsbyDate(Scanner scanner) {
+        adminController.sortEventsByDateController();
+        showMenu(scanner);
+    }
+
+    private void sortedPlayersByName(Scanner scanner) {
+        adminController.sortPlayersByNameController();
         showMenu(scanner);
     }
 
