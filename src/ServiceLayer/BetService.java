@@ -6,6 +6,7 @@ import RepoLayerInterface.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Service class to manage betting operations.
@@ -14,6 +15,8 @@ public class BetService {
 
     /** Repository for Bet objects. */
     private final repo<Bet> betRepo;
+
+    private final repo<Player> playerRepo;
 
     /** Repository for Event objects. */
     private final repo<Event> eventRepo;
@@ -32,12 +35,13 @@ public class BetService {
      * @param eventRepo    Repository for Event objects.
      * @param footballOddsRepo    Repository for Odds objects.
      */
-    public BetService(repo<Bet> betRepo, repo<Event> eventRepo, repo<FootballOdds> footballOddsRepo, repo<TennisOdds> tennisOddsRepo, repo<BasketOdds> basketOddsRepo) {
+    public BetService(repo<Bet> betRepo, repo<Event> eventRepo, repo<FootballOdds> footballOddsRepo, repo<TennisOdds> tennisOddsRepo, repo<BasketOdds> basketOddsRepo, repo<Player> playerRepo) {
         this.betRepo = betRepo;
         this.eventRepo = eventRepo;
         this.footballOddsRepo = footballOddsRepo;
         this.tennisOddsRepo = tennisOddsRepo;
         this.basketOddsRepo = basketOddsRepo;
+        this.playerRepo = playerRepo;
     }
 
     /**
@@ -121,6 +125,39 @@ public class BetService {
     }
 
 
+
+    public String getPlayerBetHistory(int playerId) {
+
+        Player player = playerRepo.get(playerId);
+        if (player == null || player.getAllBets().isEmpty()) {
+            return "No bets placed by this player";
+        }
+
+        StringBuilder betHistory = new StringBuilder();
+        betHistory.append("Bet History for Player: ").append(player.getUser_name()).append("\n");
+
+        for (Bet bet : player.getAllBets()) {
+            if (bet != null) {
+                betHistory.append("BetID: ").append(bet.getBet_id())
+                        .append(" | Bet Amount: ").append(bet.getAmount())
+                        .append(" | Bet Date: ").append(bet.getBet_date())
+                        .append("\n");
+
+                for (Event event : bet.getEvent()) {
+                    betHistory.append(" - Event: ").append(event.getEvent_name())
+                            .append(" | Event Date: ").append(event.getEvent_date())
+                            .append(" | Event Odds: ").append(event.getOdds())
+                            .append("\n");
+                }
+
+                betHistory.append("\n");
+            }
+        }
+
+        return betHistory.toString();
+    }
+
+
     /**
      * Adds a new event to the repository.
      *
@@ -185,6 +222,17 @@ public class BetService {
 
     public List<BasketOdds> getBasketOdds() {
         return basketOddsRepo.getAll();
+    }
+
+
+
+
+    public List<Event> filterbySportsType(List<Event> events, String type) {
+        return events.stream().filter(event -> event.getSports_type().equals(type)).collect(Collectors.toList());
+    }
+
+    public List<Odds> filterbyOdds(List<Odds> odds, double value) {
+            return odds.stream().filter(odd -> odd.getOdd_value().equals(value)).collect(Collectors.toList());
     }
 }
 
