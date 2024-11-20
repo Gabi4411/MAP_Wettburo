@@ -121,7 +121,7 @@ public class BetService {
         } else {
             lastBet = betRepo.getAll().getLast().getBet_id();
         }
-        Bet newBet = new Bet(lastBet + 1, event, amount, LocalDateTime.now());
+        Bet newBet =  new Bet(lastBet + 1, event, amount, LocalDateTime.now(),"active");
         betRepo.create(newBet);
 
         Player player = playerRepo.get(playerId);
@@ -144,7 +144,7 @@ public class BetService {
         betHistory.append("Bet History for Player: ").append(player.getUser_name()).append("\n");
 
         for (Bet bet : player.getAllBets()) {
-            if (bet != null) {
+            if (bet != null && bet.getBetstatus().equals("ended")){
                 betHistory.append("BetID: ").append(bet.getBet_id())
                         .append(" | Bet Amount: ").append(bet.getAmount())
                         .append(" | Bet Date: ").append(bet.getBet_date())

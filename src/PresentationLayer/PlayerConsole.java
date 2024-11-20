@@ -161,9 +161,9 @@ public class PlayerConsole {
         events.add(event1);
         events.add(event2);
 
-        Bet bet1 = new Bet(1, events, 20, LocalDateTime.now());
-        Bet bet2 = new Bet(2, events, 30, LocalDateTime.now());
-        Bet bet3 = new Bet(3, events, 40, LocalDateTime.now());
+        Bet bet1 = new Bet(1, events, 20, LocalDateTime.now(),"active");
+        Bet bet2 = new Bet(2, events, 30, LocalDateTime.now(),"ended");
+        Bet bet3 = new Bet(3, events, 40, LocalDateTime.now(),"ended");
         betRepo.create(bet1);
         betRepo.create(bet2);
         betRepo.create(bet3);
