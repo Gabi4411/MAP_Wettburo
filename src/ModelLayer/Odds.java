@@ -63,4 +63,12 @@ public abstract class Odds {
     public void setEventType(String eventType) {
         this.eventType = eventType;
     }
+
+    @Override
+    public String toString() {
+        return "Odds{" +
+                "oddValue=" + oddValue +
+                ", eventType='" + eventType + '\'' +
+                '}';
+    }
 }

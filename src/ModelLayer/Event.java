@@ -141,4 +141,14 @@ public class Event {
     }
 
 
+    @Override
+    public String toString() {
+        return "Event{" +
+                "event_id=" + event_id +
+                ", event_name='" + event_name + '\'' +
+                ", odds=" + odds +
+                ", event_date=" + event_date +
+                ", sports_type='" + sports_type + '\'' +
+                '}';
+    }
 }
