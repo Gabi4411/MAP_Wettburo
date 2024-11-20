@@ -39,9 +39,9 @@ public class PlayerConsole {
             System.out.println("1. View Events");
             System.out.println("2. View Bet History");
             System.out.println("3. View Player active Bets");
-            System.out.println("4. View BetOdd");
-            System.out.println("5. Filter Odd");
-            System.out.println("6. Filter Event by date");
+            System.out.println("4. SportTypeFilter");
+            System.out.println("5. ViewBetOdd");
+            System.out.println("6. Filter Odds");
             System.out.println("7. Exit");
             System.out.print("Select an option: ");
 

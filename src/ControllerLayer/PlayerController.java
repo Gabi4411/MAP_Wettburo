@@ -110,10 +110,11 @@ public class PlayerController {
 
     public void oddFilter(){
         List<FootballOdds> odds = betService.getFootballOdds();
-        double value = 2.0;
-        List<FootballOdds> filteredOdds = betService.filterbyOdds(odds,value);
-        StringBuilder output = new StringBuilder("Filtered Odds: \n");
-        filteredOdds.forEach(odd -> output.append(odd.toString()).append("\n"));
+        String type = "Peste 5";
+        List<FootballOdds> filteredOdds = betService.filterbyOdds(odds,type);
+        StringBuilder output = new StringBuilder("Filtered Odds: ");
+        filteredOdds.forEach(odd -> output.append(odd.getEventType().toString())
+                .append("\n"));
         System.out.println(output);
     }
 
@@ -125,6 +126,8 @@ public class PlayerController {
         filteredSportstype.forEach(event -> output.append(event.getEvent_name().toString())
                 .append(event.getSports_type())
                 .append("\n"));
+
+        System.out.println(output);
 
     }
 

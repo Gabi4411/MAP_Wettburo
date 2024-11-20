@@ -237,8 +237,8 @@ public class BetService {
         return events.stream().filter(event -> event.getSports_type().equals(type)).collect(Collectors.toList());
     }
 
-    public List<FootballOdds> filterbyOdds(List<FootballOdds> odds, double value) {
-            return odds.stream().filter(odd -> odd.getOdd_value().equals(value)).collect(Collectors.toList());
+    public List<FootballOdds> filterbyOdds(List<FootballOdds> odds, String type) {
+            return odds.stream().filter(odd -> odd.getEventType().equals(type)).collect(Collectors.toList());
     }
 
     public List<Event> sortEventsByDate(List<Event> events, boolean ascending) {
