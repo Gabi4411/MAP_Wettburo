@@ -164,9 +164,11 @@ public class UserService {
      * @return true if the admin was successfully added, false if the username or email already exists
      */
     public boolean addAdmin(String username, String password, String email) {
-        for (Admin admin : adminRepo.getAll()) {
-            if (admin.getUser_name().equals(username) && admin.getEmail().equals(email)) {
-                return false;
+        if(!adminRepo.getAll().isEmpty()) {
+            for (Admin admin : adminRepo.getAll()) {
+                if (admin.getUser_name().equals(username) && admin.getEmail().equals(email)) {
+                    return false;
+                }
             }
         }
         int lastAdminId;
