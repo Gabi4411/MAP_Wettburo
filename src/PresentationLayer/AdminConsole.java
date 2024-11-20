@@ -206,12 +206,30 @@ public class AdminConsole {
     }
 
     private void sortedEventsbyDate(Scanner scanner) {
-        adminController.sortEventsByDateController();
+        System.out.println("How do you want the list to be sorted: ascending(1) or descending(2)?");
+        int answear = scanner.nextInt();
+        boolean ascending;
+        if(answear == 1) {
+            ascending = true;
+        }
+        else {
+            ascending = false;
+        }
+        adminController.sortEventsByDateController(ascending);
         showMenu(scanner);
     }
 
     private void sortedPlayersByName(Scanner scanner) {
-        adminController.sortPlayersByNameController();
+        System.out.println("How do you want the list to be sorted: ascending(1) or descending(2)?");
+        int answear = scanner.nextInt();
+        boolean ascending;
+        if(answear == 1) {
+            ascending = true;
+        }
+        else {
+            ascending = false;
+        }
+        adminController.sortPlayersByNameController(ascending);
         showMenu(scanner);
     }
 
