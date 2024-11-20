@@ -1,10 +1,12 @@
 package ModelLayer;
 
+import java.io.Serializable;
+
 /**
  * Represents an abstract user with basic information such as ID, name, password, and email.
  * This class is intended to be extended by specific types of users.
  */
-public abstract class User {
+public abstract class User implements Serializable {
     private int user_id;
     private String user_name;
     private String password;

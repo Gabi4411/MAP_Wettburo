@@ -1,12 +1,13 @@
 package ModelLayer;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Represents the odds associated with a specific event in a sports betting system.
  * This is an abstract class that can be extended by specific types of odds implementations.
  */
-public abstract class Odds {
+public abstract class Odds implements Serializable {
     /**
      * List of odd values for the event.
      */
