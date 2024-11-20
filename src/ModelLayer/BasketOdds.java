@@ -1,12 +1,13 @@
 package ModelLayer;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Represents the odds related to a football event.
  * This class extends the Odds class and includes additional fields specific to football.
  */
-public class BasketOdds extends Odds {
+public class BasketOdds extends Odds implements Serializable {
 
     private final String type = "Basket";
 

@@ -1,12 +1,13 @@
 package ModelLayer;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * Represents a transaction performed by a player, including transaction details such as
  * transaction ID, user, amount, date, type, and status.
  */
-public class Transactions {
+public class Transactions implements Serializable {
     private int transaction_id;
     private Player user;
     private int amount;
