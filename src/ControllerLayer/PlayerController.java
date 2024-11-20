@@ -43,63 +43,63 @@ public class PlayerController {
      * @param player_id the ID of the player whose bets are to be displayed
      */
     public void viewPlayerBets(Integer player_id) {
-        StringBuilder output = new StringBuilder("Available Bets: ");
-        betService.getAvailableBets().forEach(bet -> output.append(bet.toString()).append("/n"));
+        StringBuilder output = new StringBuilder("Available Bets: \n");
+        betService.getAvailableBets().forEach(bet -> output.append(bet.toString()).append("\n"));
         System.out.println(output);
     }
 
     public void view_Bet_Odd(Integer betID){
-        StringBuilder output = new StringBuilder("Bets Odds: ");
+        StringBuilder output = new StringBuilder("Bets Odds: \n");
         betService.calculateOdd(betID);
         System.out.println(output);
     }
 
     public void viewEvents() {
-        StringBuilder output = new StringBuilder("Available Events: ");
-        betService.getAvailableEvents().forEach(event -> output.append(event.toString()).append("/n"));
+        StringBuilder output = new StringBuilder("Available Events: \n");
+        betService.getAvailableEvents().forEach(event -> output.append(event.toString()).append("\n"));
         System.out.println(output);
     }
 
 
     public void withdraw(String username, String password, Integer amount) {
         if(userService.withdraw(username, password, amount)) {
-            System.out.println("Withdraw Successful");
+            System.out.println("Withdraw Successful\n");
         }
         else {
-            System.out.println("Withdraw Failed");
+            System.out.println("Withdraw Failed\n");
         }
     }
 
     public void deposit(String username, String password, Integer amount) {
         if(userService.deposit(username, password, amount)) {
-            System.out.println("Deposit Successful");
+            System.out.println("Deposit Successful\n");
         }
         else {
-            System.out.println("Deposit Failed");
+            System.out.println("Deposit Failed\n");
         }
     }
 
     public void playerLogin(String username, String password) {
         if(userService.Login(username, password)) {
-            System.out.println("Logged in, have fun!");
+            System.out.println("Logged in, have fun!\n");
         }
         else {
-            System.out.println("Wrong password, try again, or create account if you don't have one!");
+            System.out.println("Wrong password, try again, or create account if you don't have one!\n");
         }
     }
 
     public void createPlayerAccount(String username, String password, String email) {
         if(userService.addPlayer(username, password, email)) {
-            System.out.println("Logged in, have fun!");
+            System.out.println("Logged in, have fun!\n");
         }
         else {
-            System.out.println("Couldn't create new account, because one already exist with this username or email. Please try again!");
+            System.out.println("Couldn't create new account, because one already exist with this username or email. Please try again!\n");
         }
     }
 
     public void getTransactions() {
-        StringBuilder output = new StringBuilder("All Transactions: ");
-        userService.getAllTransactions().forEach(transaction -> output.append(transaction.toString()).append("/n"));
+        StringBuilder output = new StringBuilder("All Transactions: \n");
+        userService.getAllTransactions().forEach(transaction -> output.append(transaction.toString()).append("\n"));
         System.out.println(output);
     }
 
@@ -115,14 +115,13 @@ public class PlayerController {
         StringBuilder output = new StringBuilder("Filtered Odds: ");
         filteredOdds.forEach(odd -> output.append(odd.getEventType().toString())
                 .append("\n"));
-
         System.out.println(output);
     }
 
     public void SportTypeFilter(){
         List<Event> events = betService.getAvailableEvents();
         String type = "Football";
-        StringBuilder output = new StringBuilder("SportsType: ");
+        StringBuilder output = new StringBuilder("SportsType: \n");
         List<Event> filteredSportstype = betService.filterbySportsType(events,type);
         filteredSportstype.forEach(event -> output.append(event.getEvent_name().toString())
                 .append(event.getSports_type())
@@ -134,6 +133,6 @@ public class PlayerController {
 
     public void placeBet(int playerID, List<Event> events, int amount) {
         betService.createBet(playerID, events, amount);
-        System.out.println("Bet has been created. You can see it from now on in your Bet History! Thank you for your Bet!");
+        System.out.println("Bet has been created. You can see it from now on in your Bet History! Thank you for your Bet!\n");
     }
 }
