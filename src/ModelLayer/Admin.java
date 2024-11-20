@@ -95,7 +95,7 @@ public class Admin extends User{
      */
     @Override
     public String toString() {
-        return "Admin{" +
+        return super.toString() + "Admin{" +
                 "salary=" + salary +
                 ", access_level='" + access_level + '\'' +
                 ", department='" + department + '\'' +

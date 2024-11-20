@@ -23,4 +23,11 @@ public class TennisOdds extends Odds {
     public String getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return  super.toString() + "TennisOdds{" +
+                "type='" + type + '\'' +
+                '}';
+    }
 }

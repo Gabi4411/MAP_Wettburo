@@ -131,7 +131,7 @@ public class Player extends User {
      */
     @Override
     public String toString() {
-        return "Player{" +
+        return super.toString() + "Player{" +
                 "balance=" + balance +
                 ", activeBets=" + activeBets +
                 ", allBets=" + allBets +

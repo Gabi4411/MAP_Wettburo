@@ -106,4 +106,14 @@ public class Bet {
     public void setEvent(List<Event> event) {
         this.event = event;
     }
+
+    @Override
+    public String toString() {
+        return "Bet{" +
+                "bet_id=" + bet_id +
+                ", event=" + event +
+                ", amount=" + amount +
+                ", bet_date=" + bet_date +
+                '}';
+    }
 }
