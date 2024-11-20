@@ -1,12 +1,14 @@
 package ModelLayer;
 
+import java.io.Serializable;
+
 /**
  * Represents an Admin user in the system, extending the base User class.
  * An Admin has additional fields for salary, access level, and department.
  */
 
 
-public class Admin extends User{
+public class Admin extends User implements Serializable {
 
 
     private int salary;

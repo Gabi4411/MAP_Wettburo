@@ -1,12 +1,13 @@
 package ModelLayer;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * Represents a bet placed on one or more events.
  */
-public class Bet {
+public class Bet implements Serializable {
 
     /** The unique identifier for the bet. */
     private int bet_id;

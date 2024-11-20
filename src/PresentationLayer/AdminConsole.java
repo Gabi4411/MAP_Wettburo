@@ -2,8 +2,7 @@ package PresentationLayer;
 
 import ControllerLayer.AdminController;
 import ModelLayer.*;
-import RepoLayerInterface.inMemoryRepo;
-import RepoLayerInterface.repo;
+import RepoLayerInterface.*;
 import ServiceLayer.BetService;
 import ServiceLayer.UserService;
 
@@ -292,7 +291,7 @@ public class AdminConsole {
     }
 
     public static void main(String[] args) {
-//        boolean useFiles = false;
+        boolean useFiles = true;
 
         repo<Bet> betRepo;
         repo<Event> eventRepo;
@@ -303,18 +302,18 @@ public class AdminConsole {
         repo<Transactions> transactionsRepo;
         repo<Admin> adminRepo;
 
-//        if(useFiles){
-//            String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files";
-//            betRepo = new FileRepository<>(filePath + "bets.txt");
-//            eventRepo = new FileRepository<>(filePath + "events.txt");
-//            playerRepo = new FileRepository<>(filePath + "players.txt");
-//            footballOddsRepo = new FileRepository<>(filePath + "footballOdds.txt");
-//            tennisOddsRepo = new FileRepository<>(filePath + "tennisOdds.txt");
-//            basketOddsRepo = new FileRepository<>(filePath + "basketOdds.txt");
-//            transactionsRepo = new FileRepository<>(filePath + "transactins.txt");
-//            adminRepo = new FileRepository<>(filePath + "admins.txt");
-//        }
-//        else {
+        if(useFiles){
+            String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files/";
+            betRepo = new FileRepository<>(filePath + "bets.txt");
+            eventRepo = new FileRepository<>(filePath + "events.txt");
+            playerRepo = new FileRepository<>(filePath + "players.txt");
+            footballOddsRepo = new FileRepository<>(filePath + "footballOdds.txt");
+            tennisOddsRepo = new FileRepository<>(filePath + "tennisOdds.txt");
+            basketOddsRepo = new FileRepository<>(filePath + "basketOdds.txt");
+            transactionsRepo = new FileRepository<>(filePath + "transactions.txt");
+            adminRepo = new FileRepository<>(filePath + "admins.txt");
+        }
+        else {
             //Repositories for inMemory
             betRepo = new inMemoryRepo<>();
             eventRepo = new inMemoryRepo<>();
@@ -324,7 +323,7 @@ public class AdminConsole {
             basketOddsRepo = new inMemoryRepo<>();
             transactionsRepo = new inMemoryRepo<>();
             adminRepo = new inMemoryRepo<>();
-//        }
+        }
         //Create service objects
         BetService betService = new BetService(betRepo, eventRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, playerRepo);
         UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo);

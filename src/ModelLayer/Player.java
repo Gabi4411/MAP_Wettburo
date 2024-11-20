@@ -1,12 +1,13 @@
 package ModelLayer;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Represents a player in the system, inheriting from the User class.
  * A player has a balance, a list of active bets, a bonus balance, and an account status.
  */
-public class Player extends User {
+public class Player extends User implements Serializable {
 
     /** The player's current balance. */
     private double balance;

@@ -1,5 +1,6 @@
 package ModelLayer;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Represents an event in a sports betting system.
  * Contains details such as event ID, event name, odds, event date, and sports type.
  */
-public class Event {
+public class Event implements Serializable {
     /**
      * Unique identifier for the event.
      */
