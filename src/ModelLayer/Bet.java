@@ -20,6 +20,8 @@ public class Bet {
     /** The date and time when the bet was placed. */
     private LocalDateTime bet_date;
 
+    private String betstatus;
+
     /**
      * Constructs a new Bet object.
      *
@@ -28,11 +30,20 @@ public class Bet {
      * @param amount   The amount of money placed on the bet.
      * @param bet_date The date and time when the bet was placed.
      */
-    public Bet(int bet_id, List<Event> event, int amount, LocalDateTime bet_date) {
+    public Bet(int bet_id, List<Event> event, int amount, LocalDateTime bet_date, String betstatus) {
         this.bet_id = bet_id;
         this.amount = amount;
         this.bet_date = bet_date;
         this.event = event;
+        this.betstatus = betstatus;
+    }
+
+    public String getBetstatus() {
+        return betstatus;
+    }
+
+    public void setBetstatus(String betstatus) {
+        this.betstatus = betstatus;
     }
 
     /**
@@ -114,6 +125,7 @@ public class Bet {
                 ", event=" + event +
                 ", amount=" + amount +
                 ", bet_date=" + bet_date +
+                ", betstatus='" + betstatus + '\'' +
                 '}';
     }
 }
