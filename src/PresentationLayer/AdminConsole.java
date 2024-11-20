@@ -1,11 +1,13 @@
 package PresentationLayer;
 
 import ControllerLayer.AdminController;
+import ModelLayer.*;
 import RepoLayerInterface.inMemoryRepo;
+import RepoLayerInterface.repo;
 import ServiceLayer.BetService;
 import ServiceLayer.UserService;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -213,17 +215,98 @@ public class AdminConsole {
         showMenu(scanner);
     }
 
-    public static void main(String[] args) {
-        //Repositories for inMemory
-        inMemoryRepo<ModelLayer.Bet> betRepo = new inMemoryRepo<>();
-        inMemoryRepo<ModelLayer.Event> eventRepo = new inMemoryRepo<>();
-        inMemoryRepo<ModelLayer.Player> playerRepo = new inMemoryRepo<>();
-        inMemoryRepo<ModelLayer.FootballOdds> footballOddsRepo = new inMemoryRepo<>();
-        inMemoryRepo<ModelLayer.TennisOdds> tennisOddsRepo = new inMemoryRepo<>();
-        inMemoryRepo<ModelLayer.BasketOdds> basketOddsRepo = new inMemoryRepo<>();
-        inMemoryRepo<ModelLayer.Transactions> transactionsRepo = new inMemoryRepo<>();
-        inMemoryRepo<ModelLayer.Admin> adminRepo = new inMemoryRepo<>();
+    public static void InitalizeRepo(
+            repo<Event> eventRepo,
+            repo<Bet> betRepo,
+            repo<Player> playerRepo,
+            repo<FootballOdds> footballOddsRepo,
+            repo<TennisOdds> tennisOddsRepo,
+            repo<BasketOdds> basketOddsRepo,
+            repo<Transactions> transactionsRepo,
+            repo<Admin> adminRepo
+    ) {
+        List<Double> odds = new ArrayList<>();
+        odds.add(1.0);
+        odds.add(2.0);
+        odds.add(3.0);
+        Event event1 = new Event(1, "Steaua vs Dinamo", odds, LocalDateTime.now(), "Football");
+        Event event2 = new Event(2, "UCluj vs Galati", odds, LocalDateTime.now(), "Football");
+        Event event3 = new Event(3, "Simona vs Nadal", odds, LocalDateTime.now(), "Tennis");
+        eventRepo.create(event1);
+        eventRepo.create(event2);
+        eventRepo.create(event3);
 
+        List<Event> events = new ArrayList<>();
+        events.add(event1);
+        events.add(event2);
+
+        Bet bet1 = new Bet(1, events, 20, LocalDateTime.now());
+        Bet bet2 = new Bet(2, events, 30, LocalDateTime.now());
+        Bet bet3 = new Bet(3, events, 40, LocalDateTime.now());
+        betRepo.create(bet1);
+        betRepo.create(bet2);
+        betRepo.create(bet3);
+
+        List<Bet> bets = new ArrayList<>();
+        bets.add(bet1);
+        bets.add(bet2);
+        bets.add(bet3);
+
+        Player player1 = new Player(1, "Gabi", "1234", "moldovangabi@yahoo.com", 100.0, bets, bets, 0, "Active");
+        Player player2 = new Player(2, "Lapa", "5678", "lapadtuandrei@yahoo.com", 4000, bets, bets, 0, "Active");
+        playerRepo.create(player1);
+        playerRepo.create(player2);
+
+        footballOddsRepo.create(new FootballOdds(odds, "Peste 5"));
+        footballOddsRepo.create(new FootballOdds(odds, "Sub 5"));
+
+        tennisOddsRepo.create(new TennisOdds(odds, "Most aces"));
+        tennisOddsRepo.create(new TennisOdds(odds, "Minim un set"));
+
+        basketOddsRepo.create(new BasketOdds(odds, "Peste 90 puncte"));
+        basketOddsRepo.create(new BasketOdds(odds, "Triple double in match"));
+
+        transactionsRepo.create(new Transactions(1, player1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
+        transactionsRepo.create(new Transactions(2, player2, 100, LocalDateTime.now(), "Deposit", "Completed"));
+
+        adminRepo.create(new Admin(1, "Sefu1", "123456789", "sefu@tau.com", 5000, 3, "Support"));
+        adminRepo.create(new Admin(2, "Sefu2", "987654321", "sefusefilor@tau.com", 10000, 2, "Support"));
+    }
+
+    public static void main(String[] args) {
+//        boolean useFiles = false;
+
+        repo<Bet> betRepo;
+        repo<Event> eventRepo;
+        repo<Player> playerRepo;
+        repo<FootballOdds> footballOddsRepo;
+        repo<TennisOdds> tennisOddsRepo;
+        repo<BasketOdds> basketOddsRepo;
+        repo<Transactions> transactionsRepo;
+        repo<Admin> adminRepo;
+
+//        if(useFiles){
+//            String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files";
+//            betRepo = new FileRepository<>(filePath + "bets.txt");
+//            eventRepo = new FileRepository<>(filePath + "events.txt");
+//            playerRepo = new FileRepository<>(filePath + "players.txt");
+//            footballOddsRepo = new FileRepository<>(filePath + "footballOdds.txt");
+//            tennisOddsRepo = new FileRepository<>(filePath + "tennisOdds.txt");
+//            basketOddsRepo = new FileRepository<>(filePath + "basketOdds.txt");
+//            transactionsRepo = new FileRepository<>(filePath + "transactins.txt");
+//            adminRepo = new FileRepository<>(filePath + "admins.txt");
+//        }
+//        else {
+            //Repositories for inMemory
+            betRepo = new inMemoryRepo<>();
+            eventRepo = new inMemoryRepo<>();
+            playerRepo = new inMemoryRepo<>();
+            footballOddsRepo = new inMemoryRepo<>();
+            tennisOddsRepo = new inMemoryRepo<>();
+            basketOddsRepo = new inMemoryRepo<>();
+            transactionsRepo = new inMemoryRepo<>();
+            adminRepo = new inMemoryRepo<>();
+//        }
         //Create service objects
         BetService betService = new BetService(betRepo, eventRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, playerRepo);
         UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo);
@@ -231,6 +314,10 @@ public class AdminConsole {
         //Create Admin Controller and Console Object
         AdminController adminController1 = new AdminController(userService, betService);
         AdminConsole adminConsole = new AdminConsole(adminController1);
+
+        //Initialize repos
+        InitalizeRepo(eventRepo, betRepo, playerRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, transactionsRepo, adminRepo);
+
 
         adminConsole.welcomeMenu();
     }
