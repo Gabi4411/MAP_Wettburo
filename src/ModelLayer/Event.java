@@ -139,4 +139,6 @@ public class Event {
     public void setOdds(List<Double> odds) {
         this.odds = odds;
     }
+
+
 }
