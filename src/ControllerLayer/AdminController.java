@@ -98,6 +98,6 @@ public class AdminController {
         boolean ascending = true;
         List<Player> players1 = betService.sortPlayersByName(players, ascending);
         System.out.println("Players sorted by name (" + (ascending ? "A-Z" : "Z-A") + "):\n");
-        players.forEach(player1 -> System.out.println(player1.getUser_name() + " - " + player1.getUser_name() + "\n"));
+        players.forEach(player1 -> System.out.println(player1.getUser_name() + " - " + player1.getEmail() + "\n"));
     }
 }

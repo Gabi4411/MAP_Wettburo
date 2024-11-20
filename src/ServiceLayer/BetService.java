@@ -241,24 +241,81 @@ public class BetService {
             return odds.stream().filter(odd -> odd.getOdd_value().equals(value)).collect(Collectors.toList());
     }
 
+//    public List<Event> sortEventsByDate(List<Event> events, boolean ascending) {
+//        if (ascending) {
+//            events.sort((event1, event2) -> event1.getEvent_date().compareTo(event2.getEvent_date()));
+//        } else {
+//            events.sort((event1, event2) -> event2.getEvent_date().compareTo(event1.getEvent_date()));
+//        }
+//
+//        return events;
+//    }
+//
+//    public List<Player> sortPlayersByName(List<Player> players, boolean ascending) {
+//        if (ascending) {
+//            players.sort((player1, player2) -> player1.getUser_name().compareTo(player2.getUser_name()));
+//        } else {
+//            players.sort((player1, player2) -> player2.getUser_name().compareTo(player1.getUser_name()));
+//        }
+//
+//        return players;
+//    }
+
     public List<Event> sortEventsByDate(List<Event> events, boolean ascending) {
-        if (ascending) {
-            events.sort((event1, event2) -> event1.getEvent_date().compareTo(event2.getEvent_date()));
-        } else {
-            events.sort((event1, event2) -> event2.getEvent_date().compareTo(event1.getEvent_date()));
+        List<Event> mutableEvents = new ArrayList<>(events);
+
+        if (mutableEvents == null || mutableEvents.isEmpty()) {
+            System.out.println("No events to sort.");
+            return mutableEvents;
         }
 
-        return events;
+        // Sorting logic remains the same
+        if (ascending) {
+            mutableEvents.sort((event1, event2) -> {
+                if (event1.getEvent_date() == null && event2.getEvent_date() == null) return 0;
+                if (event1.getEvent_date() == null) return 1;
+                if (event2.getEvent_date() == null) return -1;
+                return event1.getEvent_date().compareTo(event2.getEvent_date());
+            });
+        } else {
+            mutableEvents.sort((event1, event2) -> {
+                if (event1.getEvent_date() == null && event2.getEvent_date() == null) return 0;
+                if (event1.getEvent_date() == null) return 1;
+                if (event2.getEvent_date() == null) return -1;
+                return event2.getEvent_date().compareTo(event1.getEvent_date());
+            });
+        }
+
+        return mutableEvents;
     }
 
     public List<Player> sortPlayersByName(List<Player> players, boolean ascending) {
-        if (ascending) {
-            players.sort((player1, player2) -> player1.getUser_name().compareTo(player2.getUser_name()));
-        } else {
-            players.sort((player1, player2) -> player2.getUser_name().compareTo(player1.getUser_name()));
+        List<Player> mutablePlayers = new ArrayList<>(players);
+
+        if (mutablePlayers == null || mutablePlayers.isEmpty()) {
+            System.out.println("No players to sort.");
+            return mutablePlayers;
         }
 
-        return players;
+        // Sorting logic remains the same
+        if (ascending) {
+            mutablePlayers.sort((player1, player2) -> {
+                if (player1.getUser_name() == null && player2.getUser_name() == null) return 0;
+                if (player1.getUser_name() == null) return 1;
+                if (player2.getUser_name() == null) return -1;
+                return player1.getUser_name().compareTo(player2.getUser_name());
+            });
+        } else {
+            mutablePlayers.sort((player1, player2) -> {
+                if (player1.getUser_name() == null && player2.getUser_name() == null) return 0;
+                if (player1.getUser_name() == null) return 1;
+                if (player2.getUser_name() == null) return -1;
+                return player2.getUser_name().compareTo(player1.getUser_name());
+            });
+        }
+
+        return mutablePlayers;
     }
+
 }
 
