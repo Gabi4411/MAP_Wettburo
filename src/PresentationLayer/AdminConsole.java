@@ -293,6 +293,12 @@ public class AdminConsole {
     public static void main(String[] args) {
         boolean useFiles = true;
 
+        if (useFiles) {
+            System.out.println("Using FileRepository\n");
+        } else {
+            System.out.println("Using inMemoryRepo\n");
+        }
+
         repo<Bet> betRepo;
         repo<Event> eventRepo;
         repo<Player> playerRepo;
