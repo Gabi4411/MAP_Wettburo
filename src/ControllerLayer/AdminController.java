@@ -85,17 +85,15 @@ public class AdminController {
         System.out.println("Admin " + adminId + " updated to access level: " + accesLevel + "\n");
     }
 
-    public void sortEventsByDateController() {
+    public void sortEventsByDateController(boolean ascending) {
         List<Event> events = betService.getAvailableEvents();
-        boolean ascending = true;
         List<Event> events1 = betService.sortEventsByDate(events, ascending);
         System.out.println("Events sorted by date (" + (ascending ? "earliest to latest" : "latest to earliest") + "):\n");
         events.forEach(event1 -> System.out.println(event1.getEvent_date() + " - " + event1.getEvent_name() + "\n"));
     }
 
-    public void sortPlayersByNameController() {
+    public void sortPlayersByNameController(boolean ascending) {
         List<Player> players = userService.getAllPlayers();
-        boolean ascending = true;
         List<Player> players1 = betService.sortPlayersByName(players, ascending);
         System.out.println("Players sorted by name (" + (ascending ? "A-Z" : "Z-A") + "):\n");
         players.forEach(player1 -> System.out.println(player1.getUser_name() + " - " + player1.getEmail() + "\n"));
