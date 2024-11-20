@@ -26,7 +26,7 @@ public class FootballOdds extends Odds {
 
     @Override
     public String toString() {
-        return "FootballOdds{" +
+        return super.toString() + "FootballOdds{" +
                 "type='" + type + '\'' +
                 '}';
     }

@@ -26,7 +26,7 @@ public class BasketOdds extends Odds {
 
     @Override
     public String toString() {
-        return "BasketOdds{" +
+        return super.toString() + "BasketOdds{" +
                 "type='" + type + '\'' +
                 '}';
     }
