@@ -85,21 +85,6 @@ public class PlayerConsole {
         return scanner.nextLine();
     }
 
-//    private List<Odds> getOdds(Scanner scanner){
-//        List<String> odds = new ArrayList<>();
-//        odds.add(1,"GG");
-//        odds.add(2,"Correct Score");
-//    }
-
-//    private void getEvent(Scanner scanner) {
-//         List<> events = new ArrayList<>();
-//         events.add(1,"Football");
-//         events.add(2,"Football");
-//         events.add(3,"Basketball");
-//         events.add(4,"Tennis");
-//
-//
-//    }
 
     private String getSportType(Scanner scanner) {
         System.out.println("Enter Sport: ");

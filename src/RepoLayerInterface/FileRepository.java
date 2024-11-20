@@ -81,7 +81,6 @@ public class FileRepository  <T extends  Serializable> implements repo<T> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private synchronized Map<Integer, T> loadFromFile() {
         File file = new File(filePath);
         if (!file.exists()) {
