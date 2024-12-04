@@ -1,5 +1,6 @@
 package ModelLayer;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -101,5 +102,23 @@ public class PlayerBet {
                 ", bet=" + bet +
                 ", status=" + status +
                 '}';
+    }
+
+    public String toCSV() {
+        return String.join(";",
+                player.toCSV(),
+                String.join("|", bet.stream().map(Bet::toCSV).toArray(String[]::new)),
+                String.join(",", status)
+        );
+    }
+
+    public static PlayerBet fromCSV(String csvLine) {
+        String[] parts = csvLine.split(";", 3);
+        Player player = (Player) User.fromCSV(parts[0]);
+        List<Bet> bets = Arrays.stream(parts[1].split("\\|"))
+                .map(Bet::fromCSV)
+                .toList();
+        List<String> statuses = Arrays.asList(parts[2].split(","));
+        return new PlayerBet(player, bets, statuses);
     }
 }

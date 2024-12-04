@@ -2,12 +2,13 @@ package ModelLayer;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Represents a bet placed on one or more events.
  */
-public class Bet implements Serializable {
+public class Bet{
 
     /** The unique identifier for the bet. */
     private int bet_id;
@@ -128,5 +129,29 @@ public class Bet implements Serializable {
                 ", bet_date=" + bet_date +
                 ", betstatus='" + betstatus + '\'' +
                 '}';
+    }
+
+    public String toCSV() {
+        return String.join(";",
+                String.valueOf(bet_id),
+                String.join("|", event.stream().map(Event::toCSV).toArray(String[]::new)),
+                String.valueOf(amount),
+                bet_date.toString(),
+                betstatus
+        );
+    }
+
+    public static Bet fromCSV(String csvLine) {
+        String[] parts = csvLine.split(";", 5);
+        List<Event> events = Arrays.stream(parts[1].split("\\|"))
+                .map(Event::fromCSV)
+                .toList();
+        return new Bet(
+                Integer.parseInt(parts[0]),
+                events,
+                Integer.parseInt(parts[2]),
+                LocalDateTime.parse(parts[3]),
+                parts[4]
+        );
     }
 }
