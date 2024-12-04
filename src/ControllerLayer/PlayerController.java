@@ -40,7 +40,7 @@ public class PlayerController {
      * @param player_id the ID of the player whose bets are to be displayed
      */
     public void viewPlayerBets(Integer player_id) {
-        if (!CustomExceptions.checkIfEmpty(player_id)) {
+        if (!CustomExceptions.checkIfEmpty(player_id) || !CustomExceptions.idCheck(player_id)) {
             System.exit(0);
         }
 
@@ -50,7 +50,7 @@ public class PlayerController {
     }
 
     public void view_Bet_Odd(Integer betID){
-        if (!CustomExceptions.checkIfEmpty(betID)) {
+        if (!CustomExceptions.checkIfEmpty(betID) || !CustomExceptions.idCheck(betID)) {
             System.exit(0);
         }
 
@@ -125,7 +125,7 @@ public class PlayerController {
     }
 
     public void viewBetHistory(int playerID){
-        if (!CustomExceptions.checkIfEmpty(playerID)) {
+        if (!CustomExceptions.checkIfEmpty(playerID) || !CustomExceptions.idCheck(playerID)) {
             System.exit(0);
         }
 
@@ -157,7 +157,7 @@ public class PlayerController {
     }
 
     public void placeBet(int playerID, List<Event> events, int amount) {
-        if (!CustomExceptions.checkIfEmpty(playerID) || !CustomExceptions.checkIfEmpty(events) || !CustomExceptions.checkIfEmpty(amount)) {
+        if (!CustomExceptions.checkIfEmpty(playerID) || !CustomExceptions.checkIfEmpty(events) || !CustomExceptions.checkIfEmpty(amount) || CustomExceptions.idCheck(playerID)) {
             System.exit(0);
         }
 
