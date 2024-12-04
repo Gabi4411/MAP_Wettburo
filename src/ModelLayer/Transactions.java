@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * Represents a transaction performed by a player, including transaction details such as
  * transaction ID, user, amount, date, type, and status.
  */
-public class Transactions implements Serializable {
+public class Transactions {
     private int transaction_id;
     private Player user;
     private int amount;
@@ -161,5 +161,29 @@ public class Transactions implements Serializable {
                 ", transaction_type='" + transaction_type + '\'' +
                 ", transaction_status='" + transaction_status + '\'' +
                 '}';
+    }
+
+    public String toCSV() {
+        return String.join(";",
+                String.valueOf(transaction_id),
+                user.toCSV(),
+                String.valueOf(amount),
+                transcation_date.toString(),
+                transaction_type,
+                transaction_status
+        );
+    }
+
+    public static Transactions fromCSV(String csvLine) {
+        String[] parts = csvLine.split(";", 6);
+        Player user = (Player) User.fromCSV(parts[1]);
+        return new Transactions(
+                Integer.parseInt(parts[0]),
+                user,
+                Integer.parseInt(parts[2]),
+                LocalDateTime.parse(parts[3]),
+                parts[4],
+                parts[5]
+        );
     }
 }

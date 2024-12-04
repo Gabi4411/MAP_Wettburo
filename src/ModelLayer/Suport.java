@@ -134,4 +134,27 @@ public class Suport {
                 ", status='" + status + '\'' +
                 '}';
     }
+
+    public String toCSV() {
+        return String.join(";",
+                user.toCSV(),
+                String.valueOf(suport_id),
+                subject,
+                String.valueOf(help_date.getTime()),
+                status
+        );
+    }
+
+    public static Suport fromCSV(String csvLine) {
+        String[] parts = csvLine.split(";", 5);
+        User user = User.fromCSV(parts[0]);
+        return new Suport(
+                user,
+                Integer.parseInt(parts[1]),
+                parts[2],
+                new Date(Long.parseLong(parts[3])),
+                parts[4]
+        );
+    }
+
 }

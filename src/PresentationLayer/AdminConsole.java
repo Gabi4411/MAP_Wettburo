@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class AdminConsole {
     private final AdminController adminController;
 
@@ -291,7 +292,7 @@ public class AdminConsole {
     }
 
     public static void main(String[] args) {
-        boolean useFiles = true;
+        boolean useFiles = false;
 
         if (useFiles) {
             System.out.println("Using FileRepository\n");
@@ -308,16 +309,17 @@ public class AdminConsole {
         repo<Transactions> transactionsRepo;
         repo<Admin> adminRepo;
 
-        if(useFiles){
+        if (useFiles) {
             String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files/";
-            betRepo = new FileRepository<>(filePath + "bets.txt");
-            eventRepo = new FileRepository<>(filePath + "events.txt");
-            playerRepo = new FileRepository<>(filePath + "players.txt");
-            footballOddsRepo = new FileRepository<>(filePath + "footballOdds.txt");
-            tennisOddsRepo = new FileRepository<>(filePath + "tennisOdds.txt");
-            basketOddsRepo = new FileRepository<>(filePath + "basketOdds.txt");
-            transactionsRepo = new FileRepository<>(filePath + "transactions.txt");
-            adminRepo = new FileRepository<>(filePath + "admins.txt");
+
+            betRepo = new FileRepository<>(filePath + "bets.txt", Bet.class);
+            eventRepo = new FileRepository<>(filePath + "events.txt", Event.class);
+            playerRepo = new FileRepository<>(filePath + "players.txt", Player.class);
+            footballOddsRepo = new FileRepository<>(filePath + "footballOdds.txt", FootballOdds.class);
+            tennisOddsRepo = new FileRepository<>(filePath + "tennisOdds.txt", TennisOdds.class);
+            basketOddsRepo = new FileRepository<>(filePath + "basketOdds.txt", BasketOdds.class);
+            transactionsRepo = new FileRepository<>(filePath + "transactions.txt", Transactions.class);
+            adminRepo = new FileRepository<>(filePath + "admins.txt", Admin.class);
         }
         else {
             //Repositories for inMemory

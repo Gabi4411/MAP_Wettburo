@@ -5,17 +5,20 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-public class FileRepository<T extends Serializable> implements repo<T> {
+public class FileRepository<T> implements repo<T> {
     private final String filePath;
+    private final Class<T> clazz;
 
-    public FileRepository(String filePath) {
+    public FileRepository(String filePath, Class<T> clazz) {
         this.filePath = filePath;
+        this.clazz = clazz;
     }
 
     @Override
     public void create(T obj) {
         doInFile(data -> {
             Integer id = generateId(data);
+            invokeSetId(obj, id); // Set the ID in the object.
             data.put(id, obj);
         });
     }
@@ -61,9 +64,9 @@ public class FileRepository<T extends Serializable> implements repo<T> {
     // Helper Methods
 
     private synchronized void doInFile(Consumer<Map<Integer, T>> function) {
-        Map<Integer, T> data = readDataFromFile(); // Load data from file
-        function.accept(data);                    // Apply the operation
-        writeDataToFile(data);                    // Save data back to file
+        Map<Integer, T> data = readDataFromFile();
+        function.accept(data);
+        writeDataToFile(data);
     }
 
     private synchronized Map<Integer, T> readDataFromFile() {
@@ -71,51 +74,32 @@ public class FileRepository<T extends Serializable> implements repo<T> {
         if (!file.exists()) {
             return new ConcurrentHashMap<>();
         }
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-//            return (Map<Integer, T>) ois.readObject();
-            Map<Integer, T> data = (Map<Integer, T>) ois.readObject();
-            data.forEach((id, obj) -> System.out.println("Loaded: " + obj)); // Debug log
-            return data;
-        } catch (IOException | ClassNotFoundException e) {
+
+        Map<Integer, T> data = new ConcurrentHashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                T obj = fromCSV(line);
+                Integer id = invokeGetId(obj);
+                data.put(id, obj);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
-            return new ConcurrentHashMap<>();
         }
+        return data;
     }
 
     private synchronized void writeDataToFile(Map<Integer, T> data) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
-            oos.writeObject(data);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (T obj : data.values()) {
+                writer.write(toCSV(obj));
+                writer.newLine();
+            }
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Error saving to file: " + e.getMessage());
         }
     }
-
-//    private synchronized void writeDataToFile(Map<Integer, T> newData) {
-//        Map<Integer, T> existingData = new HashMap<>();
-//
-//        // Read existing data from the file if it exists
-//        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
-//            existingData = (Map<Integer, T>) ois.readObject();
-//        } catch (FileNotFoundException e) {
-//            // File doesn't exist yet, so we can safely skip
-//        } catch (IOException | ClassNotFoundException e) {
-//            e.printStackTrace();
-//            throw new RuntimeException("Error reading from file: " + e.getMessage());
-//        }
-//
-//        // Merge the new data into the existing data
-//        existingData.putAll(newData);
-//
-//        // Now write the updated map (existing + new data) back to the file
-//        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
-//            oos.writeObject(existingData);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            throw new RuntimeException("Error saving to file: " + e.getMessage());
-//        }
-//    }
-
 
     private Integer generateId(Map<Integer, T> data) {
         return data.isEmpty() ? 1 : Collections.max(data.keySet()) + 1;
@@ -128,5 +112,37 @@ public class FileRepository<T extends Serializable> implements repo<T> {
             }
         }
         return null;
+    }
+
+    private T fromCSV(String csvLine) {
+        try {
+            return (T) clazz.getMethod("fromCSV", String.class).invoke(null, csvLine);
+        } catch (Exception e) {
+            throw new RuntimeException("Error deserializing from CSV: " + e.getMessage(), e);
+        }
+    }
+
+    private String toCSV(T obj) {
+        try {
+            return (String) obj.getClass().getMethod("toCSV").invoke(obj);
+        } catch (Exception e) {
+            throw new RuntimeException("Error serializing to CSV: " + e.getMessage(), e);
+        }
+    }
+
+    private Integer invokeGetId(T obj) {
+        try {
+            return (Integer) obj.getClass().getMethod("getId").invoke(obj);
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting ID: " + e.getMessage(), e);
+        }
+    }
+
+    private void invokeSetId(T obj, Integer id) {
+        try {
+            obj.getClass().getMethod("setId", Integer.class).invoke(obj, id);
+        } catch (Exception e) {
+            throw new RuntimeException("Error setting ID: " + e.getMessage(), e);
+        }
     }
 }

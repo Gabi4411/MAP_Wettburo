@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 
 
-public class Admin extends User implements Serializable {
+public class Admin extends User{
 
 
     private int salary;
@@ -34,6 +34,12 @@ public class Admin extends User implements Serializable {
         this.department = department;
     }
 
+    public Admin() {
+        super(0, "", "", "");
+        this.salary = 0;
+        this.access_level = 0;
+        this.department = "";
+    }
 
     /**
      * Gets the salary of the admin.
@@ -104,6 +110,26 @@ public class Admin extends User implements Serializable {
                 '}';
     }
 
+    @Override
+    public String getType() {
+        return "Admin";
+    }
+
+    @Override
+    public String toCSV() {
+        return String.join(";",
+                getType(), String.valueOf(getUser_id()), getUser_name(), getPassword(), getEmail(),
+                String.valueOf(salary), String.valueOf(access_level), department
+        );
+    }
+
+    public static Admin fromCSV(String csvLine) {
+        String[] parts = csvLine.split(";", 8);
+        return new Admin(
+                Integer.parseInt(parts[1]), parts[2], parts[3], parts[4],
+                Integer.parseInt(parts[5]), Integer.parseInt(parts[6]), parts[7]
+        );
+    }
 }
 
 
