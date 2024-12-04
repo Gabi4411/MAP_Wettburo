@@ -1,11 +1,8 @@
 package ControllerLayer;
 
-import ModelLayer.Event;
-import ModelLayer.FootballOdds;
-import ModelLayer.Odds;
-import ModelLayer.Player;
-import ServiceLayer.BetService;
-import ServiceLayer.UserService;
+import ModelLayer.*;
+import ServiceLayer.*;
+import Exceptions.CustomExceptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +40,20 @@ public class PlayerController {
      * @param player_id the ID of the player whose bets are to be displayed
      */
     public void viewPlayerBets(Integer player_id) {
+        if (!CustomExceptions.checkIfEmpty(player_id)) {
+            System.exit(0);
+        }
+
         StringBuilder output = new StringBuilder("Available Bets: \n");
         betService.getAvailableBets().forEach(bet -> output.append(bet.toString()).append("\n"));
         System.out.println(output);
     }
 
     public void view_Bet_Odd(Integer betID){
+        if (!CustomExceptions.checkIfEmpty(betID)) {
+            System.exit(0);
+        }
+
         StringBuilder output = new StringBuilder("Bets Odds: \n");
         betService.calculateOdd(betID);
         System.out.println(output);
@@ -62,6 +67,10 @@ public class PlayerController {
 
 
     public void withdraw(String username, String password, Integer amount) {
+        if (!CustomExceptions.checkIfEmpty(username) || !CustomExceptions.checkIfEmpty(password) || !CustomExceptions.checkIfEmpty(amount)) {
+            System.exit(0);
+        }
+
         if(userService.withdraw(username, password, amount)) {
             System.out.println("Withdraw Successful\n");
         }
@@ -71,6 +80,10 @@ public class PlayerController {
     }
 
     public void deposit(String username, String password, Integer amount) {
+        if (!CustomExceptions.checkIfEmpty(username) || !CustomExceptions.checkIfEmpty(password) || !CustomExceptions.checkIfEmpty(amount)) {
+            System.exit(0);
+        }
+
         if(userService.deposit(username, password, amount)) {
             System.out.println("Deposit Successful\n");
         }
@@ -80,6 +93,10 @@ public class PlayerController {
     }
 
     public void playerLogin(String username, String password) {
+        if (!CustomExceptions.checkIfEmpty(username) || !CustomExceptions.checkIfEmpty(password)) {
+            System.exit(0);
+        }
+
         if(userService.Login(username, password)) {
             System.out.println("Logged in, have fun!\n");
         }
@@ -89,6 +106,10 @@ public class PlayerController {
     }
 
     public void createPlayerAccount(String username, String password, String email) {
+        if(!CustomExceptions.checkIfEmpty(username) || !CustomExceptions.checkIfEmpty(password)) {
+            System.exit(0);
+        }
+
         if(userService.addPlayer(username, password, email)) {
             System.out.println("Logged in, have fun!\n");
         }
@@ -104,6 +125,10 @@ public class PlayerController {
     }
 
     public void viewBetHistory(int playerID){
+        if (!CustomExceptions.checkIfEmpty(playerID)) {
+            System.exit(0);
+        }
+
         String bethistory = betService.getPlayerBetHistory(playerID);
         System.out.println(bethistory);
     }
@@ -132,6 +157,10 @@ public class PlayerController {
     }
 
     public void placeBet(int playerID, List<Event> events, int amount) {
+        if (!CustomExceptions.checkIfEmpty(playerID) || !CustomExceptions.checkIfEmpty(events) || !CustomExceptions.checkIfEmpty(amount)) {
+            System.exit(0);
+        }
+
         betService.createBet(playerID, events, amount);
         System.out.println("Bet has been created. You can see it from now on in your Bet History! Thank you for your Bet!\n");
     }
