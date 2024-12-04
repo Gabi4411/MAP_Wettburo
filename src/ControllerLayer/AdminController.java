@@ -98,7 +98,7 @@ public class AdminController {
     }
 
     public void updateAdmin(Integer adminId, int accesLevel) {
-        if (!CustomExceptions.checkIfEmpty(adminId)) {
+        if (!CustomExceptions.checkIfEmpty(adminId) || !CustomExceptions.idCheck(adminId)) {
             System.exit(0);
         }
 

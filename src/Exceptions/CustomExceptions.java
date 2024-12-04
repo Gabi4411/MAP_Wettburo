@@ -35,5 +35,11 @@ public class CustomExceptions {
         return true;
     }
 
-
+    public static boolean idCheck(Integer id) {
+        if (id < 0) {
+            System.out.println("Id is lower than 0!");
+            return false;
+        }
+        return true;
+    }
 }
