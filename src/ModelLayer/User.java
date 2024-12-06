@@ -1,5 +1,7 @@
 package ModelLayer;
 
+import java.io.Serializable;
+
 /**
  * Represents an abstract user with basic information such as ID, name, password, and email.
  * This class is intended to be extended by specific types of users.
@@ -113,5 +115,22 @@ public abstract class User {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public abstract String getType();
+
+    public abstract String toCSV();
+
+    public static User fromCSV(String csvLine) {
+        String[] parts = csvLine.split(";", 2);
+        String type = parts[0];
+        switch (type) {
+            case "Player":
+                return Player.fromCSV(parts[1]);
+            case "Admin":
+                return Admin.fromCSV(parts[1]);
+            default:
+                throw new IllegalArgumentException("Unknown User type: " + type);
+        }
     }
 }

@@ -204,7 +204,7 @@ public class PlayerConsole {
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
-//        boolean useFiles = false;
+        boolean useFiles = false;
 
         repo<Bet> betRepo;
         repo<Event> eventRepo;
@@ -215,18 +215,19 @@ public class PlayerConsole {
         repo<Transactions> transactionsRepo;
         repo<Admin> adminRepo;
 
-//        if(useFiles){
-//            String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files";
-//            betRepo = new FileRepository<>(filePath + "bets.txt");
-//            eventRepo = new FileRepository<>(filePath + "events.txt");
-//            playerRepo = new FileRepository<>(filePath + "players.txt");
-//            footballOddsRepo = new FileRepository<>(filePath + "footballOdds.txt");
-//            tennisOddsRepo = new FileRepository<>(filePath + "tennisOdds.txt");
-//            basketOddsRepo = new FileRepository<>(filePath + "basketOdds.txt");
-//            transactionsRepo = new FileRepository<>(filePath + "transactins.txt");
-//            adminRepo = new FileRepository<>(filePath + "admins.txt");
-//        }
-//        else {
+        if (useFiles) {
+            String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files/";
+
+            betRepo = new FileRepository<>(filePath + "bets.txt", Bet.class);
+            eventRepo = new FileRepository<>(filePath + "events.txt", Event.class);
+            playerRepo = new FileRepository<>(filePath + "players.txt", Player.class);
+            footballOddsRepo = new FileRepository<>(filePath + "footballOdds.txt", FootballOdds.class);
+            tennisOddsRepo = new FileRepository<>(filePath + "tennisOdds.txt", TennisOdds.class);
+            basketOddsRepo = new FileRepository<>(filePath + "basketOdds.txt", BasketOdds.class);
+            transactionsRepo = new FileRepository<>(filePath + "transactions.txt", Transactions.class);
+            adminRepo = new FileRepository<>(filePath + "admins.txt", Admin.class);
+        }
+        else {
             //Repositories for inMemory
             betRepo = new inMemoryRepo<>();
             eventRepo = new inMemoryRepo<>();
@@ -236,7 +237,7 @@ public class PlayerConsole {
             basketOddsRepo = new inMemoryRepo<>();
             transactionsRepo = new inMemoryRepo<>();
             adminRepo = new inMemoryRepo<>();
-//        }
+        }
 
         //Create service objects
         BetService betService = new BetService(betRepo, eventRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, playerRepo);

@@ -1,12 +1,13 @@
 package ModelLayer;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Represents the odds associated with a specific event in a sports betting system.
  * This is an abstract class that can be extended by specific types of odds implementations.
  */
-public abstract class Odds {
+public abstract class Odds{
     /**
      * List of odd values for the event.
      */
@@ -70,5 +71,24 @@ public abstract class Odds {
                 "oddValue=" + oddValue +
                 ", eventType='" + eventType + '\'' +
                 '}';
+    }
+
+    public abstract String getType();
+
+    public abstract String toCSV();
+
+    public static Odds fromCSV(String csvLine) {
+        String[] parts = csvLine.split(";", 2);
+        String type = parts[0];
+        switch (type) {
+            case "Football":
+                return FootballOdds.fromCSV(parts[1]);
+            case "Tennis":
+                return TennisOdds.fromCSV(parts[1]);
+            case "Basket":
+                return BasketOdds.fromCSV(parts[1]);
+            default:
+                throw new IllegalArgumentException("Unknown Odds type: " + type);
+        }
     }
 }

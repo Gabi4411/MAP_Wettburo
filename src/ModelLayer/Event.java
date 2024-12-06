@@ -1,13 +1,15 @@
 package ModelLayer;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Represents an event in a sports betting system.
  * Contains details such as event ID, event name, odds, event date, and sports type.
  */
-public class Event {
+public class Event{
     /**
      * Unique identifier for the event.
      */
@@ -150,5 +152,50 @@ public class Event {
                 ", event_date=" + event_date +
                 ", sports_type='" + sports_type + '\'' +
                 '}';
+    }
+    public String toCSV() {
+        return String.join(";",
+                String.valueOf(event_id),
+                event_name,
+                String.join(",", odds.stream().map(String::valueOf).toArray(String[]::new)),
+                event_date.toString(),
+                sports_type
+        );
+    }
+
+    public static Event fromCSV(String csvLine) {
+        try {
+            // Split into parts, limiting to 6 because odds may contain commas
+            String[] parts = csvLine.split(",", 6);
+
+            if (parts.length < 6) {
+                throw new IllegalArgumentException("Invalid CSV line for Event: " + csvLine);
+            }
+
+            // Parse event_id
+            int eventId = Integer.parseInt(parts[0].trim());
+
+            // Parse event_name
+            String eventName = parts[2].trim();
+
+            // Parse odds: Remove square brackets and split by commas
+            String oddsString = parts[3].trim();
+            oddsString = oddsString.substring(1, oddsString.length() - 1); // Remove '[' and ']'
+            List<Double> odds = Arrays.stream(oddsString.split(","))
+                    .map(String::trim)
+                    .map(Double::parseDouble)
+                    .toList();
+
+            // Parse event_date
+            LocalDateTime eventDate = LocalDateTime.parse(parts[4].trim());
+
+            // Parse sports_type
+            String sportsType = parts[5].trim();
+
+            // Return a new Event object
+            return new Event(eventId, eventName, odds, eventDate, sportsType);
+        } catch (Exception e) {
+            throw new RuntimeException("Error deserializing from CSV: " + csvLine, e);
+        }
     }
 }

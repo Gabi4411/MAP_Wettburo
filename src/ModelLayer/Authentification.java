@@ -27,6 +27,13 @@ public class Authentification {
         this.last_login = last_login;
     }
 
+    public Authentification() {
+        this.auth_id = 0;
+        this.user = null;
+        this.login_attempts = 0;
+        this.last_login = new Date(0); // Default to epoch time
+    }
+
     /**
      * Gets the authentication ID.
      *
@@ -114,5 +121,25 @@ public class Authentification {
                 ", login_attempts=" + login_attempts +
                 ", last_login=" + last_login +
                 '}';
+    }
+
+    public String toCSV() {
+        return String.join(";",
+                String.valueOf(auth_id),
+                user.toCSV(),
+                String.valueOf(login_attempts),
+                String.valueOf(last_login.getTime())
+        );
+    }
+
+    public static Authentification fromCSV(String csvLine) {
+        String[] parts = csvLine.split(";", 4);
+        User user = User.fromCSV(parts[1]);
+        return new Authentification(
+                Integer.parseInt(parts[0]),
+                user,
+                Integer.parseInt(parts[2]),
+                new Date(Long.parseLong(parts[3]))
+        );
     }
 }

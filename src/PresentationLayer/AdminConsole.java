@@ -2,8 +2,7 @@ package PresentationLayer;
 
 import ControllerLayer.AdminController;
 import ModelLayer.*;
-import RepoLayerInterface.inMemoryRepo;
-import RepoLayerInterface.repo;
+import RepoLayerInterface.*;
 import ServiceLayer.BetService;
 import ServiceLayer.UserService;
 
@@ -11,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 
 public class AdminConsole {
     private final AdminController adminController;
@@ -206,12 +206,30 @@ public class AdminConsole {
     }
 
     private void sortedEventsbyDate(Scanner scanner) {
-        adminController.sortEventsByDateController();
+        System.out.println("How do you want the list to be sorted: ascending(1) or descending(2)?");
+        int answear = scanner.nextInt();
+        boolean ascending;
+        if(answear == 1) {
+            ascending = true;
+        }
+        else {
+            ascending = false;
+        }
+        adminController.sortEventsByDateController(ascending);
         showMenu(scanner);
     }
 
     private void sortedPlayersByName(Scanner scanner) {
-        adminController.sortPlayersByNameController();
+        System.out.println("How do you want the list to be sorted: ascending(1) or descending(2)?");
+        int answear = scanner.nextInt();
+        boolean ascending;
+        if(answear == 1) {
+            ascending = true;
+        }
+        else {
+            ascending = false;
+        }
+        adminController.sortPlayersByNameController(ascending);
         showMenu(scanner);
     }
 
@@ -274,7 +292,13 @@ public class AdminConsole {
     }
 
     public static void main(String[] args) {
-//        boolean useFiles = false;
+        boolean useFiles = false;
+
+        if (useFiles) {
+            System.out.println("Using FileRepository\n");
+        } else {
+            System.out.println("Using inMemoryRepo\n");
+        }
 
         repo<Bet> betRepo;
         repo<Event> eventRepo;
@@ -285,18 +309,19 @@ public class AdminConsole {
         repo<Transactions> transactionsRepo;
         repo<Admin> adminRepo;
 
-//        if(useFiles){
-//            String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files";
-//            betRepo = new FileRepository<>(filePath + "bets.txt");
-//            eventRepo = new FileRepository<>(filePath + "events.txt");
-//            playerRepo = new FileRepository<>(filePath + "players.txt");
-//            footballOddsRepo = new FileRepository<>(filePath + "footballOdds.txt");
-//            tennisOddsRepo = new FileRepository<>(filePath + "tennisOdds.txt");
-//            basketOddsRepo = new FileRepository<>(filePath + "basketOdds.txt");
-//            transactionsRepo = new FileRepository<>(filePath + "transactins.txt");
-//            adminRepo = new FileRepository<>(filePath + "admins.txt");
-//        }
-//        else {
+        if (useFiles) {
+            String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files/";
+
+            betRepo = new FileRepository<>(filePath + "bets.txt", Bet.class);
+            eventRepo = new FileRepository<>(filePath + "events.txt", Event.class);
+            playerRepo = new FileRepository<>(filePath + "players.txt", Player.class);
+            footballOddsRepo = new FileRepository<>(filePath + "footballOdds.txt", FootballOdds.class);
+            tennisOddsRepo = new FileRepository<>(filePath + "tennisOdds.txt", TennisOdds.class);
+            basketOddsRepo = new FileRepository<>(filePath + "basketOdds.txt", BasketOdds.class);
+            transactionsRepo = new FileRepository<>(filePath + "transactions.txt", Transactions.class);
+            adminRepo = new FileRepository<>(filePath + "admins.txt", Admin.class);
+        }
+        else {
             //Repositories for inMemory
             betRepo = new inMemoryRepo<>();
             eventRepo = new inMemoryRepo<>();
@@ -306,7 +331,7 @@ public class AdminConsole {
             basketOddsRepo = new inMemoryRepo<>();
             transactionsRepo = new inMemoryRepo<>();
             adminRepo = new inMemoryRepo<>();
-//        }
+        }
         //Create service objects
         BetService betService = new BetService(betRepo, eventRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, playerRepo);
         UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo);

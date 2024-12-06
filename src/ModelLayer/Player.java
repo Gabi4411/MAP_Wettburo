@@ -1,12 +1,15 @@
 package ModelLayer;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Represents a player in the system, inheriting from the User class.
  * A player has a balance, a list of active bets, a bonus balance, and an account status.
  */
-public class Player extends User {
+public class Player extends User{
 
     /** The player's current balance. */
     private double balance;
@@ -42,6 +45,15 @@ public class Player extends User {
         this.allBets = allBets;
         this.bonus_balance = bonus_balance;
         this.account_status = account_status;
+    }
+
+    public Player() {
+        super(0, "", "", "");
+        this.balance = 0.0;
+        this.activeBets = new ArrayList<>();
+        this.allBets = new ArrayList<>();
+        this.bonus_balance = 0;
+        this.account_status = "";
     }
 
     public List<Bet> getAllBets() {
@@ -138,5 +150,36 @@ public class Player extends User {
                 ", bonus_balance=" + bonus_balance +
                 ", account_status='" + account_status + '\'' +
                 '}';
+    }
+
+    @Override
+    public String getType() {
+        return "Player";
+    }
+
+    @Override
+    public String toCSV() {
+        return String.join(";",
+                getType(), String.valueOf(getUser_id()), getUser_name(), getPassword(), getEmail(),
+                String.valueOf(balance),
+                String.join("|", activeBets.stream().map(Bet::toCSV).toArray(String[]::new)),
+                String.join("|", allBets.stream().map(Bet::toCSV).toArray(String[]::new)),
+                String.valueOf(bonus_balance), account_status
+        );
+    }
+
+    public static Player fromCSV(String csvLine) {
+        String[] parts = csvLine.split(";", 10);
+        List<Bet> activeBets = Arrays.stream(parts[6].split("\\|"))
+                .map(Bet::fromCSV)
+                .toList();
+        List<Bet> allBets = Arrays.stream(parts[7].split("\\|"))
+                .map(Bet::fromCSV)
+                .toList();
+        return new Player(
+                Integer.parseInt(parts[1]), parts[2], parts[3], parts[4],
+                Double.parseDouble(parts[5]), activeBets, allBets,
+                Integer.parseInt(parts[8]), parts[9]
+        );
     }
 }
