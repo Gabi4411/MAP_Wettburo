@@ -52,9 +52,9 @@ public class PlayerConsole {
                 case 1 -> playerController.viewEvents();
                 case 2 -> playerController.viewBetHistory(getPlayerId(scanner));
                 case 3 -> playerController.viewPlayerBets(getPlayerId(scanner));
-                case 4 -> playerController.SportTypeFilter();
+                case 4 -> playerController.SportTypeFilter(getSportType(scanner));
                 case 5 -> playerController.view_Bet_Odd(getBetID(scanner));
-                case 6 -> playerController.oddFilter();
+                case 6 -> playerController.oddFilter(getOddName(scanner));
                 case 7-> {
                     System.out.println("Exiting... Goodbye!");
                     return;
@@ -75,6 +75,7 @@ public class PlayerConsole {
         return Integer.parseInt(scanner.nextLine());
     }
 
+
     /**
      * Prompts the user to enter an Event ID.
      *
@@ -93,9 +94,9 @@ public class PlayerConsole {
     }
 
 
-    private double getValue(Scanner scanner) {
-        System.out.println("Enter Value: ");
-        return Double.parseDouble(scanner.nextLine());
+    private String getOddName(Scanner scanner) {
+        System.out.println("Enter OddName: ");
+        return scanner.nextLine();
     }
 
     private static Integer getBetID(Scanner scanner) {
@@ -250,5 +251,8 @@ public class PlayerConsole {
 
         // Start the console menu
         playerConsole.displayMenu();
+
+
+
     }
 }

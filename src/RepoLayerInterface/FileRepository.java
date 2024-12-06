@@ -13,7 +13,7 @@ public class FileRepository  <T extends  Serializable> implements repo<T> {
 
     public FileRepository(String filePath) {
         this.filePath = filePath;
-        this.storage = new ConcurrentHashMap<>();
+        this.storage = new ConcurrentHashMap<>(loadFromFile());
     }
 
 
@@ -92,6 +92,8 @@ public class FileRepository  <T extends  Serializable> implements repo<T> {
             throw new RuntimeException("Error loading from file: " + e.getMessage());
         }
     }
+
+
 
 
 }

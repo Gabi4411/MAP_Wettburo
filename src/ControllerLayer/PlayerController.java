@@ -108,19 +108,18 @@ public class PlayerController {
         System.out.println(bethistory);
     }
 
-    public void oddFilter(){
+    public void oddFilter(String OddType){
         List<FootballOdds> odds = betService.getFootballOdds();
-        String type = "Peste 5";
-        List<FootballOdds> filteredOdds = betService.filterbyOdds(odds,type);
+        List<FootballOdds> filteredOdds = betService.filterbyOdds(odds,OddType);
         StringBuilder output = new StringBuilder("Filtered Odds: ");
         filteredOdds.forEach(odd -> output.append(odd.getEventType().toString())
+                .append(odd.getOdd_value())
                 .append("\n"));
         System.out.println(output);
     }
 
-    public void SportTypeFilter(){
+    public void SportTypeFilter(String type){
         List<Event> events = betService.getAvailableEvents();
-        String type = "Football";
         StringBuilder output = new StringBuilder("SportsType: \n");
         List<Event> filteredSportstype = betService.filterbySportsType(events,type);
         filteredSportstype.forEach(event -> output.append(event.getEvent_name().toString())
