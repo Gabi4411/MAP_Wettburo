@@ -11,6 +11,7 @@ public class FileRepository<T> implements repo<T> {
 
     public FileRepository(String filePath, Class<T> clazz) {
         this.filePath = filePath;
+        this.storage = new ConcurrentHashMap<>(loadFromFile());
         this.clazz = clazz;
     }
 
@@ -137,6 +138,7 @@ public class FileRepository<T> implements repo<T> {
             throw new RuntimeException("Error getting ID: " + e.getMessage(), e);
         }
     }
+
 
     private void invokeSetId(T obj, Integer id) {
         try {
