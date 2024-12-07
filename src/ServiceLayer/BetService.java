@@ -78,7 +78,7 @@ public class BetService {
         Bet bet = betRepo.get(betID);
         if (bet == null) {
             System.out.println("Bet Not Found");
-            return 0;
+            return 0.0;
         }
 
         return calculateOdd(betID) * bet.getAmount();
@@ -250,7 +250,6 @@ public class BetService {
             return mutableEvents;
         }
 
-        // Sorting logic remains the same
         if (ascending) {
             mutableEvents.sort((event1, event2) -> {
                 if (event1.getEvent_date() == null && event2.getEvent_date() == null) return 0;
@@ -278,7 +277,6 @@ public class BetService {
             return mutablePlayers;
         }
 
-        // Sorting logic remains the same
         if (ascending) {
             mutablePlayers.sort((player1, player2) -> {
                 if (player1.getUser_name() == null && player2.getUser_name() == null) return 0;
