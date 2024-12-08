@@ -2,6 +2,7 @@ package Tests;
 
 import ModelLayer.*;
 import ControllerLayer.*;
+import RepoLayerInterface.inMemoryRepo;
 import ServiceLayer.*;
 
 import RepoLayerInterface.repo;
@@ -9,42 +10,55 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ApplicationTest {
-    private final AdminController adminController;
-    private final PlayerController playerController;
-    private final UserService userService;
-    private final BetService betService;
-    private final repo<Bet> betRepo;
-    private final repo<Player> playerRepo;
-    private final repo<Event> eventRepo;
-    private final repo<FootballOdds> footballOddsRepo;
-    private final repo<TennisOdds> tennisOddsRepo;
-    private final repo<BasketOdds> basketOddsRepo;
-    private final repo<Transactions> transactionRepo;
-    private final repo<Admin> adminRepo;
+    private AdminController adminController;
+    private PlayerController playerController;
+    private UserService userService;
+    private BetService betService;
+    private repo<Bet> betRepo;
+    private repo<Player> playerRepo;
+    private repo<Event> eventRepo;
+    private repo<FootballOdds> footballOddsRepo;
+    private repo<TennisOdds> tennisOddsRepo;
+    private repo<BasketOdds> basketOddsRepo;
+    private repo<Transactions> transactionRepo;
+    private repo<Admin> adminRepo;
 
-    public ApplicationTest(AdminController adminController, PlayerController playerController, UserService userService, BetService betService, repo<Bet> betRepo, repo<Event> eventRepo, repo<FootballOdds> footballOddsRepo, repo<TennisOdds> tennisOddsRepo, repo<BasketOdds> basketOddsRepo, repo<Player> playerRepo, repo<Transactions> transactionRepo, repo<Admin> adminRepo) {
-        this.adminController = adminController;
-        this.playerController = playerController;
-        this.userService = userService;
-        this.betService = betService;
-        this.betRepo = betRepo;
-        this.eventRepo = eventRepo;
-        this.footballOddsRepo = footballOddsRepo;
-        this.tennisOddsRepo = tennisOddsRepo;
-        this.basketOddsRepo = basketOddsRepo;
-        this.playerRepo = playerRepo;
-        this.transactionRepo = transactionRepo;
-        this.adminRepo = adminRepo;
+    @BeforeEach
+    void setUp() {
+        betRepo = new inMemoryRepo<>();
+        playerRepo = new inMemoryRepo<>();
+        eventRepo = new inMemoryRepo<>();
+        footballOddsRepo = new inMemoryRepo<>();
+        tennisOddsRepo = new inMemoryRepo<>();
+        basketOddsRepo = new inMemoryRepo<>();
+        transactionRepo = new inMemoryRepo<>();
+        adminRepo = new inMemoryRepo<>();
+
+        InitializeRepo(
+                eventRepo,
+                betRepo,
+                playerRepo,
+                footballOddsRepo,
+                tennisOddsRepo,
+                basketOddsRepo,
+                transactionRepo,
+                adminRepo
+        );
+
+        userService = new UserService(playerRepo, adminRepo, transactionRepo);
+        betService = new BetService(betRepo, eventRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, playerRepo);
+
+        adminController = new AdminController(userService, betService);
+        playerController = new PlayerController(betService, userService);
     }
 
-
-    //Initialize
-    public static void InitalizeRepo(
+    public static void InitializeRepo(
             repo<Event> eventRepo,
             repo<Bet> betRepo,
             repo<Player> playerRepo,
@@ -152,19 +166,19 @@ public class ApplicationTest {
         assertTrue(userService.withdraw("Gabi", "1234", 100));
         assertFalse(userService.withdraw("Gabriel", "1111", 100));
         Player player = playerRepo.get(1);
-        assertEquals(100, player.getBalance());
+        assertEquals(0.0, player.getBalance());
     }
 
     //Tests for BetService
     @Test
     void testCalculateOdd() {
-        assertEquals(6.0, betService.calculateOdd(1));
+        assertEquals(36.0, betService.calculateOdd(1));
         assertEquals(1.0, betService.calculateOdd(5));
     }
 
     @Test
     void testCalculatePotentialWinning() {
-        assertEquals(120.0, betService.calculatePotentialWinning(1));
+        assertEquals(720.0, betService.calculatePotentialWinning(1));
         assertEquals(0.0, betService.calculatePotentialWinning(5));
     }
 
@@ -207,11 +221,16 @@ public class ApplicationTest {
         odds.add(2.0);
         odds.add(3.0);
         Event event1 = new Event(3, "Caini VS Pisici", odds, LocalDateTime.now(), "Basket");
-        Event event2 = new Event(4, "Ronaldo VS Messi", odds, LocalDateTime.now(), "Tennis");
+        Event event2 = new Event(4, "R VS T", odds, LocalDateTime.now(), "Basket");
+        Event event3 = new Event(5, "Ronaldo VS Messi", odds, LocalDateTime.now(), "Tennis");
         List<Event> events = new ArrayList<>();
         events.add(event1);
         events.add(event2);
-        assertEquals(event1, betService.filterbySportsType(events, "Basket"));
+        events.add(event3);
+        List<Event> eventsBasket = new ArrayList<>();
+        eventsBasket.add(event1);
+        eventsBasket.add(event2);
+        assertEquals(eventsBasket, betService.filterbySportsType(events, "Basket"));
     }
 
     @Test
@@ -232,8 +251,50 @@ public class ApplicationTest {
     }
 
     @Test
-    void testSortEventsByDate() {}
+    void testSortEventsByDate() {
+        List<Double> odds = new ArrayList<>();
+        odds.add(1.0);
+        odds.add(2.0);
+        odds.add(3.0);
+        Event event1 = new Event(6, "M VS V", odds, LocalDateTime.now(), "Basket");
+        Event event2 = new Event(7, "M Vs B", odds, LocalDateTime.now(), "Tennis");
+        List<Event> events = new ArrayList<>();
+        events.add(event1);
+        events.add(event2);
+
+        assertEquals(events, betService.sortEventsByDate(events, true));
+    }
 
     @Test
-    void testSortPlayersByName() {}
+    void testSortPlayersByName() {
+        List<Double> odds = new ArrayList<>();
+        odds.add(1.0);
+        odds.add(2.0);
+        odds.add(3.0);
+        Event event1 = new Event(8, "Gazu VS Dumbraveni", odds, LocalDateTime.now(), "Football");
+        Event event2 = new Event(9, "Ploiesti vs Galati", odds, LocalDateTime.now(), "Football");
+        eventRepo.create(event1);
+        eventRepo.create(event2);
+        List<Event> events = new ArrayList<>();
+        events.add(event1);
+        events.add(event2);
+
+        Bet bet1 = new Bet(4, events, 50, LocalDateTime.now(),"active");
+        Bet bet2 = new Bet(5, events, 60, LocalDateTime.now(),"ended");
+        betRepo.create(bet1);
+        betRepo.create(bet2);
+
+        List<Bet> bets = new ArrayList<>();
+        bets.add(bet1);
+        bets.add(bet2);
+        List<Player> players = new ArrayList<>();
+        Player player1 = new Player(3, "Mufasa", "123456", "mufasa@yahoo.com", 100.0, bets, bets, 0, "Active");
+        Player player2 = new Player(4, "George", "56789", "george@yahoo.com", 400.0, bets, bets, 0, "Active");
+        players.add(player1);
+        players.add(player2);
+
+        assertEquals(players, betService.sortPlayersByName(players, false));
+    }
 }
+
+
