@@ -7,73 +7,63 @@ import java.util.List;
  * Represents the odds associated with a specific event in a sports betting system.
  * This is an abstract class that can be extended by specific types of odds implementations.
  */
-public abstract class Odds{
-    /**
-     * List of odd values for the event.
-     */
-    private List<Double> oddValue;
+public class Odds{
 
-    /**
-     * Type of the event (e.g., sport type or event category).
-     */
+    private String oddName;
+    private int odd_id;
     private String eventType;
+//    private double oddValue;
 
-    /**
-     * Constructs an Odds object with the specified event ID, list of odd values, and event type.
-     *
-     * @param oddValue  the list of odd values for the event
-     * @param eventType  the type of event (e.g., sport type or category)
-     */
-    public Odds(List<Double> oddValue, String eventType) {
-        this.oddValue = oddValue;
+
+    public Odds(int odd_id, String oddName, /*double oddValue,*/ String eventType) {
+        this.oddName = oddName;
+        this.odd_id = odd_id;
+        //this.oddValue = oddValue;
         this.eventType = eventType;
     }
 
-    /**
-     * Gets the list of odd values for the event.
-     *
-     * @return the list of odd values
-     */
-    public List<Double> getOdd_value() {
-        return oddValue;
+    //public double getOddValue() {
+      //  return oddValue;
+    //}
+
+//    public void setOddValue(double oddValue) {
+//        this.oddValue = oddValue;
+//    }
+
+    public String getOddName() {
+        return oddName;
     }
 
-    /**
-     * Sets the list of odd values for the event.
-     *
-     * @param oddValue the list of odd values to set
-     */
-    public void setOdd_value(List<Double> oddValue) {
-        this.oddValue = oddValue;
+    public void setOddName(String oddName) {
+        this.oddName = oddName;
     }
 
-    /**
-     * Gets the type of event.
-     *
-     * @return the event type
-     */
+    public int getOdd_id() {
+        return odd_id;
+    }
+
+    public void setOdd_id(int odd_id) {
+        this.odd_id = odd_id;
+    }
+
     public String getEventType() {
         return eventType;
     }
 
-    /**
-     * Sets the type of event.
-     *
-     * @param eventType the event type to set
-     */
     public void setEventType(String eventType) {
         this.eventType = eventType;
     }
 
+
     @Override
     public String toString() {
         return "Odds{" +
-                "oddValue=" + oddValue +
+                "oddName='" + oddName + '\'' +
+                ", odd_id=" + odd_id +
                 ", eventType='" + eventType + '\'' +
+//                ", oddValue=" + oddValue +
                 '}';
     }
-
-    public abstract String getType();
 
     public abstract String toCSV();
 

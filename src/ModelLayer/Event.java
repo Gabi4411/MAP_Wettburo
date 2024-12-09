@@ -1,9 +1,9 @@
 package ModelLayer;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents an event in a sports betting system.
@@ -23,33 +23,36 @@ public class Event{
     /**
      * List of odds for the event.
      */
-    public List<Double> odds;
+    public Map<Odds,Double> oddsList;
 
     /**
      * Date and time of the event.
      */
-    public LocalDateTime event_date;
+    public String event_date;
 
     /**
      * Type of sport for the event.
      */
     private String sports_type;
 
+    private List<Event> eventList;
+
     /**
      * Constructs an Event object with specified details.
      *
      * @param event_id    the unique identifier for the event
      * @param event_name  the name of the event
-     * @param odds        a list of odds for the event
+     * @param oddsList        a list of odds for the event
      * @param event_date  the date and time of the event
      * @param sports_type the type of sport for the event
      */
-    public Event(int event_id, String event_name, List<Double> odds, LocalDateTime event_date, String sports_type) {
+    public Event(int event_id, String event_name, Map<Odds,Double> oddsList, String event_date, String sports_type, List<Event> eventList) {
         this.event_id = event_id;
         this.event_name = event_name;
-        this.odds = odds;
+        this.oddsList = oddsList;
         this.event_date = event_date;
         this.sports_type = sports_type;
+        this.eventList = eventList;
     }
 
     /**
@@ -93,7 +96,7 @@ public class Event{
      *
      * @return the event date and time
      */
-    public LocalDateTime getEvent_date() {
+    public String getEvent_date() {
         return event_date;
     }
 
@@ -102,7 +105,7 @@ public class Event{
      *
      * @param event_date the event date and time to set
      */
-    public void setEvent_date(LocalDateTime event_date) {
+    public void setEvent_date(String event_date) {
         this.event_date = event_date;
     }
 
@@ -129,17 +132,25 @@ public class Event{
      *
      * @return the list of odds
      */
-    public List<Double> getOdds() {
-        return odds;
+    public Map<Odds,Double> getOddsList() {
+        return oddsList;
     }
 
     /**
      * Sets the list of odds for the event.
      *
-     * @param odds the list of odds to set
+     * @param oddsList the list of odds to set
      */
-    public void setOdds(List<Double> odds) {
-        this.odds = odds;
+    public void setOddsList(Map<Odds,Double> oddsList) {
+        this.oddsList = oddsList;
+    }
+
+    public List<Event> getEventList() {
+        return eventList;
+    }
+
+    public void setEventList(List<Event> eventList) {
+        this.eventList = eventList;
     }
 
 
@@ -148,16 +159,18 @@ public class Event{
         return "Event{" +
                 "event_id=" + event_id +
                 ", event_name='" + event_name + '\'' +
-                ", odds=" + odds +
+                ", oddsList=" + oddsList +
                 ", event_date=" + event_date +
                 ", sports_type='" + sports_type + '\'' +
+                ", eventList=" + eventList +
                 '}';
     }
+
     public String toCSV() {
         return String.join(";",
                 String.valueOf(event_id),
                 event_name,
-                String.join(",", odds.stream().map(String::valueOf).toArray(String[]::new)),
+                String.join(",", oddsList.keySet().stream().map(String::valueOf).toArray(String[]::new)),
                 event_date.toString(),
                 sports_type
         );
@@ -181,7 +194,7 @@ public class Event{
             // Parse odds: Remove square brackets and split by commas
             String oddsString = parts[3].trim();
             oddsString = oddsString.substring(1, oddsString.length() - 1); // Remove '[' and ']'
-            List<Double> odds = Arrays.stream(oddsString.split(","))
+            List<Odds> oddsList = Arrays.stream(oddsString.split(","))
                     .map(String::trim)
                     .map(Double::parseDouble)
                     .toList();
@@ -193,7 +206,7 @@ public class Event{
             String sportsType = parts[5].trim();
 
             // Return a new Event object
-            return new Event(eventId, eventName, odds, eventDate, sportsType);
+            return new Event(eventId, eventName, , eventDate, sportsType);
         } catch (Exception e) {
             throw new RuntimeException("Error deserializing from CSV: " + csvLine, e);
         }
