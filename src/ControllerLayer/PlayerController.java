@@ -4,7 +4,6 @@ import ModelLayer.*;
 import ServiceLayer.*;
 import Exceptions.CustomExceptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -105,7 +104,7 @@ public class PlayerController {
         }
     }
 
-    public void createPlayerAccount(String username, String password, String email) {
+    public boolean createPlayerAccount(String username, String password, String email) {
         if(!CustomExceptions.checkIfEmpty(username) || !CustomExceptions.checkIfEmpty(password)) {
             System.exit(0);
         }
@@ -116,6 +115,7 @@ public class PlayerController {
         else {
             System.out.println("Couldn't create new account, because one already exist with this username or email. Please try again!\n");
         }
+        return false;
     }
 
     public void getTransactions() {

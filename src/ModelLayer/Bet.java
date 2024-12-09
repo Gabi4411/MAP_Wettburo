@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class Bet{
 
+    private int palyer_id;
+
     /** The unique identifier for the bet. */
     private int bet_id;
 
@@ -32,12 +34,21 @@ public class Bet{
      * @param amount   The amount of money placed on the bet.
      * @param bet_date The date and time when the bet was placed.
      */
-    public Bet(int bet_id, List<Event> event, int amount, LocalDateTime bet_date, String betstatus) {
+    public Bet(int player_id,int bet_id, List<Event> event, int amount, LocalDateTime bet_date, String betstatus) {
+        this.palyer_id = player_id;
         this.bet_id = bet_id;
         this.amount = amount;
         this.bet_date = bet_date;
         this.event = event;
         this.betstatus = betstatus;
+    }
+
+    public int getPalyer_id() {
+        return palyer_id;
+    }
+
+    public void setPalyer_id(int palyer_id) {
+        this.palyer_id = palyer_id;
     }
 
     public String getBetstatus() {

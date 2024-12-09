@@ -28,12 +28,65 @@ public class PlayerConsole {
         this.playerController = playerController;
     }
 
+    public void welcomeMenu() {
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+
+        while(running) {
+            System.out.println("===Welcome to Player Console===");
+            System.out.println("What would you like to do?");
+            System.out.println("1. Create Player Account");
+            System.out.println("2. Login Player");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch(choice) {
+                case 1:
+                    createAccount(scanner);
+                    break;
+                case 2:
+                    adminLogin(scanner);
+                    break;
+                case 3:
+                    System.out.println("Goodbye!");
+                    running = false;
+                default:
+                    System.out.println("Invalid choice, try another one!");
+            }
+        }
+    }
+
+    private void createAccount(Scanner scanner) {
+        System.out.println("Enter your username: ");
+        String username = scanner.nextLine();
+        System.out.println("Enter your password: ");
+        String password = scanner.nextLine();
+        System.out.println("Enter your email: ");
+        String email = scanner.nextLine();
+        if (playerController.createPlayerAccount(username, password, email)) {
+            displayMenu(scanner);
+        }
+        else {
+            welcomeMenu();
+        }
+    }
+
+    private void adminLogin(Scanner scanner) {
+        System.out.println("Enter your username: ");
+        String username = scanner.nextLine();
+        System.out.println("Enter your password: ");
+        String password = scanner.nextLine();
+        playerController.playerLogin(username, password);
+        displayMenu(scanner);
+    }
+
     /**
      * Displays the main menu and handles user input for different actions.
      * This method continuously displays the menu and processes user choices until the user exits.
      */
-    public void displayMenu() {
-        Scanner scanner = new Scanner(System.in);
+    public void displayMenu(Scanner scanner) {
         while (true) {
             System.out.println("\n-- Betting Console Menu --");
             System.out.println("1. View Events");
@@ -141,6 +194,7 @@ public class PlayerConsole {
             repo<Event> eventRepo,
             repo<Bet> betRepo,
             repo<Player> playerRepo,
+            repo<Odds> oddRepo,
             repo<FootballOdds> footballOddsRepo,
             repo<TennisOdds> tennisOddsRepo,
             repo<BasketOdds> basketOddsRepo,
@@ -148,10 +202,11 @@ public class PlayerConsole {
             repo<Admin> adminRepo
     ) {
         List<Double> odds = new ArrayList<>();
-        odds.add(1.0);
-        odds.add(2.0);
-        odds.add(3.0);
-        Event event1 = new Event(1, "Steaua vs Dinamo", odds, LocalDateTime.now(), "Football");
+
+//        odds.add(1.0);
+//        odds.add(2.0);
+//        odds.add(3.0);
+        Event event1 = new Event(1, "Steaua vs Dinamo",  footballOddsRepo , LocalDateTime.now(), "Football");
         Event event2 = new Event(2, "UCluj vs Galati", odds, LocalDateTime.now(), "Football");
         Event event3 = new Event(3, "Simona vs Nadal", odds, LocalDateTime.now(), "Tennis");
         eventRepo.create(event1);
@@ -179,14 +234,20 @@ public class PlayerConsole {
         playerRepo.create(player1);
         playerRepo.create(player2);
 
-        footballOddsRepo.create(new FootballOdds(odds, "Peste 5"));
-        footballOddsRepo.create(new FootballOdds(odds, "Sub 5"));
 
-        tennisOddsRepo.create(new TennisOdds(odds, "Most aces"));
-        tennisOddsRepo.create(new TennisOdds(odds, "Minim un set"));
 
-        basketOddsRepo.create(new BasketOdds(odds, "Peste 90 puncte"));
-        basketOddsRepo.create(new BasketOdds(odds, "Triple double in match"));
+
+        footballOddsRepo.create(new FootballOdds(1,odds, "GG"));
+        footballOddsRepo.create(new FootballOdds(2,odds, "total goals over 2.5"));
+        footballOddsRepo.create(new FootballOdds(3,odds, "Hattrick by any Player in match"));
+
+        tennisOddsRepo.create(new TennisOdds(odds, "both to win a set"));
+        tennisOddsRepo.create(new TennisOdds(odds, "over 18.5 games"));
+        tennisOddsRepo.create(new TennisOdds(odds, "6-0 set win by any player in match"));
+
+        basketOddsRepo.create(new BasketOdds(odds, "Over 177.5 points in match"));
+        basketOddsRepo.create(new BasketOdds(odds, "Match goes in Overtime"));
+        basketOddsRepo.create(new BasketOdds(odds, "Triple double by any player in match"));
 
         transactionsRepo.create(new Transactions(1, player1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
         transactionsRepo.create(new Transactions(2, player2, 100, LocalDateTime.now(), "Deposit", "Completed"));
@@ -251,7 +312,7 @@ public class PlayerConsole {
         InitalizeRepo(eventRepo, betRepo, playerRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, transactionsRepo, adminRepo);
 
         // Start the console menu
-        playerConsole.displayMenu();
+        playerConsole.welcomeMenu();
 
 
 
