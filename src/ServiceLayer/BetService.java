@@ -17,6 +17,8 @@ public class BetService {
      */
     private final repo<Bet> betRepo;
 
+    private final repo<Transactions> transactionsRepo;;
+
     private final repo<Player> playerRepo;
 
     /**
@@ -42,12 +44,13 @@ public class BetService {
      * @param eventRepo        Repository for Event objects.
      * //@param footballOddsRepo Repository for Odds objects.
      */
-    public BetService(repo<Bet> betRepo, repo<Event> eventRepo/* ,repo<FootballOdds> footballOddsRepo, repo<TennisOdds> tennisOddsRepo, repo<BasketOdds> basketOddsRepo*/, repo<Player> playerRepo, repo<Odds> oddsRepo) {
+    public BetService(repo<Bet> betRepo, repo<Event> eventRepo,repo<Transactions> transactionsRepo/* ,repo<FootballOdds> footballOddsRepo, repo<TennisOdds> tennisOddsRepo, repo<BasketOdds> basketOddsRepo*/, repo<Player> playerRepo, repo<Odds> oddsRepo) {
         this.betRepo = betRepo;
         this.eventRepo = eventRepo;
 //        this.footballOddsRepo = footballOddsRepo;
 //        this.tennisOddsRepo = tennisOddsRepo;
 //        this.basketOddsRepo = basketOddsRepo;
+        this.transactionsRepo = transactionsRepo;
         this.playerRepo = playerRepo;
         this.oddsRepo = oddsRepo;
     }
@@ -235,33 +238,20 @@ public class BetService {
         return eventRepo.getAll();
     }
 
+    public List<Odds> getAvailableOdds(){return oddsRepo.getAll();}
 
     public List<Event> filterbySportsType(List<Event> events, String type) {
         return events.stream().filter(event -> event.getSports_type().equals(type)).collect(Collectors.toList());
     }
 
-    public List<Odds> filterbyOdds(List<Odds> odds, String type) {
-        return odds.stream().filter(odd -> odd.getEventType().equals(type)).collect(Collectors.toList());
+    public List<Transactions> getAvailableTransaction(){return transactionsRepo.getAll();}
+
+
+
+    public List<Transactions> filterbyTransactionType(List<Transactions> transactions, String type) {
+        return transactions.stream().filter(transaction -> transaction.getTransaction_type().equals(type)).collect(Collectors.toList());
     }
 
-
-
-    public void filterOddsByValue(double minValue) {
-        System.out.println("Filtering odds with value >= " + minValue);
-
-        for (Event event : getAvailableEvents()) {
-            System.out.println("Event: " + event.getEvent_name());
-
-            // Filtrarea cotelor
-            event.getOddsList().entrySet().stream()
-                    .filter(entry -> entry.getValue() >= minValue) // Filtrează valorile mai mari sau egale cu minValue
-                    .forEach(entry -> {
-                        Odds odd = entry.getKey();
-                        Double value = entry.getValue();
-                        System.out.println("Odd: " + odd.getOddName() + " (" + odd.getEventType() + ") - Value: " + value);
-                    });
-        }
-    }
 
 
     public List<Event> sortEventsByDate(List<Event> events, boolean ascending) {
@@ -435,12 +425,6 @@ public class BetService {
         System.out.print("Enter the bet amount: ");
         double betAmount = scanner.nextDouble();
 
-        // Calculul câștigului potențial
-        double potentialWin = totalOdds * betAmount;
-
-        System.out.println("Total Odds: " + totalOdds);
-        System.out.println("Potential Win: " + potentialWin);
-
 
         // Introdu suma pariată
         System.out.print("Enter your bet amount: ");
@@ -468,12 +452,16 @@ public class BetService {
 
         // Calculează câștigul potențial
         double potentialWinning = amount * totalOdds;
+        System.out.println("Total Odds: " + totalOdds);
+        System.out.println("Potential Win: " + potentialWinning);
         System.out.println("Bet placed successfully!");
         System.out.println("Potential Winning: " + potentialWinning);
+
 
         // Adaugă pariu în lista activă a pariorului
         player.getActiveBets().add(newBet);
     }
+
 
 
 

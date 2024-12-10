@@ -133,12 +133,12 @@ public class PlayerController {
         System.out.println(bethistory);
     }
 
-    public void oddFilter(String OddType){
-        List<FootballOdds> odds = betService.getFootballOdds();
-        List<FootballOdds> filteredOdds = betService.filterbyOdds(odds,OddType);
-        StringBuilder output = new StringBuilder("Filtered Odds: ");
-        filteredOdds.forEach(odd -> output.append(odd.getEventType().toString())
-                .append(odd.getOdd_value())
+    public void transactionFilter(String type){
+        List<Transactions> transactions = betService.getAvailableTransaction();
+        List<Transactions> filteredTransaction = betService.filterbyTransactionType(transactions,type);
+        StringBuilder output = new StringBuilder("Filtered Transactions: ");
+        filteredTransaction.forEach(transacation -> output.append(transacation.getTransaction_type().toString())
+                .append(transacation.getTransaction_status().toString())
                 .append("\n"));
         System.out.println(output);
     }
