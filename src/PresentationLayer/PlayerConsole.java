@@ -215,9 +215,6 @@ public class PlayerConsole {
             repo<Bet> betRepo,
             repo<Player> playerRepo,
             repo<Odds> oddRepo,
-            repo<FootballOdds> footballOddsRepo,
-            repo<TennisOdds> tennisOddsRepo,
-            repo<BasketOdds> basketOddsRepo,
             repo<Transactions> transactionsRepo,
             repo<Admin> adminRepo
     ) {
@@ -226,7 +223,7 @@ public class PlayerConsole {
 //        odds.add(1.0);
 //        odds.add(2.0);
 //        odds.add(3.0);
-        Event event1 = new Event(1, "Steaua vs Dinamo",  footballOddsRepo , LocalDateTime.now(), "Football");
+        Event event1 = new Event(1, "Steaua vs Dinamo",  oddRepo , LocalDateTime.now(), "Football");
         Event event2 = new Event(2, "UCluj vs Galati", odds, LocalDateTime.now(), "Football");
         Event event3 = new Event(3, "Simona vs Nadal", odds, LocalDateTime.now(), "Tennis");
         eventRepo.create(event1);
@@ -256,18 +253,21 @@ public class PlayerConsole {
 
 
 
+        oddRepo.create(new Odds(10,"1","All"));
+        oddRepo.create(new Odds(11,"2","All"));
 
-        footballOddsRepo.create(new FootballOdds(1,odds, "GG"));
-        footballOddsRepo.create(new FootballOdds(2,odds, "total goals over 2.5"));
-        footballOddsRepo.create(new FootballOdds(3,odds, "Hattrick by any Player in match"));
 
-        tennisOddsRepo.create(new TennisOdds(odds, "both to win a set"));
-        tennisOddsRepo.create(new TennisOdds(odds, "over 18.5 games"));
-        tennisOddsRepo.create(new TennisOdds(odds, "6-0 set win by any player in match"));
+        oddRepo.create(new Odds(1, "GG","Football"));
+        oddRepo.create(new Odds(2, "total goals over 2.5","Football"));
+        oddRepo.create(new Odds(3, "Hattrick by any Player in match","Football"));
 
-        basketOddsRepo.create(new BasketOdds(odds, "Over 177.5 points in match"));
-        basketOddsRepo.create(new BasketOdds(odds, "Match goes in Overtime"));
-        basketOddsRepo.create(new BasketOdds(odds, "Triple double by any player in match"));
+        oddRepo.create(new Odds(4, "both to win a set","Tennis"));
+        oddRepo.create(new Odds(5, "over 18.5 games","Tennis"));
+        oddRepo.create(new Odds(6, "6-0 set win by any player in match","Tennis"));
+
+        oddRepo.create(new Odds(7, "Over 177.5 points in match","Basket"));
+        oddRepo.create(new Odds(8, "Match goes in Overtime","Basket"));
+        oddRepo.create(new Odds(9, "Triple double by any player in match","Basket"));
 
         transactionsRepo.create(new Transactions(1, player1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
         transactionsRepo.create(new Transactions(2, player2, 100, LocalDateTime.now(), "Deposit", "Completed"));
@@ -290,9 +290,7 @@ public class PlayerConsole {
         repo<Bet> betRepo;
         repo<Event> eventRepo;
         repo<Player> playerRepo;
-        repo<FootballOdds> footballOddsRepo;
-        repo<TennisOdds> tennisOddsRepo;
-        repo<BasketOdds> basketOddsRepo;
+        repo<Odds> oddsRepo;
         repo<Transactions> transactionsRepo;
         repo<Admin> adminRepo;
 
@@ -302,9 +300,7 @@ public class PlayerConsole {
             betRepo = new FileRepository<>(filePath + "bets.txt", Bet.class);
             eventRepo = new FileRepository<>(filePath + "events.txt", Event.class);
             playerRepo = new FileRepository<>(filePath + "players.txt", Player.class);
-            footballOddsRepo = new FileRepository<>(filePath + "footballOdds.txt", FootballOdds.class);
-            tennisOddsRepo = new FileRepository<>(filePath + "tennisOdds.txt", TennisOdds.class);
-            basketOddsRepo = new FileRepository<>(filePath + "basketOdds.txt", BasketOdds.class);
+            oddsRepo = new FileRepository<>(filePath + "odds.txt", Odds.class);
             transactionsRepo = new FileRepository<>(filePath + "transactions.txt", Transactions.class);
             adminRepo = new FileRepository<>(filePath + "admins.txt", Admin.class);
         }
@@ -313,15 +309,13 @@ public class PlayerConsole {
             betRepo = new inMemoryRepo<>();
             eventRepo = new inMemoryRepo<>();
             playerRepo = new inMemoryRepo<>();
-            footballOddsRepo = new inMemoryRepo<>();
-            tennisOddsRepo = new inMemoryRepo<>();
-            basketOddsRepo = new inMemoryRepo<>();
+            oddsRepo = new inMemoryRepo<>();
             transactionsRepo = new inMemoryRepo<>();
             adminRepo = new inMemoryRepo<>();
         }
 
         //Create service objects
-        BetService betService = new BetService(betRepo, eventRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, playerRepo);
+        BetService betService = new BetService(betRepo, eventRepo,transactionsRepo, playerRepo,oddsRepo);
         UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo);
 
         // Create UserController and Console objects
@@ -329,7 +323,7 @@ public class PlayerConsole {
         PlayerConsole playerConsole = new PlayerConsole(playerController1);
 
         //Initialize repos
-        InitalizeRepo(eventRepo, betRepo, playerRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, transactionsRepo, adminRepo);
+        InitalizeRepo(eventRepo, betRepo, playerRepo, oddsRepo, transactionsRepo, adminRepo);
 
         // Start the console menu
         playerConsole.welcomeMenu();
