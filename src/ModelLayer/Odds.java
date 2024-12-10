@@ -65,20 +65,20 @@ public class Odds{
                 '}';
     }
 
-    public abstract String toCSV();
-
-    public static Odds fromCSV(String csvLine) {
-        String[] parts = csvLine.split(";", 2);
-        String type = parts[0];
-        switch (type) {
-            case "Football":
-                return FootballOdds.fromCSV(parts[1]);
-            case "Tennis":
-                return TennisOdds.fromCSV(parts[1]);
-            case "Basket":
-                return BasketOdds.fromCSV(parts[1]);
-            default:
-                throw new IllegalArgumentException("Unknown Odds type: " + type);
-        }
-    }
+//    public abstract String toCSV();
+//
+//    public static Odds fromCSV(String csvLine) {
+//        String[] parts = csvLine.split(";", 2);
+//        String type = parts[0];
+//        switch (type) {
+//            case "Football":
+//                return FootballOdds.fromCSV(parts[1]);
+//            case "Tennis":
+//                return TennisOdds.fromCSV(parts[1]);
+//            case "Basket":
+//                return BasketOdds.fromCSV(parts[1]);
+//            default:
+//                throw new IllegalArgumentException("Unknown Odds type: " + type);
+//        }
+//    }
 }

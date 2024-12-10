@@ -152,34 +152,34 @@ public class Player extends User{
                 '}';
     }
 
-    @Override
-    public String getType() {
-        return "Player";
-    }
+//    @Override
+//    public String getType() {
+//        return "Player";
+//    }
 
-    @Override
-    public String toCSV() {
-        return String.join(";",
-                getType(), String.valueOf(getUser_id()), getUser_name(), getPassword(), getEmail(),
-                String.valueOf(balance),
-                String.join("|", activeBets.stream().map(Bet::toCSV).toArray(String[]::new)),
-                String.join("|", allBets.stream().map(Bet::toCSV).toArray(String[]::new)),
-                String.valueOf(bonus_balance), account_status
-        );
-    }
-
-    public static Player fromCSV(String csvLine) {
-        String[] parts = csvLine.split(";", 10);
-        List<Bet> activeBets = Arrays.stream(parts[6].split("\\|"))
-                .map(Bet::fromCSV)
-                .toList();
-        List<Bet> allBets = Arrays.stream(parts[7].split("\\|"))
-                .map(Bet::fromCSV)
-                .toList();
-        return new Player(
-                Integer.parseInt(parts[1]), parts[2], parts[3], parts[4],
-                Double.parseDouble(parts[5]), activeBets, allBets,
-                Integer.parseInt(parts[8]), parts[9]
-        );
-    }
+//    @Override
+//    public String toCSV() {
+//        return String.join(";",
+//                getType(), String.valueOf(getUser_id()), getUser_name(), getPassword(), getEmail(),
+//                String.valueOf(balance),
+//                String.join("|", activeBets.stream().map(Bet::toCSV).toArray(String[]::new)),
+//                String.join("|", allBets.stream().map(Bet::toCSV).toArray(String[]::new)),
+//                String.valueOf(bonus_balance), account_status
+//        );
+//    }
+//
+//    public static Player fromCSV(String csvLine) {
+//        String[] parts = csvLine.split(";", 10);
+//        List<Bet> activeBets = Arrays.stream(parts[6].split("\\|"))
+//                .map(Bet::fromCSV)
+//                .toList();
+//        List<Bet> allBets = Arrays.stream(parts[7].split("\\|"))
+//                .map(Bet::fromCSV)
+//                .toList();
+//        return new Player(
+//                Integer.parseInt(parts[1]), parts[2], parts[3], parts[4],
+//                Double.parseDouble(parts[5]), activeBets, allBets,
+//                Integer.parseInt(parts[8]), parts[9]
+//        );
+//    }
 }
