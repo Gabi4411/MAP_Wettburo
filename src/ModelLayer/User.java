@@ -15,10 +15,10 @@ public abstract class User {
     /**
      * Constructs a User with the specified details.
      *
-     * @param user_id the unique identifier for the user
+     * @param user_id   the unique identifier for the user
      * @param user_name the username of the user
-     * @param password the password of the user
-     * @param email the email address of the user
+     * @param password  the password of the user
+     * @param email     the email address of the user
      */
 
     public User(int user_id, String user_name, String password, String email) {
@@ -27,7 +27,6 @@ public abstract class User {
         this.password = password;
         this.email = email;
     }
-
 
 
     /**
@@ -107,30 +106,30 @@ public abstract class User {
      *
      * @return a string containing the user's details
      */
-    @Override
-    public String toString() {
-        return "User{" +
-                "user_id=" + user_id +
-                ", user_name='" + user_name + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
-
-    public abstract String getType();
-
-    public abstract String toCSV();
-
-    public static User fromCSV(String csvLine) {
-        String[] parts = csvLine.split(";", 2);
-        String type = parts[0];
-        switch (type) {
-            case "Player":
-                return Player.fromCSV(parts[1]);
-            case "Admin":
-                return Admin.fromCSV(parts[1]);
-            default:
-                throw new IllegalArgumentException("Unknown User type: " + type);
-        }
-    }
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "user_id=" + user_id +
+//                ", user_name='" + user_name + '\'' +
+//                ", password='" + password + '\'' +
+//                ", email='" + email + '\'' +
+//                '}';
+//    }
+//
+//    public abstract String getType();
+//
+//    public abstract String toCSV();
+//
+//    public static User fromCSV(String csvLine) {
+//        String[] parts = csvLine.split(";", 2);
+//        String type = parts[0];
+//        switch (type) {
+//            case "Player":
+//                return Player.fromCSV(parts[1]);
+//            case "Admin":
+//                return Admin.fromCSV(parts[1]);
+//            default:
+//                throw new IllegalArgumentException("Unknown User type: " + type);
+//        }
+//    }
 }

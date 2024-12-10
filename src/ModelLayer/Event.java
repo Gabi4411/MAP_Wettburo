@@ -46,13 +46,12 @@ public class Event{
      * @param event_date  the date and time of the event
      * @param sports_type the type of sport for the event
      */
-    public Event(int event_id, String event_name, Map<Odds,Double> oddsList, String event_date, String sports_type, List<Event> eventList) {
+    public Event(int event_id, String event_name, Map<Odds,Double> oddsList, String event_date, String sports_type) {
         this.event_id = event_id;
         this.event_name = event_name;
         this.oddsList = oddsList;
         this.event_date = event_date;
         this.sports_type = sports_type;
-        this.eventList = eventList;
     }
 
     /**
@@ -145,14 +144,6 @@ public class Event{
         this.oddsList = oddsList;
     }
 
-    public List<Event> getEventList() {
-        return eventList;
-    }
-
-    public void setEventList(List<Event> eventList) {
-        this.eventList = eventList;
-    }
-
 
     @Override
     public String toString() {
@@ -166,49 +157,49 @@ public class Event{
                 '}';
     }
 
-    public String toCSV() {
-        return String.join(";",
-                String.valueOf(event_id),
-                event_name,
-                String.join(",", oddsList.keySet().stream().map(String::valueOf).toArray(String[]::new)),
-                event_date.toString(),
-                sports_type
-        );
-    }
-
-    public static Event fromCSV(String csvLine) {
-        try {
-            // Split into parts, limiting to 6 because odds may contain commas
-            String[] parts = csvLine.split(",", 6);
-
-            if (parts.length < 6) {
-                throw new IllegalArgumentException("Invalid CSV line for Event: " + csvLine);
-            }
-
-            // Parse event_id
-            int eventId = Integer.parseInt(parts[0].trim());
-
-            // Parse event_name
-            String eventName = parts[2].trim();
-
-            // Parse odds: Remove square brackets and split by commas
-            String oddsString = parts[3].trim();
-            oddsString = oddsString.substring(1, oddsString.length() - 1); // Remove '[' and ']'
-            List<Odds> oddsList = Arrays.stream(oddsString.split(","))
-                    .map(String::trim)
-                    .map(Double::parseDouble)
-                    .toList();
-
-            // Parse event_date
-            LocalDateTime eventDate = LocalDateTime.parse(parts[4].trim());
-
-            // Parse sports_type
-            String sportsType = parts[5].trim();
-
-            // Return a new Event object
-            return new Event(eventId, eventName, , eventDate, sportsType);
-        } catch (Exception e) {
-            throw new RuntimeException("Error deserializing from CSV: " + csvLine, e);
-        }
-    }
+//    public String toCSV() {
+//        return String.join(";",
+//                String.valueOf(event_id),
+//                event_name,
+//                String.join(",", oddsList.keySet().stream().map(String::valueOf).toArray(String[]::new)),
+//                event_date.toString(),
+//                sports_type
+//        );
+//    }
+//
+//    public static Event fromCSV(String csvLine) {
+//        try {
+//            // Split into parts, limiting to 6 because odds may contain commas
+//            String[] parts = csvLine.split(",", 6);
+//
+//            if (parts.length < 6) {
+//                throw new IllegalArgumentException("Invalid CSV line for Event: " + csvLine);
+//            }
+//
+//            // Parse event_id
+//            int eventId = Integer.parseInt(parts[0].trim());
+//
+//            // Parse event_name
+//            String eventName = parts[2].trim();
+//
+//            // Parse odds: Remove square brackets and split by commas
+//            String oddsString = parts[3].trim();
+//            oddsString = oddsString.substring(1, oddsString.length() - 1); // Remove '[' and ']'
+//            List<Odds> oddsList = Arrays.stream(oddsString.split(","))
+//                    .map(String::trim)
+//                    .map(Double::parseDouble)
+//                    .toList();
+//
+//            // Parse event_date
+//            LocalDateTime eventDate = LocalDateTime.parse(parts[4].trim());
+//
+//            // Parse sports_type
+//            String sportsType = parts[5].trim();
+//
+//            // Return a new Event object
+//            return new Event(eventId, eventName, , eventDate, sportsType);
+//        } catch (Exception e) {
+//            throw new RuntimeException("Error deserializing from CSV: " + csvLine, e);
+//        }
+//    }
 }
