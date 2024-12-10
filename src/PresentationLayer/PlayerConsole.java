@@ -94,8 +94,10 @@ public class PlayerConsole {
             System.out.println("3. View Player active Bets");
             System.out.println("4. SportTypeFilter");
             System.out.println("5. ViewBetOdd");
-            System.out.println("6. Filter Odds");
-            System.out.println("7. Exit");
+            System.out.println("6. Filter Transactions");
+            System.out.println("7. Deposit");
+            System.out.println("8. Withdraw");
+            System.out.println("0. Exit");
             System.out.print("Select an option: ");
 
             int choice = scanner.nextInt();
@@ -107,8 +109,12 @@ public class PlayerConsole {
                 case 3 -> playerController.viewPlayerBets(getPlayerId(scanner));
                 case 4 -> playerController.SportTypeFilter(getSportType(scanner));
                 case 5 -> playerController.view_Bet_Odd(getBetID(scanner));
-                case 6 -> playerController.oddFilter(getOddName(scanner));
-                case 7-> {
+                case 6 -> playerController.transactionFilter(getTransactionType(scanner));
+                case 7 -> playerController.deposit(getUserName(scanner),getPassword(scanner),getAmount(scanner));
+                case 8 -> playerController.withdraw(getUserName(scanner), getPassword(scanner),getAmount(scanner));
+                ////withdraw(updateBalance)
+                //viewBalance
+                case 0-> {
                     System.out.println("Exiting... Goodbye!");
                     return;
                 }
@@ -128,6 +134,20 @@ public class PlayerConsole {
         return Integer.parseInt(scanner.nextLine());
     }
 
+    private static  String getUserName(Scanner scanner) {
+        System.out.println("Enter your username: ");
+        return scanner.nextLine();
+    }
+
+    private static String getPassword(Scanner scanner) {
+        System.out.println("Enter your password: ");
+        return scanner.nextLine();
+    }
+
+    private static int getAmount(Scanner scanner) {
+        System.out.println("Enter your amount: ");
+        return Integer.parseInt(scanner.nextLine());
+    }
 
     /**
      * Prompts the user to enter an Event ID.
@@ -147,8 +167,8 @@ public class PlayerConsole {
     }
 
 
-    private String getOddName(Scanner scanner) {
-        System.out.println("Enter OddName: ");
+    private String getTransactionType(Scanner scanner) {
+        System.out.println("Enter Transction Type: ");
         return scanner.nextLine();
     }
 
