@@ -243,8 +243,10 @@ public class BetService {
 //        }
 //    }
 
-    public void placeBet(Player player,Event event) {
+    public void placeBet(int playerID) {
         Scanner scanner = new Scanner(System.in);
+
+        Player player = playerRepo.get(playerID);
 
         // Afișează evenimentele disponibile
         System.out.println("Available Events:");
@@ -284,16 +286,16 @@ public class BetService {
             System.out.println("Available Odds for " + eventt.getEvent_name() + ":");
 
             // Afișează toate cotele și valorile lor
-            event.getOddsList().forEach((odd, value) ->
-                    System.out.println(odd.getOdd_id() + ": " + odd.getOddName() + " - " + value)
-            );
+            for (Odds odd : oddsRepo.getAll()) {
+                System.out.println(odd.getOdd_id() + ": " + odd.getOddName());
+            }
 
             // Solicită utilizatorului să aleagă o cotă
             System.out.print("Enter the ID of the odd you want to select: ");
             int oddId = scanner.nextInt();
 
             // Găsește Odds-ul selectat după ID
-            Odds selectedOdd = event.getOddsList().keySet().stream()
+            Odds selectedOdd = getAvailableOdds().stream()
                     .filter(o -> o.getOdd_id() == oddId)
                     .findFirst()
                     .orElse(null);
@@ -304,7 +306,7 @@ public class BetService {
             }
 
             // Obține valoarea cotei selectate
-            Double selectedValue = event.getOddsList().get(selectedOdd);
+            Double selectedValue = eventt.getOddsList().get(selectedOdd);
             if (selectedValue == null) {
                 System.out.println("Value for the selected odd is missing. Bet cancelled.");
                 return; // Ieșire din buclă

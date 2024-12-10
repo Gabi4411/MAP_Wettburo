@@ -123,23 +123,23 @@ public class Authentification {
                 '}';
     }
 
-    public String toCSV() {
-        return String.join(";",
-                String.valueOf(auth_id),
-                user.toCSV(),
-                String.valueOf(login_attempts),
-                String.valueOf(last_login.getTime())
-        );
-    }
-
-    public static Authentification fromCSV(String csvLine) {
-        String[] parts = csvLine.split(";", 4);
-        User user = User.fromCSV(parts[1]);
-        return new Authentification(
-                Integer.parseInt(parts[0]),
-                user,
-                Integer.parseInt(parts[2]),
-                new Date(Long.parseLong(parts[3]))
-        );
-    }
+//    public String toCSV() {
+//        return String.join(";",
+//                String.valueOf(auth_id),
+//                user.toCSV(),
+//                String.valueOf(login_attempts),
+//                String.valueOf(last_login.getTime())
+//        );
+//    }
+//
+//    public static Authentification fromCSV(String csvLine) {
+//        String[] parts = csvLine.split(";", 4);
+//        User user = User.fromCSV(parts[1]);
+//        return new Authentification(
+//                Integer.parseInt(parts[0]),
+//                user,
+//                Integer.parseInt(parts[2]),
+//                new Date(Long.parseLong(parts[3]))
+//        );
+//    }
 }

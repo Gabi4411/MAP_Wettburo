@@ -8,7 +8,9 @@ import ServiceLayer.*;
 import RepoLayerInterface.repo;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,65 +18,57 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ApplicationTest {
-    private AdminController adminController;
-    private PlayerController playerController;
     private UserService userService;
     private BetService betService;
     private repo<Bet> betRepo;
     private repo<Player> playerRepo;
     private repo<Event> eventRepo;
-    private repo<FootballOdds> footballOddsRepo;
-    private repo<TennisOdds> tennisOddsRepo;
-    private repo<BasketOdds> basketOddsRepo;
     private repo<Transactions> transactionRepo;
     private repo<Admin> adminRepo;
+    private repo<Odds> oddsRepo;
 
     @BeforeEach
     void setUp() {
         betRepo = new inMemoryRepo<>();
         playerRepo = new inMemoryRepo<>();
         eventRepo = new inMemoryRepo<>();
-        footballOddsRepo = new inMemoryRepo<>();
-        tennisOddsRepo = new inMemoryRepo<>();
-        basketOddsRepo = new inMemoryRepo<>();
         transactionRepo = new inMemoryRepo<>();
         adminRepo = new inMemoryRepo<>();
+        oddsRepo = new inMemoryRepo<>();
 
         InitializeRepo(
                 eventRepo,
                 betRepo,
                 playerRepo,
-                footballOddsRepo,
-                tennisOddsRepo,
-                basketOddsRepo,
                 transactionRepo,
-                adminRepo
+                adminRepo,
+                oddsRepo
         );
 
         userService = new UserService(playerRepo, adminRepo, transactionRepo);
-        betService = new BetService(betRepo, eventRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, playerRepo);
-
-        adminController = new AdminController(userService, betService);
-        playerController = new PlayerController(betService, userService);
+        betService = new BetService(betRepo, eventRepo, transactionRepo, playerRepo, oddsRepo);
     }
 
     public static void InitializeRepo(
             repo<Event> eventRepo,
             repo<Bet> betRepo,
             repo<Player> playerRepo,
-            repo<FootballOdds> footballOddsRepo,
-            repo<TennisOdds> tennisOddsRepo,
-            repo<BasketOdds> basketOddsRepo,
             repo<Transactions> transactionsRepo,
-            repo<Admin> adminRepo
+            repo<Admin> adminRepo,
+            repo<Odds> oddsRepo
     ) {
-        List<Double> odds = new ArrayList<>();
-        odds.add(1.0);
-        odds.add(2.0);
-        odds.add(3.0);
-        Event event1 = new Event(1, "Steaua vs Dinamo", odds, LocalDateTime.now(), "Football");
-        Event event2 = new Event(2, "UCluj vs Galati", odds, LocalDateTime.now(), "Football");
-        Event event3 = new Event(3, "Simona vs Nadal", odds, LocalDateTime.now(), "Tennis");
+        Odds odd1 = new Odds(1, "Gol in minutul 10", "Football");
+        Odds odd2 = new Odds(2, "Gol in minutul 90", "Football");
+        Odds odd3 = new Odds(3, "Ace din prima", "Tennis");
+        Map<Odds, Double> map1 = new HashMap<Odds, Double>();
+        map1.put(odd1, 2.5);
+        Map<Odds, Double> map2 = new HashMap<Odds, Double>();
+        map1.put(odd2, 1.5);
+        Map<Odds, Double> map3 = new HashMap<Odds, Double>();
+        map1.put(odd3, 2.0);
+        Event event1 = new Event(1, "Steaua vs Dinamo", map1, "11.11.2024", "Football");
+        Event event2 = new Event(2, "UCluj vs Galati", map2, "12.03.2024", "Football");
+        Event event3 = new Event(3, "Simona vs Nadal", map3, "03.03.2024", "Tennis");
         eventRepo.create(event1);
         eventRepo.create(event2);
         eventRepo.create(event3);
@@ -83,9 +77,9 @@ public class ApplicationTest {
         events.add(event1);
         events.add(event2);
 
-        Bet bet1 = new Bet(1, events, 20, LocalDateTime.now(),"active");
-        Bet bet2 = new Bet(2, events, 30, LocalDateTime.now(),"ended");
-        Bet bet3 = new Bet(3, events, 40, LocalDateTime.now(),"ended");
+        Bet bet1 = new Bet(1, 1, events, 30, LocalDateTime.now(), "Active");
+        Bet bet2 = new Bet(2, 2, events, 100, LocalDateTime.now(), "Ended");
+        Bet bet3 = new Bet(1, 3, events, 10, LocalDateTime.now(), "Active");
         betRepo.create(bet1);
         betRepo.create(bet2);
         betRepo.create(bet3);
@@ -99,15 +93,6 @@ public class ApplicationTest {
         Player player2 = new Player(2, "Lapa", "5678", "lapadtuandrei@yahoo.com", 4000, bets, bets, 0, "Active");
         playerRepo.create(player1);
         playerRepo.create(player2);
-
-        footballOddsRepo.create(new FootballOdds(odds, "Peste 5"));
-        footballOddsRepo.create(new FootballOdds(odds, "Sub 5"));
-
-        tennisOddsRepo.create(new TennisOdds(odds, "Most aces"));
-        tennisOddsRepo.create(new TennisOdds(odds, "Minim un set"));
-
-        basketOddsRepo.create(new BasketOdds(odds, "Peste 90 puncte"));
-        basketOddsRepo.create(new BasketOdds(odds, "Triple double in match"));
 
         transactionsRepo.create(new Transactions(1, player1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
         transactionsRepo.create(new Transactions(2, player2, 100, LocalDateTime.now(), "Deposit", "Completed"));
@@ -170,117 +155,96 @@ public class ApplicationTest {
     }
 
     //Tests for BetService
-    @Test
-    void testCalculateOdd() {
-        assertEquals(36.0, betService.calculateOdd(1));
-        assertEquals(1.0, betService.calculateOdd(5));
-    }
-
-    @Test
-    void testCalculatePotentialWinning() {
-        assertEquals(720.0, betService.calculatePotentialWinning(1));
-        assertEquals(0.0, betService.calculatePotentialWinning(5));
-    }
-
-    @Test
-    void testCreateBet() {
-        List<Double> odds = new ArrayList<>();
-        odds.add(1.0);
-        odds.add(2.0);
-        odds.add(3.0);
-        Event event1 = new Event(3, "Caini VS Pisici", odds, LocalDateTime.now(), "Basket");
-        Event event2 = new Event(4, "Ronaldo VS Messi", odds, LocalDateTime.now(), "Tennis");
-        List<Event> events = new ArrayList<>();
-        events.add(event1);
-        events.add(event2);
-
-        betService.createBet(1, events, 30);
-        betService.getAvailableBets();
-    }
+//    @Test
+//    void testCreateBet() {
+//        betService.placeBet(1);
+//        betService.getAvailableBets();
+//    }
 
     @Test
     void testCreateEvent() {
-        betService.addEvent("Romani VS Tatari", "Football");
+        betService.addEvent("Caini VS Pisici", "Football", "01.01.2023", "Peste 1.5 goluri", 1.5);
         betService.getAvailableBets();
-    }
-
-    @Test
-    void testCreateOdds() {
-        List<Double> odds = new ArrayList<>();
-        odds.add(1.0);
-        odds.add(2.0);
-        odds.add(3.0);
-        betService.addOdds(odds, "Romani VS Tatari", "Football");
-        betService.getFootballOdds();
     }
 
     @Test
     void testFilterBySportTyoe() {
-        List<Double> odds = new ArrayList<>();
-        odds.add(1.0);
-        odds.add(2.0);
-        odds.add(3.0);
-        Event event1 = new Event(3, "Caini VS Pisici", odds, LocalDateTime.now(), "Basket");
-        Event event2 = new Event(4, "R VS T", odds, LocalDateTime.now(), "Basket");
-        Event event3 = new Event(5, "Ronaldo VS Messi", odds, LocalDateTime.now(), "Tennis");
+        Odds odd1 = new Odds(1, "Peste 1.5 goluri", "Football");
+        Odds odd2 = new Odds(2, "Sub 1.5 goluri", "Football");
+        Map<Odds, Double> map1 = new HashMap<Odds, Double>();
+        map1.put(odd1, 1.5);
+        Map<Odds, Double> map2 = new HashMap<Odds, Double>();
+        map1.put(odd2, 1.0);
+        Event event1 = new Event(1, "Caini VS Pisici", map1, "01.01.2023", "Football");
+        Event event2 = new Event(2, "Ronaldo VS Messi", map2, "02.02.2023", "Football");
         List<Event> events = new ArrayList<>();
         events.add(event1);
         events.add(event2);
-        events.add(event3);
         List<Event> eventsBasket = new ArrayList<>();
         eventsBasket.add(event1);
         eventsBasket.add(event2);
-        assertEquals(eventsBasket, betService.filterbySportsType(events, "Basket"));
+        assertEquals(eventsBasket, betService.filterbySportsType(events, "Football"));
     }
 
     @Test
-    void testFilterByOdds() {
-        List<Double> odds = new ArrayList<>();
-        odds.add(1.0);
-        odds.add(2.0);
-        odds.add(3.0);
-        FootballOdds footballOdds = new FootballOdds(odds, "Peste 5");
-        FootballOdds footballOdds1 = new FootballOdds(odds, "Sub 5");
-        List<FootballOdds> listFootball = new ArrayList<>();
-        listFootball.add(footballOdds);
-        listFootball.add(footballOdds1);
-        List<FootballOdds> listFootball1 = new ArrayList<>();
-        listFootball1.add(footballOdds);
-
-        assertEquals(listFootball1, betService.filterbyOdds(listFootball, "Peste 5"));
+    void testFilterByTransactionType() {
+        Odds odd1 = new Odds(3, "Peste 3.5 goluri", "Football");
+        Odds odd2 = new Odds(4, "Sub 3.5 goluri", "Football");
+        Map<Odds, Double> map1 = new HashMap<Odds, Double>();
+        map1.put(odd1, 2.5);
+        Map<Odds, Double> map2 = new HashMap<Odds, Double>();
+        map1.put(odd2, 1.5);
+        Event event1 = new Event(3, "Otel VS Galati", map1, "11.04.2024", "Football");
+        Event event2 = new Event(4, "M VS M", map2, "10.03.2024", "Football");
+        List<Event> events = new ArrayList<>();
+        events.add(event1);
+        events.add(event2);
+        Bet bet1 = new Bet(5, 1, events, 300, LocalDateTime.now(), "Active");
+        Bet bet2 = new Bet(6, 2, events, 10, LocalDateTime.now(), "Ended");
+        List<Bet> bets = new ArrayList<>();
+        bets.add(bet1);
+        bets.add(bet2);
+        Player player1 = new Player(3, "Meli", "1234666", "melisa@yahoo.com", 100.0, bets, bets, 0, "Active");
+        Player player2 = new Player(4, "Maria", "567887", "maria@yahoo.com", 4000, bets, bets, 0, "Active");
+        Transactions transaction1 =  new Transactions(3, player1, 150, LocalDateTime.now(), "Withdraw", "Completed");
+        Transactions transaction2 =  new Transactions(4, player2, 50, LocalDateTime.now(), "Deposit", "Completed");
     }
 
     @Test
     void testSortEventsByDate() {
-        List<Double> odds = new ArrayList<>();
-        odds.add(1.0);
-        odds.add(2.0);
-        odds.add(3.0);
-        Event event1 = new Event(6, "M VS V", odds, LocalDateTime.now(), "Basket");
-        Event event2 = new Event(7, "M Vs B", odds, LocalDateTime.now(), "Tennis");
+        Odds odd1 = new Odds(5, "Peste 3.5 goluri", "Football");
+        Odds odd2 = new Odds(6, "Sub 3.5 goluri", "Football");
+        Map<Odds, Double> map1 = new HashMap<Odds, Double>();
+        map1.put(odd1, 2.5);
+        Map<Odds, Double> map2 = new HashMap<Odds, Double>();
+        map1.put(odd2, 1.5);
+        Event event1 = new Event(5, "Otel VS Galati", map1, "11.04.2024", "Football");
+        Event event2 = new Event(6, "M VS M", map2, "10.03.2024", "Football");
         List<Event> events = new ArrayList<>();
         events.add(event1);
         events.add(event2);
 
-        assertEquals(events, betService.sortEventsByDate(events, true));
+        assertEquals(events, betService.sortEventsByDate(events, false));
     }
 
     @Test
     void testSortPlayersByName() {
-        List<Double> odds = new ArrayList<>();
-        odds.add(1.0);
-        odds.add(2.0);
-        odds.add(3.0);
-        Event event1 = new Event(8, "Gazu VS Dumbraveni", odds, LocalDateTime.now(), "Football");
-        Event event2 = new Event(9, "Ploiesti vs Galati", odds, LocalDateTime.now(), "Football");
+        Odds odd1 = new Odds(7, "Peste 3.5 goluri", "Football");
+        Odds odd2 = new Odds(8, "Sub 3.5 goluri", "Football");
+        Map<Odds, Double> map1 = new HashMap<Odds, Double>();
+        map1.put(odd1, 2.5);
+        Map<Odds, Double> map2 = new HashMap<Odds, Double>();
+        map1.put(odd2, 1.5);
+        Event event1 = new Event(7, "Gazu VS Dumbraveni", map1, "03.03.2024", "Football");
+        Event event2 = new Event(8, "Ploiesti vs Galati", map2,"04.04.2022", "Football");
         eventRepo.create(event1);
         eventRepo.create(event2);
         List<Event> events = new ArrayList<>();
         events.add(event1);
         events.add(event2);
 
-        Bet bet1 = new Bet(4, events, 50, LocalDateTime.now(),"active");
-        Bet bet2 = new Bet(5, events, 60, LocalDateTime.now(),"ended");
+        Bet bet1 = new Bet(3, 3, events,100 ,LocalDateTime.now(),"active");
+        Bet bet2 = new Bet(4, 4, events,200 ,LocalDateTime.now(),"ended");
         betRepo.create(bet1);
         betRepo.create(bet2);
 

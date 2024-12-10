@@ -7,9 +7,7 @@ import ServiceLayer.BetService;
 import ServiceLayer.UserService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class AdminConsole {
@@ -76,16 +74,14 @@ public class AdminConsole {
     private void showMenu(Scanner scanner) {
         System.out.println("===Menu===");
         System.out.println("1. Create Event");
-        System.out.println("2. Create Odds");
-        System.out.println("3. View Events");
-        System.out.println("4. View Odds");
-        System.out.println("5. View Players");
-        System.out.println("6. View Admins");
-        System.out.println("7. View Bets");
-        System.out.println("8. Update Admin Access Level");
-        System.out.println("9. Sorted Events By Date");
-        System.out.println("10. Sorted Players By Name");
-        System.out.println("11. Exit");
+        System.out.println("2. View Events");
+        System.out.println("3. View Players");
+        System.out.println("4. View Admins");
+        System.out.println("5. View Bets");
+        System.out.println("6. Update Admin Access Level");
+        System.out.println("7. Sorted Events By Date");
+        System.out.println("8. Sorted Players By Name");
+        System.out.println("9. Exit");
         System.out.print("Enter your choice: ");
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -95,33 +91,27 @@ public class AdminConsole {
                 createEvent(scanner);
                 break;
             case 2:
-                createOdds(scanner);
-                break;
-            case 3:
                 viewEvents(scanner);
                 break;
-            case 4:
-                viewOdds(scanner);
-                break;
-            case 5:
+            case 3:
                 viewPlayers(scanner);
                 break;
-            case 6:
+            case 4:
                 viewAdmins(scanner);
                 break;
-            case 7:
+            case 5:
                 viewBets(scanner);
                 break;
-            case 8:
+            case 6:
                 updateAdminAccesLevel(scanner);
                 break;
-            case 9:
+            case 7:
                 sortedEventsbyDate(scanner);
                 break;
-            case 10:
+            case 8:
                 sortedPlayersByName(scanner);
                 break;
-            case 11:
+            case 9:
                 return;
             default:
                 System.out.println("Invalid choice, try another one!");
@@ -133,51 +123,18 @@ public class AdminConsole {
         String eventName = scanner.nextLine();
         System.out.println("Enter event type: ");
         String eventType = scanner.nextLine();
-        adminController.createEvent(eventName, eventType);
+        System.out.println("Enter event date: ");
+        String eventDate = scanner.nextLine();
+        System.out.println("Enter odd name: ");
+        String oddName = scanner.nextLine();
+        System.out.println("Enter odd value: ");
+        Double value = Double.valueOf(scanner.nextLine());
+        adminController.createEvent(eventName, eventType, eventDate, oddName, value);
         showMenu(scanner);
-    }
-
-    private void createOdds(Scanner scanner) {
-        System.out.println("Enter doubles separated by spaces (type 'done' to finish):");
-        List<Double> oddsNumber = inputDoubles(scanner);
-        System.out.println("Enter what are the odds for: ");
-        String oddsString = scanner.nextLine();
-        System.out.println("Enter event type: ");
-        String eventType = scanner.nextLine();
-        adminController.createOdds(oddsNumber, oddsString, eventType);
-        showMenu(scanner);
-    }
-
-    private static List<Double> inputDoubles(Scanner scanner) {
-        List<Double> doubleList = new ArrayList<>();
-
-        while (true) {
-            String input = scanner.nextLine();
-            if (input.equalsIgnoreCase("done")) {
-                break;
-            }
-
-            String[] tokens = input.split(" ");
-            try {
-                for (String token : tokens) {
-                    double value = Double.parseDouble(token);
-                    doubleList.add(value);
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter valid double values or type 'done' to finish.");
-            }
-        }
-
-        return doubleList;
     }
 
     private void viewEvents(Scanner scanner) {
         adminController.viewEvents();
-        showMenu(scanner);
-    }
-
-    private void viewOdds(Scanner scanner) {
-        adminController.viewOdds();
         showMenu(scanner);
     }
 
@@ -237,19 +194,22 @@ public class AdminConsole {
             repo<Event> eventRepo,
             repo<Bet> betRepo,
             repo<Player> playerRepo,
-            repo<FootballOdds> footballOddsRepo,
-            repo<TennisOdds> tennisOddsRepo,
-            repo<BasketOdds> basketOddsRepo,
             repo<Transactions> transactionsRepo,
-            repo<Admin> adminRepo
+            repo<Admin> adminRepo,
+            repo<Odds> oddsRepo
     ) {
-        List<Double> odds = new ArrayList<>();
-        odds.add(1.0);
-        odds.add(2.0);
-        odds.add(3.0);
-        Event event1 = new Event(1, "Steaua vs Dinamo", odds, LocalDateTime.now(), "Football");
-        Event event2 = new Event(2, "UCluj vs Galati", odds, LocalDateTime.now(), "Football");
-        Event event3 = new Event(3, "Simona vs Nadal", odds, LocalDateTime.now(), "Tennis");
+        Odds odd1 = new Odds(1, "Gol in minutul 10", "Football");
+        Odds odd2 = new Odds(2, "Gol in minutul 90", "Football");
+        Odds odd3 = new Odds(3, "Ace din prima", "Tennis");
+        Map<Odds, Double> map1 = new HashMap<Odds, Double>();
+        map1.put(odd1, 2.5);
+        Map<Odds, Double> map2 = new HashMap<Odds, Double>();
+        map1.put(odd2, 1.5);
+        Map<Odds, Double> map3 = new HashMap<Odds, Double>();
+        map1.put(odd3, 2.0);
+        Event event1 = new Event(1, "Steaua vs Dinamo", map1, "11.11.2024", "Football");
+        Event event2 = new Event(2, "UCluj vs Galati", map2, "12.03.2024", "Football");
+        Event event3 = new Event(3, "Simona vs Nadal", map3, "03.03.2024", "Tennis");
         eventRepo.create(event1);
         eventRepo.create(event2);
         eventRepo.create(event3);
@@ -258,9 +218,10 @@ public class AdminConsole {
         events.add(event1);
         events.add(event2);
 
-        Bet bet1 = new Bet(1, events, 20, LocalDateTime.now(),"active");
-        Bet bet2 = new Bet(2, events, 30, LocalDateTime.now(),"ended");
-        Bet bet3 = new Bet(3, events, 40, LocalDateTime.now(),"ended");
+//        (int player_id,int bet_id, List<Event> event, int amount, LocalDateTime bet_date, String betstatus)
+        Bet bet1 = new Bet(1, 1, events, 30, LocalDateTime.now(), "Active");
+        Bet bet2 = new Bet(2, 2, events, 100, LocalDateTime.now(), "Ended");
+        Bet bet3 = new Bet(1, 3, events, 10, LocalDateTime.now(), "Active");
         betRepo.create(bet1);
         betRepo.create(bet2);
         betRepo.create(bet3);
@@ -274,15 +235,6 @@ public class AdminConsole {
         Player player2 = new Player(2, "Lapa", "5678", "lapadtuandrei@yahoo.com", 4000, bets, bets, 0, "Active");
         playerRepo.create(player1);
         playerRepo.create(player2);
-
-        footballOddsRepo.create(new FootballOdds(odds, "Peste 5"));
-        footballOddsRepo.create(new FootballOdds(odds, "Sub 5"));
-
-        tennisOddsRepo.create(new TennisOdds(odds, "Most aces"));
-        tennisOddsRepo.create(new TennisOdds(odds, "Minim un set"));
-
-        basketOddsRepo.create(new BasketOdds(odds, "Peste 90 puncte"));
-        basketOddsRepo.create(new BasketOdds(odds, "Triple double in match"));
 
         transactionsRepo.create(new Transactions(1, player1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
         transactionsRepo.create(new Transactions(2, player2, 100, LocalDateTime.now(), "Deposit", "Completed"));
@@ -303,11 +255,9 @@ public class AdminConsole {
         repo<Bet> betRepo;
         repo<Event> eventRepo;
         repo<Player> playerRepo;
-        repo<FootballOdds> footballOddsRepo;
-        repo<TennisOdds> tennisOddsRepo;
-        repo<BasketOdds> basketOddsRepo;
         repo<Transactions> transactionsRepo;
         repo<Admin> adminRepo;
+        repo<Odds> oddsRepo;
 
         if (useFiles) {
             String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files/";
@@ -315,25 +265,21 @@ public class AdminConsole {
             betRepo = new FileRepository<>(filePath + "bets.txt", Bet.class);
             eventRepo = new FileRepository<>(filePath + "events.txt", Event.class);
             playerRepo = new FileRepository<>(filePath + "players.txt", Player.class);
-            footballOddsRepo = new FileRepository<>(filePath + "footballOdds.txt", FootballOdds.class);
-            tennisOddsRepo = new FileRepository<>(filePath + "tennisOdds.txt", TennisOdds.class);
-            basketOddsRepo = new FileRepository<>(filePath + "basketOdds.txt", BasketOdds.class);
             transactionsRepo = new FileRepository<>(filePath + "transactions.txt", Transactions.class);
             adminRepo = new FileRepository<>(filePath + "admins.txt", Admin.class);
+            oddsRepo = new FileRepository<>(filePath + "odds.txt", Odds.class);
         }
         else {
             //Repositories for inMemory
             betRepo = new inMemoryRepo<>();
             eventRepo = new inMemoryRepo<>();
             playerRepo = new inMemoryRepo<>();
-            footballOddsRepo = new inMemoryRepo<>();
-            tennisOddsRepo = new inMemoryRepo<>();
-            basketOddsRepo = new inMemoryRepo<>();
             transactionsRepo = new inMemoryRepo<>();
             adminRepo = new inMemoryRepo<>();
+            oddsRepo = new inMemoryRepo<>();
         }
         //Create service objects
-        BetService betService = new BetService(betRepo, eventRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, playerRepo);
+        BetService betService = new BetService(betRepo, eventRepo,transactionsRepo, playerRepo, oddsRepo);
         UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo);
 
         //Create Admin Controller and Console Object
@@ -341,7 +287,7 @@ public class AdminConsole {
         AdminConsole adminConsole = new AdminConsole(adminController1);
 
         //Initialize repos
-        InitalizeRepo(eventRepo, betRepo, playerRepo, footballOddsRepo, tennisOddsRepo, basketOddsRepo, transactionsRepo, adminRepo);
+        InitalizeRepo(eventRepo, betRepo, playerRepo, transactionsRepo, adminRepo, oddsRepo);
 
 
         adminConsole.welcomeMenu();
