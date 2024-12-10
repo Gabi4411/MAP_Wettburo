@@ -110,26 +110,26 @@ public class Admin extends User{
                 '}';
     }
 
-    @Override
-    public String getType() {
-        return "Admin";
-    }
-
-    @Override
-    public String toCSV() {
-        return String.join(";",
-                getType(), String.valueOf(getUser_id()), getUser_name(), getPassword(), getEmail(),
-                String.valueOf(salary), String.valueOf(access_level), department
-        );
-    }
-
-    public static Admin fromCSV(String csvLine) {
-        String[] parts = csvLine.split(";", 8);
-        return new Admin(
-                Integer.parseInt(parts[1]), parts[2], parts[3], parts[4],
-                Integer.parseInt(parts[5]), Integer.parseInt(parts[6]), parts[7]
-        );
-    }
+//    @Override
+//    public String getType() {
+//        return "Admin";
+//    }
+//
+//    @Override
+//    public String toCSV() {
+//        return String.join(";",
+//                getType(), String.valueOf(getUser_id()), getUser_name(), getPassword(), getEmail(),
+//                String.valueOf(salary), String.valueOf(access_level), department
+//        );
+//    }
+//
+//    public static Admin fromCSV(String csvLine) {
+//        String[] parts = csvLine.split(";", 8);
+//        return new Admin(
+//                Integer.parseInt(parts[1]), parts[2], parts[3], parts[4],
+//                Integer.parseInt(parts[5]), Integer.parseInt(parts[6]), parts[7]
+//        );
+//    }
 }
 
 

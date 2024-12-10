@@ -45,22 +45,13 @@ public class AdminController {
         }
     }
 
-    public void createEvent(String eventName, String eventType) {
+    public void createEvent(String eventName, String eventType, String eventDate,  String oddName, Double value) {
         if (!CustomExceptions.checkIfEmpty(eventName) || !CustomExceptions.checkIfEmpty(eventType)) {
             System.exit(0);
         }
 
-        betService.addEvent(eventName, eventType);
+        betService.addEvent(eventName, eventType, eventDate, oddName, value);
         System.out.println("New Bet Event for " + eventType + ": " + eventName + " will be available for betting soon!\n");
-    }
-
-    public void createOdds(List<Double> odds, String eventType, String type) {
-        if (!CustomExceptions.checkIfEmpty(odds) || !CustomExceptions.checkIfEmpty(eventType)) {
-            System.exit(0);
-        }
-
-        betService.addOdds(odds, eventType, type);
-        System.out.println("Odds created for: " + eventType + " in the category: " + type + "\n");
     }
 
     public void viewPlayers() {
@@ -77,12 +68,7 @@ public class AdminController {
 
     public void viewOdds() {
         StringBuilder output = new StringBuilder("Available Odds: \n");
-        betService.getBasketOdds().forEach(odd -> output.append(odd.toString()).append("\n"));
-        System.out.println(output);
-        betService.getFootballOdds().forEach(odd -> output.append(odd.toString()).append("\n"));
-        System.out.println(output);
-        betService.getTennisOdds().forEach(odd -> output.append(odd.toString()).append("\n"));
-        System.out.println(output);
+        betService.getAvailableOdds().forEach(event -> output.append(event.toString()).append("\n"));
     }
 
     public void viewBets() {

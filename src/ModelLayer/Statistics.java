@@ -133,25 +133,25 @@ public class Statistics {
                 '}';
     }
 
-    public String toCSV() {
-        return String.join(";",
-                event.toCSV(),
-                stats_team1,
-                stats_team2,
-                h2h,
-                recent_form
-        );
-    }
-
-    public static Statistics fromCSV(String csvLine) {
-        String[] parts = csvLine.split(";", 5);
-        Event event = Event.fromCSV(parts[0]);
-        return new Statistics(
-                event,
-                parts[1],
-                parts[2],
-                parts[3],
-                parts[4]
-        );
-    }
+//    public String toCSV() {
+//        return String.join(";",
+//                event.toCSV(),
+//                stats_team1,
+//                stats_team2,
+//                h2h,
+//                recent_form
+//        );
+//    }
+//
+//    public static Statistics fromCSV(String csvLine) {
+//        String[] parts = csvLine.split(";", 5);
+//        Event event = Event.fromCSV(parts[0]);
+//        return new Statistics(
+//                event,
+//                parts[1],
+//                parts[2],
+//                parts[3],
+//                parts[4]
+//        );
+//    }
 }
