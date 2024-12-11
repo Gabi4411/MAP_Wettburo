@@ -27,6 +27,8 @@ public class UserService {
      */
     private final repo<Transactions> transactionsRepo;
 
+    private final repo<Suport> suportRepo;
+
     /**
      * Constructs a UserService object with the specified repositories for players, admins, and transactions.
      *
@@ -34,10 +36,11 @@ public class UserService {
      * @param adminRepo      the repository for admin data
      * @param transactionsRepo the repository for transaction data
      */
-    public UserService(repo<Player> playerRepo, repo<Admin> adminRepo, repo<Transactions> transactionsRepo) {
+    public UserService(repo<Player> playerRepo, repo<Admin> adminRepo, repo<Transactions> transactionsRepo, repo<Suport> suportRepo) {
         this.playerRepo = playerRepo;
         this.adminRepo = adminRepo;
         this.transactionsRepo = transactionsRepo;
+        this.suportRepo = suportRepo;
     }
 
     /**
@@ -260,4 +263,12 @@ public class UserService {
 
         return true;
     }
-}
+
+    public boolean getSupportStatus(int playerId) {
+        Suport suport = suportRepo.get(playerId);
+        if (suport.getStatus().equals("Active")) {
+            return true;
+        }
+        return false;
+    }
+ }

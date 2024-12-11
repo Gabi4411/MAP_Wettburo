@@ -3,26 +3,27 @@ package ModelLayer;
 /**
  * Represents a support request submitted by a user, with details about the request's subject, date, and status.
  */
-import java.util.Date;
+import java.time.LocalDateTime;
+
 public class Suport {
-    private User user;
+    private int playerId;
     private int suport_id;
     private String subject;
-    private Date help_date;
+    private LocalDateTime help_date;
     private String status;
 
     /**
      * Constructs a Support object with specified details.
      *
-     * @param user       the user who submitted the support request
+     * @param playerId       the user who submitted the support request
      * @param suport_id the unique ID of the support request
      * @param subject    the subject of the support request
      * @param help_date  the date of the support request
      * @param status     the current status of the support request
      */
 
-    public Suport(User user, int suport_id, String subject, Date help_date, String status) {
-        this.user = user;
+    public Suport(int playerId, int suport_id, String subject, LocalDateTime help_date, String status) {
+        this.playerId = playerId;
         this.suport_id = suport_id;
         this.subject = subject;
         this.help_date = help_date;
@@ -34,18 +35,14 @@ public class Suport {
      *
      * @return the user who submitted the support request
      */
-    public User getUser() {
-        return user;
-    }
+    public int getPlayerId() {return playerId;}
 
     /**
      * Sets the user associated with this support request.
      *
-     * @param user the user to be set for this support request
+     * @param playerId the user to be set for this support request
      */
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public void setPlayerId(int playerId) {this.playerId = playerId;}
 
     /**
      * Gets the ID of the support request.
@@ -88,7 +85,7 @@ public class Suport {
      *
      * @return the date of the support request
      */
-    public Date getHelp_date() {
+    public LocalDateTime getHelp_date() {
         return help_date;
     }
 
@@ -97,7 +94,7 @@ public class Suport {
      *
      * @param help_date the date to be set
      */
-    public void setHelp_date(Date help_date) {
+    public void setHelp_date(LocalDateTime help_date) {
         this.help_date = help_date;
     }
 
@@ -127,7 +124,7 @@ public class Suport {
     @Override
     public String toString() {
         return "Suport{" +
-                "user=" + user +
+                "playerId=" + playerId +
                 ", suport_id=" + suport_id +
                 ", subject='" + subject + '\'' +
                 ", help_date=" + help_date +
@@ -135,7 +132,7 @@ public class Suport {
                 '}';
     }
 
-//    public String toCSV() {
+    //    public String toCSV() {
 //        return String.join(";",
 //                user.toCSV(),
 //                String.valueOf(suport_id),

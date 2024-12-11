@@ -213,7 +213,8 @@ public class PlayerConsole {
             repo<Player> playerRepo,
             repo<Transactions> transactionsRepo,
             repo<Admin> adminRepo,
-            repo<Odds> oddsRepo
+            repo<Odds> oddsRepo,
+            repo<Suport> suportrepo
     ) {
         Odds odd1 = new Odds(1, "Gol in minutul 10", "Football");
         Odds odd2 = new Odds(2, "Gol in minutul 90", "Football");
@@ -235,7 +236,6 @@ public class PlayerConsole {
         events.add(event1);
         events.add(event2);
 
-//        (int player_id,int bet_id, List<Event> event, int amount, LocalDateTime bet_date, String betstatus)
         Bet bet1 = new Bet(1, 1, events, 30, LocalDateTime.now(), "Active");
         Bet bet2 = new Bet(2, 2, events, 100, LocalDateTime.now(), "Ended");
         Bet bet3 = new Bet(1, 3, events, 10, LocalDateTime.now(), "Active");
@@ -258,6 +258,20 @@ public class PlayerConsole {
 
         adminRepo.create(new Admin(1, "Sefu1", "123456789", "sefu@tau.com", 5000, 3, "Support"));
         adminRepo.create(new Admin(2, "Sefu2", "987654321", "sefusefilor@tau.com", 10000, 2, "Support"));
+
+        Odds odd4 = new Odds(4, "Peste 1.5 goluri", "Football");
+        Odds odd5 = new Odds(5, "Sub 1.5 goluri", "Football");
+        Odds odd6 = new Odds(6, "6-4 al doilea set", "Tennis");
+
+        oddsRepo.create(odd4);
+        oddsRepo.create(odd5);
+        oddsRepo.create(odd6);
+
+        Suport suport1 = new Suport(1, 1, "Problems when withdrawing", LocalDateTime.now(), "Active");
+        Suport suport2 = new Suport(2, 2, "Problems when depositing", LocalDateTime.now(), "Ended");
+
+        suportrepo.create(suport1);
+        suportrepo.create(suport2);
     }
 
 
@@ -283,6 +297,7 @@ public class PlayerConsole {
         repo<Transactions> transactionsRepo;
         repo<Admin> adminRepo;
         repo<Odds> oddsRepo;
+        repo<Suport> suportRepo;
 
         if (useFiles) {
             String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files/";
@@ -293,6 +308,7 @@ public class PlayerConsole {
             transactionsRepo = new FileRepository<>(filePath + "transactions.txt", Transactions.class);
             adminRepo = new FileRepository<>(filePath + "admins.txt", Admin.class);
             oddsRepo = new FileRepository<>(filePath + "odds.txt", Odds.class);
+            suportRepo = new FileRepository<>(filePath + "suport.txt", Suport.class);
         }
         else {
             //Repositories for inMemory
@@ -302,17 +318,18 @@ public class PlayerConsole {
             transactionsRepo = new inMemoryRepo<>();
             adminRepo = new inMemoryRepo<>();
             oddsRepo = new inMemoryRepo<>();
+            suportRepo = new inMemoryRepo<>();
         }
         //Create service objects
         BetService betService = new BetService(betRepo, eventRepo,transactionsRepo, playerRepo, oddsRepo);
-        UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo);
+        UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo, suportRepo);
 
         //Create Admin Controller and Console Object
         PlayerController playerController1 = new PlayerController(betService, userService);
         PlayerConsole playerConsole = new PlayerConsole(playerController1);
 
         //Initialize repos
-        InitalizeRepo(eventRepo, betRepo, playerRepo, transactionsRepo, adminRepo, oddsRepo);
+        InitalizeRepo(eventRepo, betRepo, playerRepo, transactionsRepo, adminRepo, oddsRepo, suportRepo);
 
 
         playerConsole.welcomeMenu();
