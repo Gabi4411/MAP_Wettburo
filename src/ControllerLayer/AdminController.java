@@ -1,9 +1,11 @@
 package ControllerLayer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ModelLayer.Event;
 import ModelLayer.Player;
+import ModelLayer.Suport;
 import ServiceLayer.BetService;
 import ServiceLayer.UserService;
 import Exceptions.CustomExceptions;
@@ -104,5 +106,17 @@ public class AdminController {
         List<Player> players1 = betService.sortPlayersByName(players, ascending);
         System.out.println("Players sorted by name (" + (ascending ? "A-Z" : "Z-A") + "):\n");
         players1.forEach(player1 -> System.out.println(player1.getUser_name() + " - " + player1.getEmail() + "\n"));
+    }
+
+    public void whatProblemsAreActive(List<Integer> playersIds) {
+        List<Integer> allProblems = new ArrayList<>();
+
+        for (Integer playerId : playersIds) {
+            if(userService.getSupportStatus(playerId)) {
+                allProblems.add(playerId);
+            }
+        }
+
+        System.out.println("This are the players who asked for help in Support:" + allProblems);
     }
 }
