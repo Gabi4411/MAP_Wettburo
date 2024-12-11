@@ -132,7 +132,8 @@ public class Bet{
     @Override
     public String toString() {
         return "Bet{" +
-                "bet_id=" + bet_id +
+                "palyer_id=" + palyer_id +
+                ", bet_id=" + bet_id +
                 ", event=" + event +
                 ", amount=" + amount +
                 ", bet_date=" + bet_date +
@@ -140,7 +141,8 @@ public class Bet{
                 '}';
     }
 
-//    public String toCSV() {
+
+    //    public String toCSV() {
 //        return String.join(";",
 //                String.valueOf(bet_id),
 //                String.join("|", event.stream().map(Event::toCSV).toArray(String[]::new)),
