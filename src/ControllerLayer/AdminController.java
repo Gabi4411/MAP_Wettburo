@@ -117,6 +117,19 @@ public class AdminController {
             }
         }
 
-        System.out.println("This are the players who asked for help in Support:" + allProblems);
+        System.out.println("This are the players who asked for help in Support:" + allProblems + "\n");
+    }
+
+    public void addStatistic(int eventId, String eventDescription, String eventPrediction) {
+        if(!CustomExceptions.checkIfEmpty(eventId) || !CustomExceptions.checkIfEmpty(eventDescription) || !CustomExceptions.checkIfEmpty(eventPrediction)) {
+            System.exit(0);
+        }
+
+        if (userService.createStatistic(eventId, eventDescription, eventPrediction)) {
+            System.out.println("Statistic added!\n");
+        }
+        else {
+            System.out.println("Statistic already exists for this event!\n");
+        }
     }
 }

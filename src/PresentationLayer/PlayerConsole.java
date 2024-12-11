@@ -214,7 +214,8 @@ public class PlayerConsole {
             repo<Transactions> transactionsRepo,
             repo<Admin> adminRepo,
             repo<Odds> oddsRepo,
-            repo<Suport> suportrepo
+            repo<Suport> suportrepo,
+            repo<Statistics> statisticsrepo
     ) {
         Odds odd1 = new Odds(1, "Gol in minutul 10", "Football");
         Odds odd2 = new Odds(2, "Gol in minutul 90", "Football");
@@ -272,6 +273,12 @@ public class PlayerConsole {
 
         suportrepo.create(suport1);
         suportrepo.create(suport2);
+
+        Statistics statistics1 = new Statistics(1, "The best Football Match in History", "Steaua has a 70% change of winning!");
+        Statistics statistics2 = new Statistics(2, "The match will be fully booked", "UCluj will win!");
+
+        statisticsrepo.create(statistics1);
+        statisticsrepo.create(statistics2);
     }
 
 
@@ -298,6 +305,7 @@ public class PlayerConsole {
         repo<Admin> adminRepo;
         repo<Odds> oddsRepo;
         repo<Suport> suportRepo;
+        repo<Statistics> statisticsRepo;
 
         if (useFiles) {
             String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files/";
@@ -309,6 +317,7 @@ public class PlayerConsole {
             adminRepo = new FileRepository<>(filePath + "admins.txt", Admin.class);
             oddsRepo = new FileRepository<>(filePath + "odds.txt", Odds.class);
             suportRepo = new FileRepository<>(filePath + "suport.txt", Suport.class);
+            statisticsRepo = new FileRepository<>(filePath + "statistics.txt", Statistics.class);
         }
         else {
             //Repositories for inMemory
@@ -319,17 +328,18 @@ public class PlayerConsole {
             adminRepo = new inMemoryRepo<>();
             oddsRepo = new inMemoryRepo<>();
             suportRepo = new inMemoryRepo<>();
+            statisticsRepo = new inMemoryRepo<>();
         }
         //Create service objects
         BetService betService = new BetService(betRepo, eventRepo,transactionsRepo, playerRepo, oddsRepo);
-        UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo, suportRepo);
+        UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo, suportRepo, statisticsRepo);
 
         //Create Admin Controller and Console Object
         PlayerController playerController1 = new PlayerController(betService, userService);
         PlayerConsole playerConsole = new PlayerConsole(playerController1);
 
         //Initialize repos
-        InitalizeRepo(eventRepo, betRepo, playerRepo, transactionsRepo, adminRepo, oddsRepo, suportRepo);
+        InitalizeRepo(eventRepo, betRepo, playerRepo, transactionsRepo, adminRepo, oddsRepo, suportRepo, statisticsRepo);
 
 
         playerConsole.welcomeMenu();

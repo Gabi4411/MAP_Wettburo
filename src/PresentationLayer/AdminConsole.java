@@ -81,7 +81,9 @@ public class AdminConsole {
         System.out.println("6. Update Admin Access Level");
         System.out.println("7. Sorted Events By Date");
         System.out.println("8. Sorted Players By Name");
-        System.out.println("9. Exit");
+        System.out.println("9. Get Active Supports");
+        System.out.println("10. Create new Statistic for Event");
+        System.out.println("11. Exit");
         System.out.print("Enter your choice: ");
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -114,6 +116,8 @@ public class AdminConsole {
             case 9:
                 activeSupports(scanner);
             case 10:
+                createStatistic(scanner);
+            case 11:
                 return;
             default:
                 System.out.println("Invalid choice, try another one!");
@@ -209,6 +213,17 @@ public class AdminConsole {
         showMenu(scanner);
     }
 
+    private void createStatistic(Scanner scanner) {
+        System.out.println("Give me the event id:");
+        int eventId = Integer.parseInt(scanner.nextLine());
+        System.out.println("Give me the desciption:");
+        String desc = scanner.nextLine();
+        System.out.println("Give me the prediction:");
+        String prediction = scanner.nextLine();
+        adminController.addStatistic(eventId, desc, prediction);
+        showMenu(scanner);
+    }
+
     public static void InitalizeRepo(
             repo<Event> eventRepo,
             repo<Bet> betRepo,
@@ -216,7 +231,8 @@ public class AdminConsole {
             repo<Transactions> transactionsRepo,
             repo<Admin> adminRepo,
             repo<Odds> oddsRepo,
-            repo<Suport> suportrepo
+            repo<Suport> suportrepo,
+            repo<Statistics> statisticsrepo
     ) {
         Odds odd1 = new Odds(1, "Gol in minutul 10", "Football");
         Odds odd2 = new Odds(2, "Gol in minutul 90", "Football");
@@ -274,6 +290,12 @@ public class AdminConsole {
 
         suportrepo.create(suport1);
         suportrepo.create(suport2);
+
+        Statistics statistics1 = new Statistics(1, "The best Football Match in History", "Steaua has a 70% change of winning!");
+        Statistics statistics2 = new Statistics(2, "The match will be fully booked", "UCluj will win!");
+
+        statisticsrepo.create(statistics1);
+        statisticsrepo.create(statistics2);
     }
 
     public static void main(String[] args) {
@@ -292,6 +314,7 @@ public class AdminConsole {
         repo<Admin> adminRepo;
         repo<Odds> oddsRepo;
         repo<Suport> suportRepo;
+        repo<Statistics> statisticsRepo;
 
         if (useFiles) {
             String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files/";
@@ -303,6 +326,7 @@ public class AdminConsole {
             adminRepo = new FileRepository<>(filePath + "admins.txt", Admin.class);
             oddsRepo = new FileRepository<>(filePath + "odds.txt", Odds.class);
             suportRepo = new FileRepository<>(filePath + "suport.txt", Suport.class);
+            statisticsRepo = new FileRepository<>(filePath + "statistics.txt", Statistics.class);
         }
         else {
             //Repositories for inMemory
@@ -313,17 +337,18 @@ public class AdminConsole {
             adminRepo = new inMemoryRepo<>();
             oddsRepo = new inMemoryRepo<>();
             suportRepo = new inMemoryRepo<>();
+            statisticsRepo = new inMemoryRepo<>();
         }
         //Create service objects
         BetService betService = new BetService(betRepo, eventRepo,transactionsRepo, playerRepo, oddsRepo);
-        UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo, suportRepo);
+        UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo, suportRepo, statisticsRepo);
 
         //Create Admin Controller and Console Object
         AdminController adminController1 = new AdminController(userService, betService);
         AdminConsole adminConsole = new AdminConsole(adminController1);
 
         //Initialize repos
-        InitalizeRepo(eventRepo, betRepo, playerRepo, transactionsRepo, adminRepo, oddsRepo, suportRepo);
+        InitalizeRepo(eventRepo, betRepo, playerRepo, transactionsRepo, adminRepo, oddsRepo, suportRepo, statisticsRepo);
 
 
         adminConsole.welcomeMenu();

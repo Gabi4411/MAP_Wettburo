@@ -27,6 +27,7 @@ public class ApplicationTest {
     private repo<Admin> adminRepo;
     private repo<Odds> oddsRepo;
     private repo<Suport> suportRepo;
+    private repo<Statistics> statisticsrepo;
 
     @BeforeEach
     void setUp() {
@@ -37,6 +38,7 @@ public class ApplicationTest {
         adminRepo = new inMemoryRepo<>();
         oddsRepo = new inMemoryRepo<>();
         suportRepo = new inMemoryRepo<>();
+        statisticsrepo = new inMemoryRepo<>();
 
         InitializeRepo(
                 eventRepo,
@@ -47,7 +49,7 @@ public class ApplicationTest {
                 oddsRepo
         );
 
-        userService = new UserService(playerRepo, adminRepo, transactionRepo, suportRepo);
+        userService = new UserService(playerRepo, adminRepo, transactionRepo, suportRepo, statisticsrepo);
         betService = new BetService(betRepo, eventRepo, transactionRepo, playerRepo, oddsRepo);
     }
 
