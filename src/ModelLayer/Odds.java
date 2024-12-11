@@ -12,23 +12,15 @@ public class Odds{
     private String oddName;
     private int odd_id;
     private String eventType;
-//    private double oddValue;
 
 
-    public Odds(int odd_id, String oddName, /*double oddValue,*/ String eventType) {
-        this.oddName = oddName;
+
+    public Odds(int odd_id, String oddName, String eventType) {
         this.odd_id = odd_id;
-        //this.oddValue = oddValue;
+        this.oddName = oddName;
         this.eventType = eventType;
     }
 
-    //public double getOddValue() {
-      //  return oddValue;
-    //}
-
-//    public void setOddValue(double oddValue) {
-//        this.oddValue = oddValue;
-//    }
 
     public String getOddName() {
         return oddName;
@@ -58,10 +50,9 @@ public class Odds{
     @Override
     public String toString() {
         return "Odds{" +
-                "oddName='" + oddName + '\'' +
-                ", odd_id=" + odd_id +
+                "oddID='" + odd_id + '\'' +
+                ", oddName=" + oddName +
                 ", eventType='" + eventType + '\'' +
-//                ", oddValue=" + oddValue +
                 '}';
     }
 

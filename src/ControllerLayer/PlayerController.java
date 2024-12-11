@@ -48,6 +48,8 @@ public class PlayerController {
         System.out.println(output);
     }
 
+
+
     public void viewEvents() {
         StringBuilder output = new StringBuilder("Available Events: \n");
         betService.getAvailableEvents().forEach(event -> output.append(event.toString()).append("\n"));

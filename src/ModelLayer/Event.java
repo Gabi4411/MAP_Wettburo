@@ -13,29 +13,28 @@ public class Event{
     /**
      * Unique identifier for the event.
      */
-    public int event_id;
+    private int event_id;
 
     /**
      * Name of the event.
      */
-    public String event_name;
+    private String event_name;
 
     /**
      * List of odds for the event.
      */
-    public Map<Odds,Double> oddsList;
+    private Map<Odds,Double> oddsList;
 
     /**
      * Date and time of the event.
      */
-    public String event_date;
+    private String event_date;
 
     /**
      * Type of sport for the event.
      */
     private String sports_type;
 
-    private List<Event> eventList;
 
     /**
      * Constructs an Event object with specified details.
@@ -153,7 +152,6 @@ public class Event{
                 ", oddsList=" + oddsList +
                 ", event_date=" + event_date +
                 ", sports_type='" + sports_type + '\'' +
-                ", eventList=" + eventList +
                 '}';
     }
 

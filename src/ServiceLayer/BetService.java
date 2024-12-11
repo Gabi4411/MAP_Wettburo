@@ -203,45 +203,7 @@ public class BetService {
     }
 
 
-//    public double getOddsValueByName(Event event, String oddName) {
-//        Map<String, Double> odds = event.getOddsList();
-//        if (odds.containsKey(oddName)) {
-//            return odds.get(oddName);
-//        } else {
-//            throw new IllegalArgumentException("No odds found for name " + oddName);
-//        }
-//    }
 
-
-
-//    public void setDefaultOdds(Odds odds,Event event) {
-//        if (odds.getEventType().equals("Football")) {
-//            event.oddsList.add(new Odds(1,"1",0.0, "Football"));  // Cota pentru echipa 1
-//            event.oddsList.add(new Odds(2,"X",0.0, "Football"));
-//            event.oddsList.add(new Odds(3,"2",0.0, "Football"));
-//            event.oddsList.add(new Odds(4,"GG",0.0, "Football"));
-//            event.oddsList.add(new Odds(5,"Hattrick in Match",0.0, "Football"));
-//            event.oddsList.add(new Odds(6,"over 2.5 goals",0.0, "Football"));
-//
-//        }else if (odds.getEventType().equals("Tennis")) {
-//
-//            event.oddsList.add(new Odds(50,"1",0.0, "Tennis"));
-//            event.oddsList.add(new Odds(51,"2",0.0, "Tennis"));
-//            event.oddsList.add(new Odds(52,"both to win a set",0.0, "Tennis"));
-//            event.oddsList.add(new Odds(53,"6-0 set win in match",0.0, "Tennis"));
-//            event.oddsList.add(new Odds(54,"games 1st set over 8.5",0.0, "Tennis"));
-//
-//        }else if (odds.getEventType().equals("Basket")) {
-//
-//            event.oddsList.add(new Odds(100,"1",0.0, "Basket"));
-//            event.oddsList.add(new Odds(101,"X",0.0, "Basket"));
-//            event.oddsList.add(new Odds(102,"2",0.0, "Basket"));
-//            event.oddsList.add(new Odds(103,"Triple Double in Match",0.0, "Basket"));
-//            event.oddsList.add(new Odds(104,"over 177.5 Points",0.0, "Basket"));
-//            event.oddsList.add(new Odds(105,"2OT",0.0, "Basket"));
-//
-//        }
-//    }
 
     public void placeBet(int playerID) {
         Scanner scanner = new Scanner(System.in);
