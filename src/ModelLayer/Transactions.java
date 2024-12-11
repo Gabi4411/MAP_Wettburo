@@ -150,7 +150,6 @@ public class Transactions {
      *
      * @return a string representation of the Transactions object
      */
-
     @Override
     public String toString() {
         return "Transactions{" +
@@ -163,7 +162,7 @@ public class Transactions {
                 '}';
     }
 
-//    public String toCSV() {
+    //    public String toCSV() {
 //        return String.join(";",
 //                String.valueOf(transaction_id),
 //                user.toCSV(),

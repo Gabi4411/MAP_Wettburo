@@ -103,14 +103,14 @@ public class Admin extends User{
      */
     @Override
     public String toString() {
-        return super.toString() + "Admin{" +
+        return "Admin{" +
+                super.toString() +
                 "salary=" + salary +
-                ", access_level='" + access_level + '\'' +
+                ", access_level=" + access_level +
                 ", department='" + department + '\'' +
                 '}';
     }
-
-//    @Override
+    //    @Override
 //    public String getType() {
 //        return "Admin";
 //    }
