@@ -121,7 +121,7 @@ public class AdminController {
     }
 
     public void addStatistic(int eventId, String eventDescription, String eventPrediction) {
-        if(!CustomExceptions.checkIfEmpty(eventId) || !CustomExceptions.checkIfEmpty(eventDescription) || !CustomExceptions.checkIfEmpty(eventPredictin)) {
+        if(!CustomExceptions.checkIfEmpty(eventId) || !CustomExceptions.checkIfEmpty(eventDescription) || !CustomExceptions.checkIfEmpty(eventPrediction)) {
             System.exit(0);
         }
 
