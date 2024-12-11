@@ -110,26 +110,29 @@ public class Admin extends User{
                 ", department='" + department + '\'' +
                 '}';
     }
-    //    @Override
-//    public String getType() {
-//        return "Admin";
-//    }
-//
-//    @Override
-//    public String toCSV() {
-//        return String.join(";",
-//                getType(), String.valueOf(getUser_id()), getUser_name(), getPassword(), getEmail(),
-//                String.valueOf(salary), String.valueOf(access_level), department
-//        );
-//    }
-//
-//    public static Admin fromCSV(String csvLine) {
-//        String[] parts = csvLine.split(";", 8);
-//        return new Admin(
-//                Integer.parseInt(parts[1]), parts[2], parts[3], parts[4],
-//                Integer.parseInt(parts[5]), Integer.parseInt(parts[6]), parts[7]
-//        );
-//    }
+
+    public String toCSV() {
+        return getUser_id() + "," + getUser_name() + "," + getPassword() + "," + getEmail() + "," + salary + "," + access_level + "," + department;
+    }
+
+    /**
+     * Creates an Admin object from a CSV string.
+     *
+     * @param csvLine the CSV string
+     * @return the Admin object created from the CSV string
+     */
+    public static Admin fromCSV(String csvLine) {
+        String[] values = csvLine.split(",");
+        int user_id = Integer.parseInt(values[0]);
+        String user_name = values[1];
+        String password = values[2];
+        String email = values[3];
+        int salary = Integer.parseInt(values[4]);
+        int access_level = Integer.parseInt(values[5]);
+        String department = values[6];
+
+        return new Admin(user_id, user_name, password, email, salary, access_level, department);
+    }
 }
 
 

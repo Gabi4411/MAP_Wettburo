@@ -1,7 +1,11 @@
 package ModelLayer;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Represents a bet placed on one or more events.
@@ -141,28 +145,50 @@ public class Bet{
                 '}';
     }
 
+    // toCSV method
+    public String toCSV() {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        // Serialize events as strings in a specific format
+        String eventDetails = event.stream()
+                .map(e -> e.getEvent_id() + ":" + e.getEvent_name() + ":" +
+                        e.getOddsList().entrySet().stream()
+                                .map(odds -> odds.getKey().toCSV() + ":" + odds.getValue())
+                                .collect(Collectors.joining(";")) +
+                        ":" + e.getEvent_date() + ":" + e.getSports_type())
+                .collect(Collectors.joining("|"));
+        return palyer_id + "," + bet_id + "," + eventDetails + "," + amount + "," + bet_date.format(formatter) + "," + betstatus;
+    }
 
-    //    public String toCSV() {
-//        return String.join(";",
-//                String.valueOf(bet_id),
-//                String.join("|", event.stream().map(Event::toCSV).toArray(String[]::new)),
-//                String.valueOf(amount),
-//                bet_date.toString(),
-//                betstatus
-//        );
-//    }
-//
-//    public static Bet fromCSV(String csvLine) {
-//        String[] parts = csvLine.split(";", 5);
-//        List<Event> events = Arrays.stream(parts[1].split("\\|"))
-//                .map(Event::fromCSV)
-//                .toList();
-//        return new Bet(
-//                Integer.parseInt(parts[0]),
-//                events,
-//                Integer.parseInt(parts[2]),
-//                LocalDateTime.parse(parts[3]),
-//                parts[4]
-//        );
-//    }
+    // fromCSV method
+    public static Bet fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",", -1);
+        int player_id = Integer.parseInt(parts[0]);
+        int bet_id = Integer.parseInt(parts[1]);
+
+        // Deserialize event details
+        List<Event> events = Arrays.stream(parts[2].split("\\|"))
+                .map(eventStr -> {
+                    String[] eventParts = eventStr.split(":");
+                    int event_id = Integer.parseInt(eventParts[0]);
+                    String event_name = eventParts[1];
+                    Map<Odds, Double> oddsList = Arrays.stream(eventParts[2].split(";"))
+                            .map(oddsStr -> {
+                                String[] oddsParts = oddsStr.split(",");
+                                Odds odds = Odds.fromCSV(oddsParts[0]); // Assuming Odds has a fromCSV method
+                                double value = Double.parseDouble(oddsParts[1]);
+                                return Map.entry(odds, value);
+                            })
+                            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                    String event_date = eventParts[3];
+                    String sports_type = eventParts[4];
+                    return new Event(event_id, event_name, oddsList, event_date, sports_type);
+                })
+                .toList();
+
+        int amount = Integer.parseInt(parts[3]);
+        LocalDateTime bet_date = LocalDateTime.parse(parts[4], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String betstatus = parts[5];
+
+        return new Bet(player_id, bet_id, events, amount, bet_date, betstatus);
+    }
 }

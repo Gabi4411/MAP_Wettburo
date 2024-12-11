@@ -1,9 +1,9 @@
 package ModelLayer;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a player in the system, inheriting from the User class.
@@ -152,34 +152,40 @@ public class Player extends User{
                 ", account_status='" + account_status + '\'' +
                 '}';
     }
-    //    @Override
-//    public String getType() {
-//        return "Player";
-//    }
 
-//    @Override
-//    public String toCSV() {
-//        return String.join(";",
-//                getType(), String.valueOf(getUser_id()), getUser_name(), getPassword(), getEmail(),
-//                String.valueOf(balance),
-//                String.join("|", activeBets.stream().map(Bet::toCSV).toArray(String[]::new)),
-//                String.join("|", allBets.stream().map(Bet::toCSV).toArray(String[]::new)),
-//                String.valueOf(bonus_balance), account_status
-//        );
-//    }
-//
-//    public static Player fromCSV(String csvLine) {
-//        String[] parts = csvLine.split(";", 10);
-//        List<Bet> activeBets = Arrays.stream(parts[6].split("\\|"))
-//                .map(Bet::fromCSV)
-//                .toList();
-//        List<Bet> allBets = Arrays.stream(parts[7].split("\\|"))
-//                .map(Bet::fromCSV)
-//                .toList();
-//        return new Player(
-//                Integer.parseInt(parts[1]), parts[2], parts[3], parts[4],
-//                Double.parseDouble(parts[5]), activeBets, allBets,
-//                Integer.parseInt(parts[8]), parts[9]
-//        );
-//    }
+    public String toCSV() {
+        String activeBetsCSV = activeBets.stream().map(Bet::toCSV).collect(Collectors.joining("|"));
+        String allBetsCSV = allBets.stream().map(Bet::toCSV).collect(Collectors.joining("|"));
+        return getUser_id() + "," + getUser_name() + "," + getPassword() + "," + getEmail() + "," + balance + "," + activeBetsCSV + "," + allBetsCSV + "," + bonus_balance + "," + account_status;
+    }
+
+    public static Player fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",", -1);
+
+        int user_id = Integer.parseInt(parts[0]);
+        String user_name = parts[1];
+        String password = parts[2];
+        String email = parts[3];
+        double balance = Double.parseDouble(parts[4]);
+
+        List<Bet> activeBets = new ArrayList<>();
+        if (!parts[5].isEmpty()) {
+            activeBets = Arrays.stream(parts[5].split("\\|"))
+                    .map(Bet::fromCSV)
+                    .collect(Collectors.toList());
+        }
+
+        List<Bet> allBets = new ArrayList<>();
+        if (!parts[6].isEmpty()) {
+            allBets = Arrays.stream(parts[6].split("\\|"))
+                    .map(Bet::fromCSV)
+                    .collect(Collectors.toList());
+        }
+
+        int bonus_balance = Integer.parseInt(parts[7]);
+        String account_status = parts[8];
+
+        return new Player(user_id, user_name, password, email, balance, activeBets, allBets, bonus_balance, account_status);
+    }
 }
+
