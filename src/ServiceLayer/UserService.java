@@ -29,6 +29,8 @@ public class UserService {
 
     private final repo<Suport> suportRepo;
 
+    private final repo<Statistics> statisticsRepo;
+
     /**
      * Constructs a UserService object with the specified repositories for players, admins, and transactions.
      *
@@ -36,11 +38,12 @@ public class UserService {
      * @param adminRepo      the repository for admin data
      * @param transactionsRepo the repository for transaction data
      */
-    public UserService(repo<Player> playerRepo, repo<Admin> adminRepo, repo<Transactions> transactionsRepo, repo<Suport> suportRepo) {
+    public UserService(repo<Player> playerRepo, repo<Admin> adminRepo, repo<Transactions> transactionsRepo, repo<Suport> suportRepo, repo<Statistics> statisticsRepo) {
         this.playerRepo = playerRepo;
         this.adminRepo = adminRepo;
         this.transactionsRepo = transactionsRepo;
         this.suportRepo = suportRepo;
+        this.statisticsRepo = statisticsRepo;
     }
 
     /**
@@ -270,5 +273,17 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public boolean createStatistic(int eventId, String eventDescription, String eventPrediction) {
+        for (Statistics statistic : statisticsRepo.getAll()) {
+            if (statistic.getEventId() == eventId) {
+                return false;
+            }
+        }
+
+        Statistics statistics = new Statistics(eventId, eventDescription, eventPrediction);
+        statisticsRepo.create(statistics);
+        return true;
     }
  }
