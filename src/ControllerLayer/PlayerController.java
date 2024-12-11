@@ -39,7 +39,7 @@ public class PlayerController {
      * @param player_id the ID of the player whose bets are to be displayed
      */
     public void viewPlayerBets(Integer player_id) {
-        if (!CustomExceptions.checkIfEmpty(player_id) || !CustomExceptions.idCheck(player_id)) {
+        if (CustomExceptions.checkIfEmpty(player_id) || CustomExceptions.idCheck(player_id)) {
             System.exit(0);
         }
 
@@ -58,7 +58,7 @@ public class PlayerController {
 
 
     public void withdraw(String username, String password, Integer amount) {
-        if (!CustomExceptions.checkIfEmpty(username) || !CustomExceptions.checkIfEmpty(password) || !CustomExceptions.checkIfEmpty(amount)) {
+        if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password) || CustomExceptions.checkIfEmpty(amount)) {
             System.exit(0);
         }
 
@@ -71,7 +71,7 @@ public class PlayerController {
     }
 
     public void deposit(String username, String password, Integer amount) {
-        if (!CustomExceptions.checkIfEmpty(username) || !CustomExceptions.checkIfEmpty(password) || !CustomExceptions.checkIfEmpty(amount)) {
+        if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password) || CustomExceptions.checkIfEmpty(amount)) {
             System.exit(0);
         }
 
@@ -84,7 +84,7 @@ public class PlayerController {
     }
 
     public void playerLogin(String username, String password) {
-        if (!CustomExceptions.checkIfEmpty(username) || !CustomExceptions.checkIfEmpty(password)) {
+        if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password)) {
             System.exit(0);
         }
 
@@ -97,7 +97,7 @@ public class PlayerController {
     }
 
     public boolean createPlayerAccount(String username, String password, String email) {
-        if(!CustomExceptions.checkIfEmpty(username) || !CustomExceptions.checkIfEmpty(password)) {
+        if(CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password)) {
             System.exit(0);
         }
 
@@ -117,7 +117,7 @@ public class PlayerController {
     }
 
     public void viewBetHistory(int playerID){
-        if (!CustomExceptions.checkIfEmpty(playerID) || !CustomExceptions.idCheck(playerID)) {
+        if (CustomExceptions.checkIfEmpty(playerID) || CustomExceptions.idCheck(playerID)) {
             System.exit(0);
         }
 

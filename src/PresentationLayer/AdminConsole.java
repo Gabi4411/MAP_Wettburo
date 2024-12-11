@@ -115,8 +115,10 @@ public class AdminConsole {
                 break;
             case 9:
                 activeSupports(scanner);
+                break;
             case 10:
                 createStatistic(scanner);
+                break;
             case 11:
                 return;
             default:
@@ -240,9 +242,9 @@ public class AdminConsole {
         Map<Odds, Double> map1 = new HashMap<Odds, Double>();
         map1.put(odd1, 2.5);
         Map<Odds, Double> map2 = new HashMap<Odds, Double>();
-        map1.put(odd2, 1.5);
+        map2.put(odd2, 1.5);
         Map<Odds, Double> map3 = new HashMap<Odds, Double>();
-        map1.put(odd3, 2.0);
+        map3.put(odd3, 2.0);
         Event event1 = new Event(1, "Steaua vs Dinamo", map1, "11.11.2024", "Football");
         Event event2 = new Event(2, "UCluj vs Galati", map2, "12.03.2024", "Football");
         Event event3 = new Event(3, "Simona vs Nadal", map3, "03.03.2024", "Tennis");

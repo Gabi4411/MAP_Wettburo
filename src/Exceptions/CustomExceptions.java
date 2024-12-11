@@ -6,34 +6,20 @@ import java.util.Map;
 public class CustomExceptions {
     public static boolean checkIfEmpty(Object input) {
         if (input == null) {
-            System.out.println("Input is empty (null)!");
+            return true;
+        } else if (input instanceof String) {
+            return ((String) input).isEmpty();
+        } else if (input instanceof Collection<?>) {
+            return ((Collection<?>) input).isEmpty();
+        } else if (input instanceof Map<?, ?>) {
+            return ((Map<?, ?>) input).isEmpty();
+        } else if (input.getClass().isArray()) {
+            return ((Object[]) input).length == 0;
         }
-        else if (input instanceof String) {
-            if (((String) input).isEmpty()) {
-                System.out.println("Input is empty (String)!");
-            }
-            return false;
-        }
-        else if (input instanceof Collection<?>) {
-            if (((Collection<?>) input).isEmpty()) {
-                System.out.println("Input is empty (Collection<?>)!");
-            }
-            return false;
-        }
-        else if (input instanceof Map<?, ?>) {
-            if (((Map<?, ?>) input).isEmpty()) {
-                System.out.println("Input is empty (Map<?, ?>)!");
-            }
-            return false;
-        }
-        else if (input.getClass().isArray()) {
-            if (((Object[]) input).length == 0) {
-                System.out.println("Input is empty (Object[])!");
-            }
-            return false;
-        }
-        return true;
+        return false;
     }
+
+
 
     public static boolean idCheck(Integer id) {
         if (id < 0) {

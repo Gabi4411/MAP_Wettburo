@@ -143,7 +143,8 @@ public class Player extends User{
      */
     @Override
     public String toString() {
-        return super.toString() + "Player{" +
+        return "Player{" +
+                super.toString() +
                 "balance=" + balance +
                 ", activeBets=" + activeBets +
                 ", allBets=" + allBets +
@@ -151,7 +152,6 @@ public class Player extends User{
                 ", account_status='" + account_status + '\'' +
                 '}';
     }
-
     //    @Override
 //    public String getType() {
 //        return "Player";

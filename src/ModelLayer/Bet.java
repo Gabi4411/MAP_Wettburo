@@ -132,7 +132,7 @@ public class Bet{
     @Override
     public String toString() {
         return "Bet{" +
-                "palyer_id=" + palyer_id +
+                "player id=" + palyer_id +
                 ", bet_id=" + bet_id +
                 ", event=" + event +
                 ", amount=" + amount +

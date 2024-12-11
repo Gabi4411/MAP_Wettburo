@@ -33,7 +33,7 @@ public class AdminController {
     }
 
     public boolean createAdminAccount(String username, String password, String email) {
-        if (!CustomExceptions.checkIfEmpty(username) || !CustomExceptions.checkIfEmpty(password) || !CustomExceptions.checkIfEmpty(email)) {
+        if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password) || CustomExceptions.checkIfEmpty(email)) {
             System.exit(0);
         }
 
@@ -48,7 +48,7 @@ public class AdminController {
     }
 
     public void createEvent(String eventName, String eventType, String eventDate,  String oddName, Double value) {
-        if (!CustomExceptions.checkIfEmpty(eventName) || !CustomExceptions.checkIfEmpty(eventType)) {
+        if (CustomExceptions.checkIfEmpty(eventName) || CustomExceptions.checkIfEmpty(eventType)) {
             System.exit(0);
         }
 
@@ -86,7 +86,7 @@ public class AdminController {
     }
 
     public void updateAdmin(Integer adminId, int accesLevel) {
-        if (!CustomExceptions.checkIfEmpty(adminId) || !CustomExceptions.idCheck(adminId)) {
+        if (CustomExceptions.checkIfEmpty(adminId) || CustomExceptions.idCheck(adminId)) {
             System.exit(0);
         }
 
@@ -121,7 +121,7 @@ public class AdminController {
     }
 
     public void addStatistic(int eventId, String eventDescription, String eventPrediction) {
-        if(!CustomExceptions.checkIfEmpty(eventId) || !CustomExceptions.checkIfEmpty(eventDescription) || !CustomExceptions.checkIfEmpty(eventPrediction)) {
+        if(CustomExceptions.checkIfEmpty(eventId) || CustomExceptions.checkIfEmpty(eventDescription) || CustomExceptions.checkIfEmpty(eventPrediction)) {
             System.exit(0);
         }
 
