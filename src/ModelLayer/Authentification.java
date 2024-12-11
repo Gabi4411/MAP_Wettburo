@@ -123,23 +123,44 @@ public class Authentification {
                 '}';
     }
 
-//    public String toCSV() {
-//        return String.join(";",
-//                String.valueOf(auth_id),
-//                user.toCSV(),
-//                String.valueOf(login_attempts),
-//                String.valueOf(last_login.getTime())
-//        );
-//    }
-//
-//    public static Authentification fromCSV(String csvLine) {
-//        String[] parts = csvLine.split(";", 4);
-//        User user = User.fromCSV(parts[1]);
-//        return new Authentification(
-//                Integer.parseInt(parts[0]),
-//                user,
-//                Integer.parseInt(parts[2]),
-//                new Date(Long.parseLong(parts[3]))
-//        );
-//    }
+    /**
+     * Converts this Authentification object to a CSV string.
+     *
+     * @return a CSV representation of the Authentification object
+     */
+    public String toCSV() {
+        return auth_id + "," + user.getUser_id() + "," + login_attempts + "," + last_login.getTime();
+    }
+
+    /**
+     * Creates an Authentification object from a CSV string.
+     *
+     * @param csvLine the CSV string
+     * @return the Authentification object created from the CSV string
+     */
+    public static Authentification fromCSV(String csvLine) {
+        String[] values = csvLine.split(",");
+        int auth_id = Integer.parseInt(values[0]);
+        int user_id = Integer.parseInt(values[1]); // Fetch user by ID
+        int login_attempts = Integer.parseInt(values[2]);
+        Date last_login = new Date(Long.parseLong(values[3]));
+
+        // Assuming we have a UserRepo or another way to fetch the User object by user_id
+        User user = fetchUserById(user_id);  // This method needs to be defined elsewhere
+
+        return new Authentification(auth_id, user, login_attempts, last_login);
+    }
+
+    /**
+     * Fetches a User object by its ID.
+     * (You would replace this with actual logic for fetching a user from a repository or database.)
+     *
+     * @param user_id the ID of the user to fetch
+     * @return a User object corresponding to the provided user_id
+     */
+    private static User fetchUserById(int user_id) {
+        // This is a placeholder method. You can fetch the user from a repository like UserRepo
+        // For now, let's assume the user is an Admin with a default constructor (you would ideally fetch the real user)
+        return new Admin(user_id, "Example Name", "password", "email@example.com", 5000, 1, "IT");
+    }
 }

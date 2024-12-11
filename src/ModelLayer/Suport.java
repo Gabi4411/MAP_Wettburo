@@ -4,6 +4,7 @@ package ModelLayer;
  * Represents a support request submitted by a user, with details about the request's subject, date, and status.
  */
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Suport {
     private int playerId;
@@ -131,27 +132,23 @@ public class Suport {
                 ", status='" + status + '\'' +
                 '}';
     }
+    public static Suport fromCSV(String csvLine) {
+        String[] fields = csvLine.split(",");
+        int playerId = Integer.parseInt(fields[0].trim());
+        int suport_id = Integer.parseInt(fields[1].trim());
+        String subject = fields[2].trim();
 
-    //    public String toCSV() {
-//        return String.join(";",
-//                user.toCSV(),
-//                String.valueOf(suport_id),
-//                subject,
-//                String.valueOf(help_date.getTime()),
-//                status
-//        );
-//    }
-//
-//    public static Suport fromCSV(String csvLine) {
-//        String[] parts = csvLine.split(";", 5);
-//        User user = User.fromCSV(parts[0]);
-//        return new Suport(
-//                user,
-//                Integer.parseInt(parts[1]),
-//                parts[2],
-//                new Date(Long.parseLong(parts[3])),
-//                parts[4]
-//        );
-//    }
+        // Parse the help_date field into a LocalDateTime object
+        LocalDateTime help_date = LocalDateTime.parse(fields[3].trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
+        String status = fields[4].trim();
+
+        return new Suport(playerId, suport_id, subject, help_date, status);
+    }
+
+    public String toCSV() {
+        // Format the LocalDateTime help_date as a string
+        String formattedDate = help_date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return playerId + "," + suport_id + "," + subject + "," + formattedDate + "," + status;
+    }
 }

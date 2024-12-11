@@ -311,14 +311,61 @@ public class PlayerConsole {
         if (useFiles) {
             String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files/";
 
-            betRepo = new FileRepository<>(filePath + "bets.txt", Bet.class);
-            eventRepo = new FileRepository<>(filePath + "events.txt", Event.class);
-            playerRepo = new FileRepository<>(filePath + "players.txt", Player.class);
-            transactionsRepo = new FileRepository<>(filePath + "transactions.txt", Transactions.class);
-            adminRepo = new FileRepository<>(filePath + "admins.txt", Admin.class);
-            oddsRepo = new FileRepository<>(filePath + "odds.txt", Odds.class);
-            suportRepo = new FileRepository<>(filePath + "suport.txt", Suport.class);
-            statisticsRepo = new FileRepository<>(filePath + "statistics.txt", Statistics.class);
+            betRepo = new FileRepository<>(
+                    filePath + "bets.txt",
+                    Bet::fromCSV,
+                    Bet::toCSV,
+                    Bet::getBet_id
+            );
+
+            eventRepo = new FileRepository<>(
+                    filePath + "events.txt",
+                    Event::fromCSV,
+                    Event::toCSV,
+                    Event::getEvent_id
+            );
+
+            playerRepo = new FileRepository<>(
+                    filePath + "players.txt",
+                    Player::fromCSV,
+                    Player::toCSV,
+                    Player::getUser_id
+            );
+
+            transactionsRepo = new FileRepository<>(
+                    filePath + "transactions.txt",
+                    Transactions::fromCSV,
+                    Transactions::toCSV,
+                    Transactions::getTransaction_id
+            );
+
+            adminRepo = new FileRepository<>(
+                    filePath + "admins.txt",
+                    Admin::fromCSV,
+                    Admin::toCSV,
+                    Admin::getUser_id
+            );
+
+            oddsRepo = new FileRepository<>(
+                    filePath + "odds.txt",
+                    Odds::fromCSV,
+                    Odds::toCSV,
+                    Odds::getOdd_id
+            );
+
+            suportRepo = new FileRepository<>(
+                    filePath + "suport.txt",
+                    Suport::fromCSV,
+                    Suport::toCSV,
+                    Suport::getSuport_id
+            );
+
+            statisticsRepo = new FileRepository<>(
+                    filePath + "statistics.txt",
+                    Statistics::fromCSV,
+                    Statistics::toCSV,
+                    Statistics::getEventId
+            );
         }
         else {
             //Repositories for inMemory

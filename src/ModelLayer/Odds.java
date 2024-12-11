@@ -56,20 +56,21 @@ public class Odds{
                 '}';
     }
 
-//    public abstract String toCSV();
-//
-//    public static Odds fromCSV(String csvLine) {
-//        String[] parts = csvLine.split(";", 2);
-//        String type = parts[0];
-//        switch (type) {
-//            case "Football":
-//                return FootballOdds.fromCSV(parts[1]);
-//            case "Tennis":
-//                return TennisOdds.fromCSV(parts[1]);
-//            case "Basket":
-//                return BasketOdds.fromCSV(parts[1]);
-//            default:
-//                throw new IllegalArgumentException("Unknown Odds type: " + type);
-//        }
-//    }
+    public String toCSV() {
+        return odd_id + "," + oddName + "," + eventType;
+    }
+
+    /**
+     * Creates an Odds object from a CSV string.
+     *
+     * @param csvLine the CSV string containing odds data
+     * @return the Odds object
+     */
+    public static Odds fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",");
+        int odd_id = Integer.parseInt(parts[0]);
+        String oddName = parts[1];
+        String eventType = parts[2];
+        return new Odds(odd_id, oddName, eventType);
+    }
 }
