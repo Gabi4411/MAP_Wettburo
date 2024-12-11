@@ -163,27 +163,27 @@ public class Transactions {
                 '}';
     }
 
-    public String toCSV() {
-        return String.join(";",
-                String.valueOf(transaction_id),
-                user.toCSV(),
-                String.valueOf(amount),
-                transcation_date.toString(),
-                transaction_type,
-                transaction_status
-        );
-    }
-
-    public static Transactions fromCSV(String csvLine) {
-        String[] parts = csvLine.split(";", 6);
-        Player user = (Player) User.fromCSV(parts[1]);
-        return new Transactions(
-                Integer.parseInt(parts[0]),
-                user,
-                Integer.parseInt(parts[2]),
-                LocalDateTime.parse(parts[3]),
-                parts[4],
-                parts[5]
-        );
-    }
+//    public String toCSV() {
+//        return String.join(";",
+//                String.valueOf(transaction_id),
+//                user.toCSV(),
+//                String.valueOf(amount),
+//                transcation_date.toString(),
+//                transaction_type,
+//                transaction_status
+//        );
+//    }
+//
+//    public static Transactions fromCSV(String csvLine) {
+//        String[] parts = csvLine.split(";", 6);
+//        Player user = (Player) User.fromCSV(parts[1]);
+//        return new Transactions(
+//                Integer.parseInt(parts[0]),
+//                user,
+//                Integer.parseInt(parts[2]),
+//                LocalDateTime.parse(parts[3]),
+//                parts[4],
+//                parts[5]
+//        );
+//    }
 }

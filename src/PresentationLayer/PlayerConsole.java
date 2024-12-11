@@ -1,9 +1,7 @@
 package PresentationLayer;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import ModelLayer.*;
 import RepoLayerInterface.*;
@@ -108,10 +106,9 @@ public class PlayerConsole {
                 case 2 -> playerController.viewBetHistory(getPlayerId(scanner));
                 case 3 -> playerController.viewPlayerBets(getPlayerId(scanner));
                 case 4 -> playerController.SportTypeFilter(getSportType(scanner));
-                case 5 -> playerController.view_Bet_Odd(getBetID(scanner));
-                case 6 -> playerController.transactionFilter(getTransactionType(scanner));
-                case 7 -> playerController.deposit(getUserName(scanner),getPassword(scanner),getAmount(scanner));
-                case 8 -> playerController.withdraw(getUserName(scanner), getPassword(scanner),getAmount(scanner));
+                case 5 -> playerController.transactionFilter(getTransactionType(scanner));
+                case 6 -> playerController.deposit(getUserName(scanner),getPassword(scanner),getAmount(scanner));
+                case 7 -> playerController.withdraw(getUserName(scanner), getPassword(scanner),getAmount(scanner));
                 ////withdraw(updateBalance)
                 //viewBalance
                 case 0-> {
@@ -214,18 +211,22 @@ public class PlayerConsole {
             repo<Event> eventRepo,
             repo<Bet> betRepo,
             repo<Player> playerRepo,
-            repo<Odds> oddRepo,
             repo<Transactions> transactionsRepo,
-            repo<Admin> adminRepo
+            repo<Admin> adminRepo,
+            repo<Odds> oddsRepo
     ) {
-        List<Double> odds = new ArrayList<>();
-
-//        odds.add(1.0);
-//        odds.add(2.0);
-//        odds.add(3.0);
-        Event event1 = new Event(1, "Steaua vs Dinamo",  oddRepo , LocalDateTime.now(), "Football");
-        Event event2 = new Event(2, "UCluj vs Galati", odds, LocalDateTime.now(), "Football");
-        Event event3 = new Event(3, "Simona vs Nadal", odds, LocalDateTime.now(), "Tennis");
+        Odds odd1 = new Odds(1, "Gol in minutul 10", "Football");
+        Odds odd2 = new Odds(2, "Gol in minutul 90", "Football");
+        Odds odd3 = new Odds(3, "Ace din prima", "Tennis");
+        Map<Odds, Double> map1 = new HashMap<Odds, Double>();
+        map1.put(odd1, 2.5);
+        Map<Odds, Double> map2 = new HashMap<Odds, Double>();
+        map1.put(odd2, 1.5);
+        Map<Odds, Double> map3 = new HashMap<Odds, Double>();
+        map1.put(odd3, 2.0);
+        Event event1 = new Event(1, "Steaua vs Dinamo", map1, "11.11.2024", "Football");
+        Event event2 = new Event(2, "UCluj vs Galati", map2, "12.03.2024", "Football");
+        Event event3 = new Event(3, "Simona vs Nadal", map3, "03.03.2024", "Tennis");
         eventRepo.create(event1);
         eventRepo.create(event2);
         eventRepo.create(event3);
@@ -234,9 +235,10 @@ public class PlayerConsole {
         events.add(event1);
         events.add(event2);
 
-        Bet bet1 = new Bet(1, events, 20, LocalDateTime.now(),"active");
-        Bet bet2 = new Bet(2, events, 30, LocalDateTime.now(),"ended");
-        Bet bet3 = new Bet(3, events, 40, LocalDateTime.now(),"ended");
+//        (int player_id,int bet_id, List<Event> event, int amount, LocalDateTime bet_date, String betstatus)
+        Bet bet1 = new Bet(1, 1, events, 30, LocalDateTime.now(), "Active");
+        Bet bet2 = new Bet(2, 2, events, 100, LocalDateTime.now(), "Ended");
+        Bet bet3 = new Bet(1, 3, events, 10, LocalDateTime.now(), "Active");
         betRepo.create(bet1);
         betRepo.create(bet2);
         betRepo.create(bet3);
@@ -250,24 +252,6 @@ public class PlayerConsole {
         Player player2 = new Player(2, "Lapa", "5678", "lapadtuandrei@yahoo.com", 4000, bets, bets, 0, "Active");
         playerRepo.create(player1);
         playerRepo.create(player2);
-
-
-
-        oddRepo.create(new Odds(10,"1","All"));
-        oddRepo.create(new Odds(11,"2","All"));
-
-
-        oddRepo.create(new Odds(1, "GG","Football"));
-        oddRepo.create(new Odds(2, "total goals over 2.5","Football"));
-        oddRepo.create(new Odds(3, "Hattrick by any Player in match","Football"));
-
-        oddRepo.create(new Odds(4, "both to win a set","Tennis"));
-        oddRepo.create(new Odds(5, "over 18.5 games","Tennis"));
-        oddRepo.create(new Odds(6, "6-0 set win by any player in match","Tennis"));
-
-        oddRepo.create(new Odds(7, "Over 177.5 points in match","Basket"));
-        oddRepo.create(new Odds(8, "Match goes in Overtime","Basket"));
-        oddRepo.create(new Odds(9, "Triple double by any player in match","Basket"));
 
         transactionsRepo.create(new Transactions(1, player1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
         transactionsRepo.create(new Transactions(2, player2, 100, LocalDateTime.now(), "Deposit", "Completed"));
@@ -287,12 +271,18 @@ public class PlayerConsole {
     public static void main(String[] args) {
         boolean useFiles = false;
 
+        if (useFiles) {
+            System.out.println("Using FileRepository\n");
+        } else {
+            System.out.println("Using inMemoryRepo\n");
+        }
+
         repo<Bet> betRepo;
         repo<Event> eventRepo;
         repo<Player> playerRepo;
-        repo<Odds> oddsRepo;
         repo<Transactions> transactionsRepo;
         repo<Admin> adminRepo;
+        repo<Odds> oddsRepo;
 
         if (useFiles) {
             String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files/";
@@ -300,35 +290,31 @@ public class PlayerConsole {
             betRepo = new FileRepository<>(filePath + "bets.txt", Bet.class);
             eventRepo = new FileRepository<>(filePath + "events.txt", Event.class);
             playerRepo = new FileRepository<>(filePath + "players.txt", Player.class);
-            oddsRepo = new FileRepository<>(filePath + "odds.txt", Odds.class);
             transactionsRepo = new FileRepository<>(filePath + "transactions.txt", Transactions.class);
             adminRepo = new FileRepository<>(filePath + "admins.txt", Admin.class);
+            oddsRepo = new FileRepository<>(filePath + "odds.txt", Odds.class);
         }
         else {
             //Repositories for inMemory
             betRepo = new inMemoryRepo<>();
             eventRepo = new inMemoryRepo<>();
             playerRepo = new inMemoryRepo<>();
-            oddsRepo = new inMemoryRepo<>();
             transactionsRepo = new inMemoryRepo<>();
             adminRepo = new inMemoryRepo<>();
+            oddsRepo = new inMemoryRepo<>();
         }
-
         //Create service objects
-        BetService betService = new BetService(betRepo, eventRepo,transactionsRepo, playerRepo,oddsRepo);
+        BetService betService = new BetService(betRepo, eventRepo,transactionsRepo, playerRepo, oddsRepo);
         UserService userService = new UserService(playerRepo, adminRepo, transactionsRepo);
 
-        // Create UserController and Console objects
+        //Create Admin Controller and Console Object
         PlayerController playerController1 = new PlayerController(betService, userService);
         PlayerConsole playerConsole = new PlayerConsole(playerController1);
 
         //Initialize repos
-        InitalizeRepo(eventRepo, betRepo, playerRepo, oddsRepo, transactionsRepo, adminRepo);
+        InitalizeRepo(eventRepo, betRepo, playerRepo, transactionsRepo, adminRepo, oddsRepo);
 
-        // Start the console menu
+
         playerConsole.welcomeMenu();
-
-
-
     }
 }

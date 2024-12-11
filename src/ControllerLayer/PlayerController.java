@@ -48,16 +48,6 @@ public class PlayerController {
         System.out.println(output);
     }
 
-    public void view_Bet_Odd(Integer betID){
-        if (!CustomExceptions.checkIfEmpty(betID) || !CustomExceptions.idCheck(betID)) {
-            System.exit(0);
-        }
-
-        StringBuilder output = new StringBuilder("Bets Odds: \n");
-        betService.calculateOdd(betID);
-        System.out.println(output);
-    }
-
     public void viewEvents() {
         StringBuilder output = new StringBuilder("Available Events: \n");
         betService.getAvailableEvents().forEach(event -> output.append(event.toString()).append("\n"));
@@ -155,12 +145,12 @@ public class PlayerController {
 
     }
 
-    public void placeBet(int playerID, List<Event> events, int amount) {
-        if (!CustomExceptions.checkIfEmpty(playerID) || !CustomExceptions.checkIfEmpty(events) || !CustomExceptions.checkIfEmpty(amount) || CustomExceptions.idCheck(playerID)) {
+    public void placeNewBet(int playerID) {
+        if (CustomExceptions.idCheck(playerID)) {
             System.exit(0);
         }
 
-        betService.createBet(playerID, events, amount);
+        betService.placeBet(playerID);
         System.out.println("Bet has been created. You can see it from now on in your Bet History! Thank you for your Bet!\n");
     }
 }
