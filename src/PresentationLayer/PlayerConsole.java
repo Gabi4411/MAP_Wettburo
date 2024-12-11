@@ -91,10 +91,10 @@ public class PlayerConsole {
             System.out.println("2. View Bet History");
             System.out.println("3. View Player active Bets");
             System.out.println("4. SportTypeFilter");
-            System.out.println("5. ViewBetOdd");
-            System.out.println("6. Filter Transactions");
-            System.out.println("7. Deposit");
-            System.out.println("8. Withdraw");
+            System.out.println("5. Filter Transactions");
+            System.out.println("6. Deposit");
+            System.out.println("7. Withdraw");
+            System.out.println("8. Place Bet");
             System.out.println("0. Exit");
             System.out.print("Select an option: ");
 
@@ -109,6 +109,7 @@ public class PlayerConsole {
                 case 5 -> playerController.transactionFilter(getTransactionType(scanner));
                 case 6 -> playerController.deposit(getUserName(scanner),getPassword(scanner),getAmount(scanner));
                 case 7 -> playerController.withdraw(getUserName(scanner), getPassword(scanner),getAmount(scanner));
+                case 8 -> playerController.placeNewBet(getPlayerId(scanner));
                 ////withdraw(updateBalance)
                 //viewBalance
                 case 0-> {
