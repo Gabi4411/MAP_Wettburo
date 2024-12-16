@@ -264,14 +264,14 @@ public class BetService {
 
             if (selectedOdd == null) {
                 System.out.println("Invalid Odd ID. Bet cancelled.");
-                return; // Ieșire din buclă
+                return;
             }
 
             // Obține valoarea cotei selectate
             Double selectedValue = eventt.getOddsList().get(selectedOdd);
             if (selectedValue == null) {
                 System.out.println("Value for the selected odd is missing. Bet cancelled.");
-                return; // Ieșire din buclă
+                return;
             }
 
             // Actualizează cota totală
