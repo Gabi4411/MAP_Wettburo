@@ -28,9 +28,8 @@ public class PlayerConsole {
 
     public void welcomeMenu() {
         Scanner scanner = new Scanner(System.in);
-        boolean running = true;
 
-        while(running) {
+        while(true) {
             System.out.println("---Welcome to Player Console---");
             System.out.println("What would you like to do?");
             System.out.println("1. Create Player Account");
@@ -45,11 +44,10 @@ public class PlayerConsole {
                     createAccount(scanner);
                     break;
                 case 2:
-                    adminLogin(scanner);
+                    playerLogin(scanner);
                     break;
                 case 3:
-                    System.out.println("Goodbye!");
-                    running = false;
+                    return;
                 default:
                     System.out.println("Invalid choice, try another one!");
             }
@@ -71,13 +69,17 @@ public class PlayerConsole {
         }
     }
 
-    private void adminLogin(Scanner scanner) {
+    private void playerLogin(Scanner scanner) {
         System.out.println("Enter your username: ");
         String username = scanner.nextLine();
         System.out.println("Enter your password: ");
         String password = scanner.nextLine();
-        playerController.playerLogin(username, password);
-        displayMenu(scanner);
+        if(playerController.playerLogin(username, password)){
+            displayMenu(scanner);
+        }
+        else{
+            welcomeMenu();
+        }
     }
 
     /**

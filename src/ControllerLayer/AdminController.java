@@ -19,25 +19,27 @@ public class AdminController {
         this.betService = betService;
     }
 
-    public void adminLogin(String username, String password) {
-        if (!CustomExceptions.checkIfEmpty(username) || !CustomExceptions.checkIfEmpty(password)) {
-            System.exit(0);
+    public boolean adminLogin(String username, String password) {
+        if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password)) {
+            System.out.println("Invalid username or password\n");
+            return false;
         }
-
-        if (userService.AdminLogin(username, password)) {
+        else if (userService.AdminLogin(username, password)) {
             System.out.println("Admin logged in, enjoy!\n");
+            return true;
         }
         else {
             System.out.println("Couldn't find Admin, please create account first!\n");
+            return false;
         }
     }
 
     public boolean createAdminAccount(String username, String password, String email) {
         if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password) || CustomExceptions.checkIfEmpty(email)) {
-            System.exit(0);
+            System.out.println("Invalid username or password\n");
+            return false;
         }
-
-        if(userService.addAdmin(username, password, email)) {
+        else if(userService.addAdmin(username, password, email)) {
             System.out.println("Admin account created!\n");
             return true;
         }
@@ -49,11 +51,12 @@ public class AdminController {
 
     public void createEvent(String eventName, String eventType, String eventDate,  String oddName, Double value) {
         if (CustomExceptions.checkIfEmpty(eventName) || CustomExceptions.checkIfEmpty(eventType)) {
-            System.exit(0);
+            System.out.println("Invalid event! Please try again\n");
         }
-
-        betService.addEvent(eventName, eventType, eventDate, oddName, value);
-        System.out.println("New Bet Event for " + eventType + ": " + eventName + " will be available for betting soon!\n");
+        else {
+            betService.addEvent(eventName, eventType, eventDate, oddName, value);
+            System.out.println("New Bet Event for " + eventType + ": " + eventName + " will be available for betting soon!\n");
+        }
     }
 
     public void viewPlayers() {
@@ -66,11 +69,6 @@ public class AdminController {
         StringBuilder output = new StringBuilder("Available Events: \n");
         betService.getAvailableEvents().forEach(event -> output.append(event.toString()).append("\n"));
         System.out.println(output);
-    }
-
-    public void viewOdds() {
-        StringBuilder output = new StringBuilder("Available Odds: \n");
-        betService.getAvailableOdds().forEach(event -> output.append(event.toString()).append("\n"));
     }
 
     public void viewBets() {
@@ -87,11 +85,12 @@ public class AdminController {
 
     public void updateAdmin(Integer adminId, int accesLevel) {
         if (CustomExceptions.checkIfEmpty(adminId) || CustomExceptions.idCheck(adminId)) {
-            System.exit(0);
+            System.out.println("Invalid admin! Please try again!\n");
         }
-
-        userService.updateAccesLevelAdmin(adminId, accesLevel);
-        System.out.println("Admin " + adminId + " updated to access level: " + accesLevel + "\n");
+        else {
+            userService.updateAccesLevelAdmin(adminId, accesLevel);
+            System.out.println("Admin " + adminId + " updated to access level: " + accesLevel + "\n");
+        }
     }
 
     public void sortEventsByDateController(boolean ascending) {
@@ -122,10 +121,9 @@ public class AdminController {
 
     public void addStatistic(int eventId, String eventDescription, String eventPrediction) {
         if(CustomExceptions.checkIfEmpty(eventId) || CustomExceptions.checkIfEmpty(eventDescription) || CustomExceptions.checkIfEmpty(eventPrediction)) {
-            System.exit(0);
+            System.out.println("Invalid event! Please try again!\n");
         }
-
-        if (userService.createStatistic(eventId, eventDescription, eventPrediction)) {
+        else if (userService.createStatistic(eventId, eventDescription, eventPrediction)) {
             System.out.println("Statistic added!\n");
         }
         else {
