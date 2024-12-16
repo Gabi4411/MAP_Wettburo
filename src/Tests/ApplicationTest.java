@@ -188,6 +188,7 @@ public class ApplicationTest {
         eventsBasket.add(event1);
         eventsBasket.add(event2);
         assertEquals(eventsBasket, betService.filterbySportsType(events, "Football"));
+        assertNotEquals(eventsBasket, betService.filterbySportsType(events, "Tennis"));
     }
 
     @Test
@@ -211,7 +212,13 @@ public class ApplicationTest {
         Player player1 = new Player(3, "Meli", "1234666", "melisa@yahoo.com", 100.0, bets, bets, 0, "Active");
         Player player2 = new Player(4, "Maria", "567887", "maria@yahoo.com", 4000, bets, bets, 0, "Active");
         Transactions transaction1 =  new Transactions(3, player1, 150, LocalDateTime.now(), "Withdraw", "Completed");
-        Transactions transaction2 =  new Transactions(4, player2, 50, LocalDateTime.now(), "Deposit", "Completed");
+        Transactions transaction2 =  new Transactions(4, player2, 50, LocalDateTime.now(), "Withdraw", "Completed");
+        List<Transactions> transactions = new ArrayList<>();
+        transactions.add(transaction1);
+        transactions.add(transaction2);
+
+        assertEquals(transactions, betService.filterbyTransactionType(transactions, "Withdraw"));
+        assertNotEquals(transactions, betService.filterbyTransactionType(transactions, "Deposit"));
     }
 
     @Test
@@ -229,6 +236,7 @@ public class ApplicationTest {
         events.add(event2);
 
         assertEquals(events, betService.sortEventsByDate(events, false));
+        assertNotEquals(events, betService.sortEventsByDate(events, true));
     }
 
     @Test
@@ -262,6 +270,7 @@ public class ApplicationTest {
         players.add(player2);
 
         assertEquals(players, betService.sortPlayersByName(players, false));
+        assertNotEquals(players, betService.sortPlayersByName(players, true));
     }
 }
 
