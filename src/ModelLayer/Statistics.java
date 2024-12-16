@@ -6,23 +6,34 @@ import java.util.ArrayList;
  * Represents statistics for an event, including team statistics, head-to-head data, and recent form.
  */
 public class Statistics {
-    private int eventId;
+    private int stat_id;
+    private int event_id;
     private String eventDescription;
     private String eventPrediction;
 
 
-    public Statistics(int eventId, String eventDescription, String eventPrediction) {
-        this.eventId = eventId;
+    public Statistics(int stat_id,int event_id, String eventDescription, String eventPrediction) {
+        this.stat_id = stat_id;
+        this.event_id = event_id;
         this.eventDescription = eventDescription;
         this.eventPrediction = eventPrediction;
     }
 
-    public int getEventId() {
-        return eventId;
+
+    public int getStat_id() {
+        return stat_id;
     }
 
-    public void setEventId(int eventId) {
-        this.eventId = eventId;
+    public void setStat_id(int stat_id) {
+        this.stat_id = stat_id;
+    }
+
+    public int getEvent_id() {
+        return event_id;
+    }
+
+    public void setEvent_id(int event_id) {
+        this.event_id = event_id;
     }
 
     public String getEventDescription() {
@@ -41,10 +52,12 @@ public class Statistics {
         this.eventPrediction = eventPrediction;
     }
 
+
     @Override
     public String toString() {
         return "Statistics{" +
-                "eventId=" + eventId +
+                "stat_id=" + stat_id +
+                ", event_id=" + event_id +
                 ", eventDescription='" + eventDescription + '\'' +
                 ", eventPrediction='" + eventPrediction + '\'' +
                 '}';
