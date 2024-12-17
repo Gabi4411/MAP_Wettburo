@@ -23,12 +23,10 @@ public class AdminController {
         if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password)) {
             System.out.println("Invalid username or password\n");
             return false;
-        }
-        else if (userService.AdminLogin(username, password)) {
+        } else if (userService.AdminLogin(username, password)) {
             System.out.println("Admin logged in, enjoy!\n");
             return true;
-        }
-        else {
+        } else {
             System.out.println("Couldn't find Admin, please create account first!\n");
             return false;
         }
@@ -38,22 +36,19 @@ public class AdminController {
         if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password) || CustomExceptions.checkIfEmpty(email)) {
             System.out.println("Invalid username or password\n");
             return false;
-        }
-        else if(userService.addAdmin(username, password, email)) {
+        } else if (userService.addAdmin(username, password, email)) {
             System.out.println("Admin account created!\n");
             return true;
-        }
-        else {
+        } else {
             System.out.println("Couldn't create new account, because one already exist with this username or email. Please try again!\n");
             return false;
         }
     }
 
-    public void createEvent(String eventName, String eventType, String eventDate,  String oddName, Double value) {
+    public void createEvent(String eventName, String eventType, String eventDate, String oddName, Double value) {
         if (CustomExceptions.checkIfEmpty(eventName) || CustomExceptions.checkIfEmpty(eventType)) {
             System.out.println("Invalid event! Please try again\n");
-        }
-        else {
+        } else {
             betService.addEvent(eventName, eventType, eventDate, oddName, value);
             System.out.println("New Bet Event for " + eventType + ": " + eventName + " will be available for betting soon!\n");
         }
@@ -86,8 +81,7 @@ public class AdminController {
     public void updateAdmin(Integer adminId, int accesLevel) {
         if (CustomExceptions.checkIfEmpty(adminId) || CustomExceptions.idCheck(adminId)) {
             System.out.println("Invalid admin! Please try again!\n");
-        }
-        else {
+        } else {
             userService.updateAccesLevelAdmin(adminId, accesLevel);
             System.out.println("Admin " + adminId + " updated to access level: " + accesLevel + "\n");
         }
@@ -111,7 +105,7 @@ public class AdminController {
         List<Integer> allProblems = new ArrayList<>();
 
         for (Integer playerId : playersIds) {
-            if(userService.getSupportStatus(playerId)) {
+            if (userService.getSupportStatus(playerId)) {
                 allProblems.add(playerId);
             }
         }
@@ -120,16 +114,15 @@ public class AdminController {
     }
 
     public void addStatistic(int statId, int eventId, String eventDescription, String eventPrediction) {
-        if(CustomExceptions.checkIfEmpty(eventId) || CustomExceptions.checkIfEmpty(eventDescription) || CustomExceptions.checkIfEmpty(eventPrediction)) {
+        if (CustomExceptions.checkIfEmpty(eventId) || CustomExceptions.checkIfEmpty(eventDescription) || CustomExceptions.checkIfEmpty(eventPrediction)) {
             System.out.println("Invalid event! Please try again!\n");
-        }
-        else if (userService.createStatistic(eventId, eventDescription, eventPrediction)) {
+        } else if (userService.createStatistic(statId, eventId, eventDescription, eventPrediction)) {
 
-        if (userService.createStatistic(statId,eventId, eventDescription, eventPrediction)) {
-            System.out.println("Statistic added!\n");
-        }
-        else {
-            System.out.println("Statistic already exists for this event!\n");
+            if (userService.createStatistic(statId, eventId, eventDescription, eventPrediction)) {
+                System.out.println("Statistic added!\n");
+            } else {
+                System.out.println("Statistic already exists for this event!\n");
+            }
         }
     }
 }
