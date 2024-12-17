@@ -20,10 +20,9 @@ public class AdminConsole {
 
     public void welcomeMenu() {
         Scanner scanner = new Scanner(System.in);
-        boolean running = true;
 
-        while(running) {
-            System.out.println("===Welcome to Admin Console===");
+        while(true) {
+            System.out.println("---Welcome to Admin Console---");
             System.out.println("What would you like to do?");
             System.out.println("1. Create Admin");
             System.out.println("2. Login Admin");
@@ -40,8 +39,7 @@ public class AdminConsole {
                     adminLogin(scanner);
                     break;
                 case 3:
-                    System.out.println("Goodbye!");
-                    running = false;
+                    return;
                 default:
                     System.out.println("Invalid choice, try another one!");
             }
@@ -68,8 +66,12 @@ public class AdminConsole {
         String username = scanner.nextLine();
         System.out.println("Enter your password: ");
         String password = scanner.nextLine();
-        adminController.adminLogin(username, password);
-        showMenu(scanner);
+        if(adminController.adminLogin(username, password)) {
+            showMenu(scanner);
+        }
+        else {
+            welcomeMenu();
+        }
     }
 
     private void showMenu(Scanner scanner) {

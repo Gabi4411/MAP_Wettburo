@@ -83,22 +83,25 @@ public class PlayerController {
         }
     }
 
-    public void playerLogin(String username, String password) {
+    public boolean playerLogin(String username, String password) {
         if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password)) {
-            System.exit(0);
+            System.out.println("Wrong data input! Please try again!\n");
+            return false;
         }
-
-        if(userService.Login(username, password)) {
+        else if(userService.Login(username, password)) {
             System.out.println("Logged in, have fun!\n");
+            return true;
         }
         else {
             System.out.println("Wrong password, try again, or create account if you don't have one!\n");
+            return false;
         }
     }
 
     public boolean createPlayerAccount(String username, String password, String email) {
         if(CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password)) {
-            System.exit(0);
+            System.out.println("Wrong input! Try again!\n");
+            return false;
         }
 
         if(userService.addPlayer(username, password, email)) {
@@ -118,7 +121,7 @@ public class PlayerController {
 
     public void viewBetHistory(int playerID){
         if (CustomExceptions.checkIfEmpty(playerID) || CustomExceptions.idCheck(playerID)) {
-            System.exit(0);
+            System.out.println("Wrong player id! Please try again!\n");
         }
 
         String bethistory = betService.getPlayerBetHistory(playerID);
@@ -149,7 +152,7 @@ public class PlayerController {
 
     public void placeNewBet(int playerID) {
         if (CustomExceptions.idCheck(playerID)) {
-            System.exit(0);
+            System.out.println("Wrong player id! Please try again!\n");
         }
 
         betService.placeBet(playerID);
