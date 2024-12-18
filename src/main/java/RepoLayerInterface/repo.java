@@ -40,13 +40,13 @@ public interface repo<T> {
      */
     void delete(Integer id);
 
-    /**
-     * Finds and retrieves an object by its ID.
-     *
-     * @param id the ID of the object to find
-     * @return the object corresponding to the provided ID, or null if not found
-     */
-    T find_by_ID(Integer id);
+//    /**
+//     * Finds and retrieves an object by its ID.
+//     *
+//     * @param id the ID of the object to find
+//     * @return the object corresponding to the provided ID, or null if not found
+//     */
+//    T find_by_ID(Integer id);
 
     /**
      * Retrieves all objects in the repository.

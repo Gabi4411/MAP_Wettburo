@@ -73,20 +73,20 @@ public class inMemoryRepo<T> implements repo<T> {
 
     }
 
-    /**
-     * Finds and retrieves an object by its ID.
-     *
-     * @param id the ID of the object to find
-     * @return the object associated with the given ID, or null if not found
-     */
-    public T find_by_ID(Integer id) {
-        if(data.containsKey(current_id)) {
-            return data.get(id);
-        }else{
-            System.out.println(current_id+"was not found");
-            return null;
-        }
-    }
+//    /**
+//     * Finds and retrieves an object by its ID.
+//     *
+//     * @param id the ID of the object to find
+//     * @return the object associated with the given ID, or null if not found
+//     */
+//    public T find_by_ID(Integer id) {
+//        if(data.containsKey(current_id)) {
+//            return data.get(id);
+//        }else{
+//            System.out.println(current_id+"was not found");
+//            return null;
+//        }
+//    }
 
     /**
      * Retrieves all objects stored in the repository.
