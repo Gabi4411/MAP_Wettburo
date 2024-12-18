@@ -128,8 +128,8 @@ public class CombinedConsoles {
         playerRepo.create(player1);
         playerRepo.create(player2);
 
-        transactionsRepo.create(new Transactions(1, player1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
-        transactionsRepo.create(new Transactions(2, player2, 100, LocalDateTime.now(), "Deposit", "Completed"));
+//        transactionsRepo.create(new Transactions(1, player1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
+//        transactionsRepo.create(new Transactions(2, player2, 100, LocalDateTime.now(), "Deposit", "Completed"));
 
         adminRepo.create(new Admin(1, "Sefu1", "123456789", "sefu@tau.com", 5000, 3, "Support"));
         adminRepo.create(new Admin(2, "Sefu2", "987654321", "sefusefilor@tau.com", 10000, 2, "Support"));
@@ -148,8 +148,8 @@ public class CombinedConsoles {
         suportrepo.create(suport1);
         suportrepo.create(suport2);
 
-        Statistics statistics1 = new Statistics(1, "The best Football Match in History", "Steaua has a 70% change of winning!");
-        Statistics statistics2 = new Statistics(2, "The match will be fully booked", "UCluj will win!");
+        Statistics statistics1 = new Statistics(1,1, "The best Football Match in History", "Steaua has a 70% change of winning!");
+        Statistics statistics2 = new Statistics(2,1, "The match will be fully booked", "UCluj will win!");
 
         statisticsrepo.create(statistics1);
         statisticsrepo.create(statistics2);
@@ -224,7 +224,7 @@ public class CombinedConsoles {
                     filePath + "statistics.txt",
                     Statistics::fromCSV,
                     Statistics::toCSV,
-                    Statistics::getEventId
+                    Statistics::getStat_id
             );
         }
         else if (repoChoice == 2) {

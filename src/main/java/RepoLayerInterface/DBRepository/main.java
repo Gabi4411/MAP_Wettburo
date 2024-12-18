@@ -46,11 +46,11 @@ public class main {
         Authentification auth2 = new Authentification(2, 2, 0, new Date(System.currentTimeMillis()));
 
         // Instanțiere repository-uri
-        AdminDBRepository adminDBRepository = new AdminDBRepository("jdbc:mysql://127.0.0.1:3306/MAP_DB", "root", "MAPfinal");
-        PlayerDBRepository playerDBRepository = new PlayerDBRepository("jdbc:mysql://127.0.0.1:3306/MAP_DB", "root", "MAPfinal");
-        BetDBRepository betDBRepository = new BetDBRepository("jdbc:mysql://127.0.0.1:3306/MAP_DB", "root", "MAPfinal");
-        TransactionsDBRepository transactionsDBRepository = new TransactionsDBRepository("jdbc:mysql://127.0.0.1:3306/MAP_DB", "root", "MAPfinal");
-        AuthentificationDBRepository authentificationDBRepository = new AuthentificationDBRepository("jdbc:mysql://127.0.0.1:3306/MAP_DB", "root", "MAPfinal");
+        AdminDBRepository adminDBRepository = new AdminDBRepository("jdbc:mysql://127.0.0.1:3306/wettburo", "root", "MAPfinal");
+        PlayerDBRepository playerDBRepository = new PlayerDBRepository("jdbc:mysql://127.0.0.1:3306/wettburo", "root", "MAPfinal");
+        BetDBRepository betDBRepository = new BetDBRepository("jdbc:mysql://127.0.0.1:3306/wettburo", "root", "MAPfinal");
+        TransactionsDBRepository transactionsDBRepository = new TransactionsDBRepository("jdbc:mysql://127.0.0.1:3306/wettburo", "root", "MAPfinal");
+        AuthentificationDBRepository authentificationDBRepository = new AuthentificationDBRepository("jdbc:mysql://127.0.0.1:3306/wettburo", "root", "MAPfinal");
 
         // Creare înregistrări în baza de date
         adminDBRepository.create(adminUser);

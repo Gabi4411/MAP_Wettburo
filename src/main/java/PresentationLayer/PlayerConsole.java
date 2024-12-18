@@ -109,8 +109,8 @@ public class PlayerConsole {
                 case 3 -> playerController.viewPlayerBets(getPlayerId(scanner));
                 case 4 -> playerController.SportTypeFilter(getSportType(scanner));
                 case 5 -> playerController.transactionFilter(getTransactionType(scanner));
-                case 6 -> playerController.deposit(getUserName(scanner),getPassword(scanner),getAmount(scanner));
-                case 7 -> playerController.withdraw(getUserName(scanner), getPassword(scanner),getAmount(scanner));
+//                case 6 -> playerController.deposit(getUserName(scanner),getPassword(scanner),getAmount(scanner));
+//                case 7 -> playerController.withdraw(getUserName(scanner), getPassword(scanner),getAmount(scanner));
                 case 8 -> playerController.placeNewBet(getPlayerId(scanner));
                 ////withdraw(updateBalance)
                 //viewBalance
@@ -257,8 +257,8 @@ public class PlayerConsole {
         playerRepo.create(player1);
         playerRepo.create(player2);
 
-        transactionsRepo.create(new Transactions(1, player1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
-        transactionsRepo.create(new Transactions(2, player2, 100, LocalDateTime.now(), "Deposit", "Completed"));
+//        transactionsRepo.create(new Transactions(1, player1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
+//        transactionsRepo.create(new Transactions(2, player2, 100, LocalDateTime.now(), "Deposit", "Completed"));
 
         adminRepo.create(new Admin(1, "Sefu1", "123456789", "sefu@tau.com", 5000, 3, "Support"));
         adminRepo.create(new Admin(2, "Sefu2", "987654321", "sefusefilor@tau.com", 10000, 2, "Support"));
