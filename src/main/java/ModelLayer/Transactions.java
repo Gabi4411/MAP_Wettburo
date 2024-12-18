@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Transactions {
     private int transaction_id;
-    private Player user;
+    private int player_id;
     private int amount;
     private LocalDateTime transcation_date;
     private String transaction_type;
@@ -25,16 +25,16 @@ public class Transactions {
      * Constructs a Transactions object with specified details.
      *
      * @param transaction_id   the unique ID of the transaction
-     * @param user             the player associated with the transaction
+     * @param player_id          the player associated with the transaction
      * @param amount           the transaction amount
      * @param transcation_date the date and time of the transaction
      * @param transaction_type the type of the transaction (e.g., deposit, withdrawal)
      * @param transaction_status the status of the transaction (e.g., pending, completed)
      */
 
-    public Transactions(int transaction_id, Player user, int amount, LocalDateTime transcation_date, String transaction_type, String transaction_status) {
+    public Transactions(int transaction_id, int player_id, int amount, LocalDateTime transcation_date, String transaction_type, String transaction_status) {
         this.transaction_id = transaction_id;
-        this.user = user;
+        this.player_id = player_id;
         this.amount = amount;
         this.transcation_date = transcation_date;
         this.transaction_type = transaction_type;
@@ -64,18 +64,18 @@ public class Transactions {
      *
      * @return the player who made the transaction
      */
-    public Player getUser() {
-        return user;
+    public int getPlayerID() {
+        return player_id;
     }
 
     /**
      * Sets the player associated with the transaction.
      *
-     * @param user the player to be set
+     * @param player_id the player to be set
      */
 
-    public void setUser(Player user) {
-        this.user = user;
+    public void setPlayerID(int player_id) {
+        this.player_id = player_id;
     }
 
     /**
@@ -161,7 +161,7 @@ public class Transactions {
     public String toString() {
         return "Transactions{" +
                 "transaction_id=" + transaction_id +
-                ", user=" + user +
+                ", player_id=" + player_id +
                 ", amount=" + amount +
                 ", transcation_date=" + transcation_date +
                 ", transaction_type='" + transaction_type + '\'' +
@@ -171,13 +171,7 @@ public class Transactions {
 
     public String toCSV() {
         return transaction_id + "," +
-                user.getUser_id() + "," +
-                user.getUser_name() + "," +
-                user.getPassword() + "," +
-                user.getEmail() + "," +
-                user.getBalance() + "," +
-                user.getBonus_balance() + "," +
-                user.getAccount_status() + "," +
+                player_id + "," +
                 amount + "," +
                 transcation_date.format(DATE_FORMATTER) + "," +
                 transaction_type + "," +
@@ -193,28 +187,14 @@ public class Transactions {
     public static Transactions fromCSV(String csv) {
         String[] parts = csv.split(",");
 
-        // Parse Player details
-        int user_id = Integer.parseInt(parts[1]);
-        String user_name = parts[2];
-        String password = parts[3];
-        String email = parts[4];
-        double balance = Double.parseDouble(parts[5]);
-        int bonus_balance = Integer.parseInt(parts[6]);
-        String account_status = parts[7];
-
-        // Create an empty list of bets (since these are not stored in the CSV)
-        List<Bet> activeBets = new ArrayList<>();
-        List<Bet> allBets = new ArrayList<>();
-
-        Player user = new Player(user_id, user_name, password, email, balance, activeBets, allBets, bonus_balance, account_status);
-
         // Parse Transactions details
         int transaction_id = Integer.parseInt(parts[0]);
-        int amount = Integer.parseInt(parts[8]);
-        LocalDateTime transcation_date = LocalDateTime.parse(parts[9], DATE_FORMATTER);
-        String transaction_type = parts[10];
-        String transaction_status = parts[11];
+        int player_id = Integer.parseInt(parts[1]);
+        int amount = Integer.parseInt(parts[2]);
+        LocalDateTime transcation_date = LocalDateTime.parse(parts[3], DATE_FORMATTER);
+        String transaction_type = parts[4];
+        String transaction_status = parts[5];
 
-        return new Transactions(transaction_id, user, amount, transcation_date, transaction_type, transaction_status);
+        return new Transactions(transaction_id, player_id, amount, transcation_date, transaction_type, transaction_status);
     }
 }

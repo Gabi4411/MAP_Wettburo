@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class Authentification {
     private int auth_id;
-    private User user;
+    private int user_id;
     private int login_attempts;
     private Date last_login;
 
@@ -15,21 +15,21 @@ public class Authentification {
      * Constructs an Authentification object with the specified details.
      *
      * @param auth_id        the unique ID of the authentication session
-     * @param user           the user associated with this authentication
+     * @param user_id           the user associated with this authentication
      * @param login_attempts the number of login attempts for this session
      * @param last_login     the date and time of the last successful login
      */
 
-    public Authentification(int auth_id, User user, int login_attempts, Date last_login) {
+    public Authentification(int auth_id, int user_id, int login_attempts, Date last_login) {
         this.auth_id = auth_id;
-        this.user = user;
+        this.user_id = user_id;
         this.login_attempts = login_attempts;
         this.last_login = last_login;
     }
 
     public Authentification() {
         this.auth_id = 0;
-        this.user = null;
+        this.user_id = 0;
         this.login_attempts = 0;
         this.last_login = new Date(0); // Default to epoch time
     }
@@ -57,17 +57,17 @@ public class Authentification {
      *
      * @return the user associated with this authentication session
      */
-    public User getUser() {
-        return user;
+    public int getUser_id() {
+        return user_id;
     }
 
     /**
      * Sets the user for this authentication session.
      *
-     * @param user the user to be set
+     * @param user_id the user to be set
      */
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(int user_id) {
+        this.user_id = user_id;
     }
 
     /**
@@ -117,7 +117,7 @@ public class Authentification {
     public String toString() {
         return "Authentification{" +
                 "auth_id=" + auth_id +
-                ", user=" + user +
+                ", user=" + user_id +
                 ", login_attempts=" + login_attempts +
                 ", last_login=" + last_login +
                 '}';
@@ -129,7 +129,7 @@ public class Authentification {
      * @return a CSV representation of the Authentification object
      */
     public String toCSV() {
-        return auth_id + "," + user.getUser_id() + "," + login_attempts + "," + last_login.getTime();
+        return auth_id + "," + user_id + "," + login_attempts + "," + last_login.getTime();
     }
 
     /**
@@ -148,7 +148,7 @@ public class Authentification {
         // Assuming we have a UserRepo or another way to fetch the User object by user_id
         User user = fetchUserById(user_id);  // This method needs to be defined elsewhere
 
-        return new Authentification(auth_id, user, login_attempts, last_login);
+        return new Authentification(auth_id, user_id, login_attempts, last_login);
     }
 
     /**
