@@ -57,31 +57,31 @@ public class PlayerController {
     }
 
 
-    public void withdraw(String username, String password, Integer amount) {
-        if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password) || CustomExceptions.checkIfEmpty(amount)) {
-            System.exit(0);
-        }
-
-        if(userService.withdraw(username, password, amount)) {
-            System.out.println("Withdraw Successful\n");
-        }
-        else {
-            System.out.println("Withdraw Failed\n");
-        }
-    }
-
-    public void deposit(String username, String password, Integer amount) {
-        if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password) || CustomExceptions.checkIfEmpty(amount)) {
-            System.exit(0);
-        }
-
-        if(userService.deposit(username, password, amount)) {
-            System.out.println("Deposit Successful\n");
-        }
-        else {
-            System.out.println("Deposit Failed\n");
-        }
-    }
+//    public void withdraw(String username, String password, Integer amount) {
+//        if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password) || CustomExceptions.checkIfEmpty(amount)) {
+//            System.exit(0);
+//        }
+//
+//        if(userService.withdraw(username, password, amount)) {
+//            System.out.println("Withdraw Successful\n");
+//        }
+//        else {
+//            System.out.println("Withdraw Failed\n");
+//        }
+//    }
+//
+//    public void deposit(String username, String password, Integer amount) {
+//        if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password) || CustomExceptions.checkIfEmpty(amount)) {
+//            System.exit(0);
+//        }
+//
+//        if(userService.deposit(username, password, amount)) {
+//            System.out.println("Deposit Successful\n");
+//        }
+//        else {
+//            System.out.println("Deposit Failed\n");
+//        }
+//    }
 
     public boolean playerLogin(String username, String password) {
         if (CustomExceptions.checkIfEmpty(username) || CustomExceptions.checkIfEmpty(password)) {

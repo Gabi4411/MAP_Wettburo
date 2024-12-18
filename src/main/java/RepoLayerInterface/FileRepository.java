@@ -51,11 +51,11 @@ public class FileRepository<T> implements repo<T> {
         doInFile(data -> data.remove(id));
     }
 
-    @Override
-    public T find_by_ID(Integer id) {
-        // Delegate to the `get` method
-        return get(id);
-    }
+//    @Override
+//    public T find_by_ID(Integer id) {
+//        // Delegate to the `get` method
+//        return get(id);
+//    }
 
     @Override
     public List<T> getAll() {
