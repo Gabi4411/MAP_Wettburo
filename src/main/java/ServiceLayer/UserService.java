@@ -198,81 +198,78 @@ public class UserService {
         return transactionsRepo.getAll();
     }
 
-//    /**
-//     * Deposits the specified amount into a player's account, creating a transaction record.
-//     *
-//     * @param username the username of the player
-//     * @param password the password of the player
-//     * @param amount   the amount to deposit
-//     * @return true if the deposit was successful, false if the player is not found
-//     */
-//    public boolean deposit(String username, String password, int amount) {
-//        Player user = null;
-//        for (Transactions transaction : transactionsRepo.getAll()) {
-//            if (transaction.getUser().getUser_name().equals(username) && transaction.getUser().getPassword().equals(password)) {
-//                user = transaction.getUser();
-//                break;
-//            }
-//        }
-//        if (user == null) {
-//            return false;
-//        }
-//        int lastTransactions;
-//        if (transactionsRepo.getAll().isEmpty()) {
-//            lastTransactions = 0;
-//        } else {
-//            lastTransactions = transactionsRepo.getAll().getLast().getTransaction_id();
-//        }
-//        Transactions transactions = new Transactions(lastTransactions + 1, user, amount, LocalDateTime.now(), "Deposit", "Done");
-//        transactionsRepo.create(transactions);
-//        user.setBalance(user.getBalance() + amount);
-//
-//        return true;
-//    }
+    /**
+     * Deposits the specified amount into a player's account, creating a transaction record.
+     *
+     * @param username the username of the player
+     * @param password the password of the player
+     * @param amount   the amount to deposit
+     * @return true if the deposit was successful, false if the player is not found
+     */
+    public boolean deposit(String username, String password, int amount) {
+        Player user = null;
+        for (Transactions transaction : transactionsRepo.getAll()) {
+            if(playerRepo.get(transaction.getPlayerID()).getUser_name().equals(username) && playerRepo.get(transaction.getPlayerID()).getPassword().equals(password)) {
+                user = playerRepo.get(transaction.getPlayerID());
+                break;
+            }
+        }
+        if (user == null) {
+            return false;
+        }
+        int lastTransactions;
+        if (transactionsRepo.getAll().isEmpty()) {
+            lastTransactions = 0;
+        } else {
+            lastTransactions = transactionsRepo.getAll().getLast().getTransaction_id();
+        }
+        Transactions transactions = new Transactions(lastTransactions + 1, user.getUser_id(), amount, LocalDateTime.now(), "Deposit", "Done");
+        transactionsRepo.create(transactions);
+        user.setBalance(user.getBalance() + amount);
 
-//    /**
-//     * Withdraws the specified amount from a player's account, creating a transaction record.
-//     *
-//     * @param username the username of the player
-//     * @param password the password of the player
-//     * @param amount   the amount to withdraw
-//     * @return true if the withdrawal was successful, false if the player is not found or if he doesn't have enough money
-//     */
-//    public boolean withdraw(String username, String password, int  amount) {
-//        Player user = null;
-//        for (Transactions transaction : transactionsRepo.getAll()) {
-//            if (transaction.getPlayerID().equals(username) && transaction.getUser().getPassword().equals(password)) {
-//                user = transaction.getUser();
-//                break;
-//            }
-//        }
-//        if (user == null) {
-//            return false;
-//        }
-//
-//        if (amount > user.getBalance()) {
-//            return false;
-//        }
-//
-//        user.setBalance(user.getBalance() - amount);
-//        int lastTransactions;
-//        if (transactionsRepo.getAll().isEmpty()) {
-//            lastTransactions = 0;
-//        } else {
-//            lastTransactions = transactionsRepo.getAll().getLast().getTransaction_id();
-//        }
-//        Transactions transactions = new Transactions(lastTransactions + 1, user, amount, LocalDateTime.now(), "Withdraw", "Done");
-//        transactionsRepo.create(transactions);
-//
-//        return true;
-//    }
+        return true;
+    }
+
+    /**
+     * Withdraws the specified amount from a player's account, creating a transaction record.
+     *
+     * @param username the username of the player
+     * @param password the password of the player
+     * @param amount   the amount to withdraw
+     * @return true if the withdrawal was successful, false if the player is not found or if he doesn't have enough money
+     */
+    public boolean withdraw(String username, String password, int  amount) {
+        Player user = null;
+        for (Transactions transaction : transactionsRepo.getAll()) {
+            if(playerRepo.get(transaction.getPlayerID()).getUser_name().equals(username) && playerRepo.get(transaction.getPlayerID()).getPassword().equals(password)) {
+                user = playerRepo.get(transaction.getPlayerID());
+                break;
+            }
+        }
+        if (user == null) {
+            return false;
+        }
+
+        if (amount > user.getBalance()) {
+            return false;
+        }
+
+        user.setBalance(user.getBalance() - amount);
+        int lastTransactions;
+        if (transactionsRepo.getAll().isEmpty()) {
+            lastTransactions = 0;
+        } else {
+            lastTransactions = transactionsRepo.getAll().getLast().getTransaction_id();
+        }
+        Transactions transactions = new Transactions(lastTransactions + 1, user.getUser_id(), amount, LocalDateTime.now(), "Withdraw", "Done");
+        transactionsRepo.create(transactions);
+
+        return true;
+    }
 
     public boolean getSupportStatus(int playerId) {
         Suport suport = suportRepo.get(playerId);
-        if (suport.getStatus().equals("Active")) {
-            return true;
-        }
-        return false;
+        return suport.getStatus().equals("Active");
     }
 
     public boolean createStatistic(int statId, int eventId, String eventDescription, String eventPrediction) {
