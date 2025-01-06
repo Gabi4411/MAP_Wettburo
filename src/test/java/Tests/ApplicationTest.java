@@ -98,8 +98,8 @@ public class ApplicationTest {
         playerRepo.create(player1);
         playerRepo.create(player2);
 
-        transactionsRepo.create(new Transactions(1, player1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
-        transactionsRepo.create(new Transactions(2, player2, 100, LocalDateTime.now(), "Deposit", "Completed"));
+        transactionsRepo.create(new Transactions(1, 1, 100, LocalDateTime.now(), "Withdraw", "Completed"));
+        transactionsRepo.create(new Transactions(2, 2, 100, LocalDateTime.now(), "Deposit", "Completed"));
 
         adminRepo.create(new Admin(1, "Sefu1", "123456789", "sefu@tau.com", 5000, 3, "Support"));
         adminRepo.create(new Admin(2, "Sefu2", "987654321", "sefusefilor@tau.com", 10000, 2, "Support"));
@@ -158,12 +158,12 @@ public class ApplicationTest {
         assertEquals(0.0, player.getBalance());
     }
 
-    //Tests for BetService
-//    @Test
-//    void testCreateBet() {
-//        betService.placeBet(1);
-//        betService.getAvailableBets();
-//    }
+//    Tests for BetService
+    @Test
+    void testCreateBet() {
+        betService.placeBet(1);
+        betService.getAvailableBets();
+    }
 
     @Test
     void testCreateEvent() {
@@ -211,8 +211,8 @@ public class ApplicationTest {
         bets.add(bet2);
         Player player1 = new Player(3, "Meli", "1234666", "melisa@yahoo.com", 100.0, bets, bets, 0, "Active");
         Player player2 = new Player(4, "Maria", "567887", "maria@yahoo.com", 4000, bets, bets, 0, "Active");
-        Transactions transaction1 =  new Transactions(3, player1, 150, LocalDateTime.now(), "Withdraw", "Completed");
-        Transactions transaction2 =  new Transactions(4, player2, 50, LocalDateTime.now(), "Withdraw", "Completed");
+        Transactions transaction1 =  new Transactions(3, 3, 150, LocalDateTime.now(), "Withdraw", "Completed");
+        Transactions transaction2 =  new Transactions(4, 4, 50, LocalDateTime.now(), "Withdraw", "Completed");
         List<Transactions> transactions = new ArrayList<>();
         transactions.add(transaction1);
         transactions.add(transaction2);
