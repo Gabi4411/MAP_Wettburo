@@ -1,26 +1,24 @@
 package ModelLayer;
 
+import java.util.Objects;
+
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Represents the odds associated with a specific event in a sports betting system.
  * This is an abstract class that can be extended by specific types of odds implementations.
  */
-public class Odds{
+public class Odds implements HasId{
 
     private String oddName;
     private int odd_id;
     private String eventType;
-
-
 
     public Odds(int odd_id, String oddName, String eventType) {
         this.odd_id = odd_id;
         this.oddName = oddName;
         this.eventType = eventType;
     }
-
 
     public String getOddName() {
         return oddName;
@@ -46,7 +44,6 @@ public class Odds{
         this.eventType = eventType;
     }
 
-
     @Override
     public String toString() {
         return "Odds{" +
@@ -56,21 +53,28 @@ public class Odds{
                 '}';
     }
 
-    public String toCSV() {
-        return odd_id + "," + oddName + "," + eventType;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Odds)) return false;
+        Odds odds = (Odds) o;
+        return odd_id == odds.odd_id &&
+                Objects.equals(oddName, odds.oddName) &&
+                Objects.equals(eventType, odds.eventType);
     }
 
-    /**
-     * Creates an Odds object from a CSV string.
-     *
-     * @param csvLine the CSV string containing odds data
-     * @return the Odds object
-     */
-    public static Odds fromCSV(String csvLine) {
-        String[] parts = csvLine.split(",");
-        int odd_id = Integer.parseInt(parts[0]);
-        String oddName = parts[1];
-        String eventType = parts[2];
-        return new Odds(odd_id, oddName, eventType);
+    @Override
+    public int hashCode() {
+        return Objects.hash(odd_id, oddName, eventType);
+    }
+
+    @Override
+    public int getId() {
+        return odd_id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.odd_id = id;
     }
 }

@@ -1,39 +1,34 @@
 package RepoLayerInterface;
 
+import ModelLayer.HasId;
+
 import java.io.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * File-based repository implementation for managing objects of type T.
  *
- * @param <T> The type of objects stored in the repository.
+ * @param <T> the type of objects stored in the repository, extending HasId
  */
-public class FileRepository<T> implements repo<T> {
+public class FileRepository<T extends HasId> implements repo<T> {
     private final String filePath;
-    private final Function<String, T> fromCSV; // Function to deserialize objects from CSV.
-    private final Function<T, String> toCSV;  // Function to serialize objects to CSV.
-    private final Function<T, Integer> getId; // Function to extract the ID from an object.
 
     /**
-     * Constructs a FileRepository with the given parameters.
+     * Constructs a FileRepository with the specified file path.
      *
-     * @param filePath The path to the file where data is stored.
-     * @param fromCSV  A function to convert a CSV line into an object of type T.
-     * @param toCSV    A function to convert an object of type T to a CSV string.
-     * @param getId    A function to extract the ID from an object of type T.
+     * @param filePath the path to the file where data is stored
      */
-    public FileRepository(String filePath, Function<String, T> fromCSV, Function<T, String> toCSV, Function<T, Integer> getId) {
+    public FileRepository(String filePath) {
         this.filePath = filePath;
-        this.fromCSV = fromCSV;
-        this.toCSV = toCSV;
-        this.getId = getId;
     }
 
     @Override
     public void create(T obj) {
-        doInFile(data -> data.putIfAbsent(getId.apply(obj), obj));
+        doInFile(data -> data.putIfAbsent(obj.getId(), obj));
     }
 
     @Override
@@ -43,7 +38,7 @@ public class FileRepository<T> implements repo<T> {
 
     @Override
     public void update(T obj) {
-        doInFile(data -> data.replace(getId.apply(obj), obj));
+        doInFile(data -> data.replace(obj.getId(), obj));
     }
 
     @Override
@@ -51,21 +46,15 @@ public class FileRepository<T> implements repo<T> {
         doInFile(data -> data.remove(id));
     }
 
-//    @Override
-//    public T find_by_ID(Integer id) {
-//        // Delegate to the `get` method
-//        return get(id);
-//    }
-
     @Override
     public List<T> getAll() {
-        return new ArrayList<>(readDataFromFile().values());
+        return readDataFromFile().values().stream().collect(Collectors.toList());
     }
 
     /**
      * Performs an operation on the data stored in the file.
      *
-     * @param function The function to apply to the data.
+     * @param function the function to apply to the data
      */
     private void doInFile(Consumer<Map<Integer, T>> function) {
         Map<Integer, T> data = readDataFromFile();
@@ -76,57 +65,32 @@ public class FileRepository<T> implements repo<T> {
     /**
      * Reads the data from the file.
      *
-     * @return A map of object IDs to objects.
+     * @return a map of object IDs to objects
      */
     private Map<Integer, T> readDataFromFile() {
-        Map<Integer, T> objects = new HashMap<>();
         File file = new File(filePath);
-
         if (!file.exists()) {
-            return objects; // Return an empty map if the file doesn't exist.
+            return new HashMap<>();
         }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String header = reader.readLine(); // Skip or process the header line.
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                try {
-                    T obj = fromCSV.apply(line);
-                    objects.put(getId.apply(obj), obj);
-                } catch (Exception e) {
-                    System.err.println("Error parsing line: " + line);
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading from file: " + e.getMessage());
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            return (Map<Integer, T>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return new HashMap<>();
         }
-        return objects;
     }
 
     /**
      * Writes the data to the file.
      *
-     * @param data A map of object IDs to objects.
+     * @param data a map of object IDs to objects
      */
     private void writeDataToFile(Map<Integer, T> data) {
-        if (data.isEmpty()) return;
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            // Write the header, if applicable.
-            Optional<T> firstEntry = data.values().stream().findFirst();
-            if (firstEntry.isPresent()) {
-                writer.write("ID," + toCSV.apply(firstEntry.get()).split(",", 2)[1]);
-                writer.newLine();
-            }
-
-            // Write the data.
-            for (T obj : data.values()) {
-                writer.write(getId.apply(obj) + "," + toCSV.apply(obj));
-                writer.newLine();
-            }
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            oos.writeObject(data);
         } catch (IOException e) {
-            System.err.println("Error writing to file: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

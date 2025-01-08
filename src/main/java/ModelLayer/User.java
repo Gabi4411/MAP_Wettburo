@@ -1,12 +1,12 @@
 package ModelLayer;
 
-import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Represents an abstract user with basic information such as ID, name, password, and email.
  * This class is intended to be extended by specific types of users.
  */
-public abstract class User {
+public abstract class User implements HasId{
     private int user_id;
     private String user_name;
     private String password;
@@ -20,14 +20,12 @@ public abstract class User {
      * @param password  the password of the user
      * @param email     the email address of the user
      */
-
     public User(int user_id, String user_name, String password, String email) {
         this.user_id = user_id;
         this.user_name = user_name;
         this.password = password;
         this.email = email;
     }
-
 
     /**
      * Gets the user ID.
@@ -106,4 +104,39 @@ public abstract class User {
      *
      * @return a string containing the user's details
      */
-}
+    @Override
+    public String toString() {
+        return "User{" +
+                "user_id=" + user_id +
+                ", user_name='" + user_name + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return user_id == user.user_id &&
+                user_name.equals(user.user_name) &&
+                password.equals(user.password) &&
+                email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user_id, user_name, password, email);
+    }
+
+    @Override
+    public int getId() {
+        return user_id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.user_id = id;
+    }
+ }

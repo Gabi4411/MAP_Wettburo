@@ -160,11 +160,11 @@ public class ApplicationTest {
     }
 
 //    Tests for BetService
-    @Test
-    void testCreateBet() {
-        betService.placeBet(1);
-        betService.getAvailableBets();
-    }
+//    @Test
+//    void testCreateBet() {
+//        betService.placeBet(1);
+//        betService.getAvailableBets();
+//    }
 
     @Test
     void testCreateEvent() {

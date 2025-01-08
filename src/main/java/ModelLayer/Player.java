@@ -1,9 +1,8 @@
 package ModelLayer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
  * Represents a player in the system, inheriting from the User class.
@@ -24,7 +23,6 @@ public class Player extends User{
 
     /** The status of the player's account.*/
     private String account_status;
-
 
     /**
      * Constructs a new Player object.
@@ -153,39 +151,21 @@ public class Player extends User{
                 '}';
     }
 
-    public String toCSV() {
-        String activeBetsCSV = activeBets.stream().map(Bet::toCSV).collect(Collectors.joining("|"));
-        String allBetsCSV = allBets.stream().map(Bet::toCSV).collect(Collectors.joining("|"));
-        return getUser_id() + "," + getUser_name() + "," + getPassword() + "," + getEmail() + "," + balance + "," + activeBetsCSV + "," + allBetsCSV + "," + bonus_balance + "," + account_status;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player)) return false;
+        if (!super.equals(o)) return false;
+        Player player = (Player) o;
+        return Double.compare(player.balance, balance) == 0 &&
+                bonus_balance == player.bonus_balance &&
+                Objects.equals(activeBets, player.activeBets) &&
+                Objects.equals(allBets, player.allBets) &&
+                Objects.equals(account_status, player.account_status);
     }
 
-    public static Player fromCSV(String csvLine) {
-        String[] parts = csvLine.split(",", -1);
-
-        int user_id = Integer.parseInt(parts[0]);
-        String user_name = parts[1];
-        String password = parts[2];
-        String email = parts[3];
-        double balance = Double.parseDouble(parts[4]);
-
-        List<Bet> activeBets = new ArrayList<>();
-        if (!parts[5].isEmpty()) {
-            activeBets = Arrays.stream(parts[5].split("\\|"))
-                    .map(Bet::fromCSV)
-                    .collect(Collectors.toList());
-        }
-
-        List<Bet> allBets = new ArrayList<>();
-        if (!parts[6].isEmpty()) {
-            allBets = Arrays.stream(parts[6].split("\\|"))
-                    .map(Bet::fromCSV)
-                    .collect(Collectors.toList());
-        }
-
-        int bonus_balance = Integer.parseInt(parts[7]);
-        String account_status = parts[8];
-
-        return new Player(user_id, user_name, password, email, balance, activeBets, allBets, bonus_balance, account_status);
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), balance, activeBets, allBets, bonus_balance, account_status);
     }
 }
-

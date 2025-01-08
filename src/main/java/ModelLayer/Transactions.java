@@ -1,16 +1,14 @@
 package ModelLayer;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.ArrayList;
-
+import java.util.Objects;
 
 /**
  * Represents a transaction performed by a player, including transaction details such as
  * transaction ID, user, amount, date, type, and status.
  */
-public class Transactions {
+public class Transactions implements HasId {
     private int transaction_id;
     private int player_id;
     private int amount;
@@ -18,20 +16,16 @@ public class Transactions {
     private String transaction_type;
     private String transaction_status;
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-
     /**
      * Constructs a Transactions object with specified details.
      *
      * @param transaction_id   the unique ID of the transaction
-     * @param player_id          the player associated with the transaction
+     * @param player_id        the player associated with the transaction
      * @param amount           the transaction amount
      * @param transcation_date the date and time of the transaction
      * @param transaction_type the type of the transaction (e.g., deposit, withdrawal)
      * @param transaction_status the status of the transaction (e.g., pending, completed)
      */
-
     public Transactions(int transaction_id, int player_id, int amount, LocalDateTime transcation_date, String transaction_type, String transaction_status) {
         this.transaction_id = transaction_id;
         this.player_id = player_id;
@@ -73,7 +67,6 @@ public class Transactions {
      *
      * @param player_id the player to be set
      */
-
     public void setPlayerID(int player_id) {
         this.player_id = player_id;
     }
@@ -137,7 +130,6 @@ public class Transactions {
      *
      * @return the transaction status (e.g., pending, completed)
      */
-
     public String getTransaction_status() {
         return transaction_status;
     }
@@ -147,7 +139,6 @@ public class Transactions {
      *
      * @param transaction_status the transaction status to be set
      */
-
     public void setTransaction_status(String transaction_status) {
         this.transaction_status = transaction_status;
     }
@@ -169,32 +160,31 @@ public class Transactions {
                 '}';
     }
 
-    public String toCSV() {
-        return transaction_id + "," +
-                player_id + "," +
-                amount + "," +
-                transcation_date.format(DATE_FORMATTER) + "," +
-                transaction_type + "," +
-                transaction_status;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Transactions)) return false;
+        Transactions that = (Transactions) o;
+        return transaction_id == that.transaction_id &&
+                player_id == that.player_id &&
+                amount == that.amount &&
+                Objects.equals(transcation_date, that.transcation_date) &&
+                Objects.equals(transaction_type, that.transaction_type) &&
+                Objects.equals(transaction_status, that.transaction_status);
     }
 
-    /**
-     * Creates a Transactions object from a CSV string. Reconstructs the Player object as well.
-     *
-     * @param csv the CSV string representing a transaction.
-     * @return a Transactions object.
-     */
-    public static Transactions fromCSV(String csv) {
-        String[] parts = csv.split(",");
+    @Override
+    public int hashCode() {
+        return Objects.hash(transaction_id, player_id, amount, transcation_date, transaction_type, transaction_status);
+    }
 
-        // Parse Transactions details
-        int transaction_id = Integer.parseInt(parts[0]);
-        int player_id = Integer.parseInt(parts[1]);
-        int amount = Integer.parseInt(parts[2]);
-        LocalDateTime transcation_date = LocalDateTime.parse(parts[3], DATE_FORMATTER);
-        String transaction_type = parts[4];
-        String transaction_status = parts[5];
+    @Override
+    public int getId() {
+        return transaction_id;
+    }
 
-        return new Transactions(transaction_id, player_id, amount, transcation_date, transaction_type, transaction_status);
+    @Override
+    public void setId(int id) {
+        this.transaction_id = id;
     }
 }

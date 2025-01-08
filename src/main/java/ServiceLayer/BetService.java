@@ -268,7 +268,14 @@ public class BetService {
             }
 
             // Obține valoarea cotei selectate
-            Double selectedValue = eventt.getOddsList().get(selectedOdd);
+//            Double selectedValue = eventt.getOddsList().get(selectedOdd);
+            Double selectedValue = null;
+            for (Map.Entry<Odds, Double> entry : eventt.getOddsList().entrySet()) {
+                if (entry.getKey().getOdd_id() == oddId) {
+                    selectedValue = entry.getValue();
+                    break;
+                }
+            }
             if (selectedValue == null) {
                 System.out.println("Value for the selected odd is missing. Bet cancelled.");
                 return;
@@ -279,9 +286,9 @@ public class BetService {
             System.out.println("Selected Odd: " + selectedOdd.getOddName() + " - " + selectedValue);
         }
 
-        // Solicită suma pariată de utilizator
-        System.out.print("Enter the bet amount: ");
-        double betAmount = scanner.nextDouble();
+//        // Solicită suma pariată de utilizator
+//        System.out.print("Enter the bet amount: ");
+//        double betAmount = scanner.nextDouble();
 
 
         // Introdu suma pariată

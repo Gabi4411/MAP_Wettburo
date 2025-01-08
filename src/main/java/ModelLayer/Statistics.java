@@ -1,24 +1,22 @@
 package ModelLayer;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Objects;
+
 /**
  * Represents statistics for an event, including team statistics, head-to-head data, and recent form.
  */
-public class Statistics {
+public class Statistics implements HasId{
     private int stat_id;
     private int event_id;
     private String eventDescription;
     private String eventPrediction;
 
-
-    public Statistics(int stat_id,int event_id, String eventDescription, String eventPrediction) {
+    public Statistics(int stat_id, int event_id, String eventDescription, String eventPrediction) {
         this.stat_id = stat_id;
         this.event_id = event_id;
         this.eventDescription = eventDescription;
         this.eventPrediction = eventPrediction;
     }
-
 
     public int getStat_id() {
         return stat_id;
@@ -52,7 +50,6 @@ public class Statistics {
         this.eventPrediction = eventPrediction;
     }
 
-
     @Override
     public String toString() {
         return "Statistics{" +
@@ -63,37 +60,29 @@ public class Statistics {
                 '}';
     }
 
-    public static Statistics fromCSV(String csvLine) {
-        String[] fields = csvLine.split(",");
-        int statId = Integer.parseInt(fields[0].trim());
-        int eventId = Integer.parseInt(fields[1].trim());
-        String eventDescription = fields[2].trim();
-        String eventPrediction = fields[3].trim();
-        return new Statistics(statId,eventId, eventDescription, eventPrediction);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Statistics)) return false;
+        Statistics that = (Statistics) o;
+        return stat_id == that.stat_id &&
+                event_id == that.event_id &&
+                Objects.equals(eventDescription, that.eventDescription) &&
+                Objects.equals(eventPrediction, that.eventPrediction);
     }
 
-    /**
-     * Converts a Statistics object to a CSV line.
-     *
-     * @return A CSV string representing the Statistics object.
-     */
-    public String toCSV() {
-        return stat_id + "," + event_id + "," + eventDescription + "," + eventPrediction;
+    @Override
+    public int hashCode() {
+        return Objects.hash(stat_id, event_id, eventDescription, eventPrediction);
     }
 
-    public static List<Statistics> fromCSVList(List<String> csvLines) {
-        List<Statistics> statisticsList = new ArrayList<>();
-        for (String line : csvLines) {
-            statisticsList.add(fromCSV(line));
-        }
-        return statisticsList;
+    @Override
+    public int getId() {
+        return stat_id;
     }
 
-    public static List<String> toCSVList(List<Statistics> statisticsList) {
-        List<String> csvLines = new ArrayList<>();
-        for (Statistics statistics : statisticsList) {
-            csvLines.add(statistics.toCSV());
-        }
-        return csvLines;
+    @Override
+    public void setId(int id) {
+        this.stat_id = id;
     }
 }
