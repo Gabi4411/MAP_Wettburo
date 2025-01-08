@@ -32,8 +32,8 @@ public class CombinedConsoles {
         PlayerController playerController = new PlayerController(betService, userService);
         AdminController adminController = new AdminController(userService, betService);
 
-        this.playerConsole = new PlayerConsole(playerController);
-        this.adminConsole = new AdminConsole(adminController);
+        this.playerConsole = new PlayerConsole(playerController, this);
+        this.adminConsole = new AdminConsole(adminController, this);
     }
 
     public void showMainMenu() {
@@ -50,8 +50,8 @@ public class CombinedConsoles {
                 case 1 -> playerConsole.welcomeMenu();
                 case 2 -> adminConsole.welcomeMenu();
                 case 3 -> {
-                    System.out.println("Exiting application...");
-                    return;
+                    System.out.println("Exiting application...\n");
+                    System.exit(0);
                 }
                 default -> System.out.println("Invalid choice. Try again.");
             }
@@ -69,9 +69,9 @@ public class CombinedConsoles {
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    return 1; // In-memory repo
+                    return 1; // File repo
                 case 2:
-                    return 2; // File-based repo
+                    return 2; // Memory repo
                 case 3:
                     return 3; // Database repo
                 default:
@@ -93,7 +93,10 @@ public class CombinedConsoles {
     ) {
         Odds odd1 = new Odds(1, "Gol in minutul 10", "Football");
         Odds odd2 = new Odds(2, "Gol in minutul 90", "Football");
-        Odds odd3 = new Odds(3, "Ace din prima", "Tennis");
+        Odds odd3 = new Odds(3, "Hattrick in match", "Football");
+        oddsRepo.create(odd1);
+        oddsRepo.create(odd2);
+        oddsRepo.create(odd3);
         Map<Odds, Double> map1 = new HashMap<Odds, Double>();
         map1.put(odd1, 2.5);
         Map<Odds, Double> map2 = new HashMap<Odds, Double>();
@@ -102,7 +105,7 @@ public class CombinedConsoles {
         map3.put(odd3, 2.0);
         Event event1 = new Event(1, "Steaua vs Dinamo", map1, "11.11.2024", "Football");
         Event event2 = new Event(2, "UCluj vs Galati", map2, "12.03.2024", "Football");
-        Event event3 = new Event(3, "Simona vs Nadal", map3, "03.03.2024", "Tennis");
+        Event event3 = new Event(3, "Liverpool vs Gaz Metan Medias", map3, "03.03.2024", "Football");
         eventRepo.create(event1);
         eventRepo.create(event2);
         eventRepo.create(event3);
@@ -136,11 +139,22 @@ public class CombinedConsoles {
 
         Odds odd4 = new Odds(4, "Peste 1.5 goluri", "Football");
         Odds odd5 = new Odds(5, "Sub 1.5 goluri", "Football");
-        Odds odd6 = new Odds(6, "6-4 al doilea set", "Tennis");
-
+        Odds odd6 = new Odds(6, "GG", "Football");
         oddsRepo.create(odd4);
         oddsRepo.create(odd5);
         oddsRepo.create(odd6);
+        Map<Odds, Double> map4 = new HashMap<Odds, Double>();
+        map4.put(odd4, 3.5);
+        Map<Odds, Double> map5 = new HashMap<Odds, Double>();
+        map5.put(odd5, 1.0);
+        Map<Odds, Double> map6 = new HashMap<Odds, Double>();
+        map6.put(odd6, 4.0);
+        Event event4 = new Event(1, "Bayern vs BVB", map1, "11.11.2024", "Football");
+        Event event5 = new Event(2, "Barcelona vs PSG", map2, "12.03.2024", "Football");
+        Event event6 = new Event(3, "Real VS Madrid", map3, "03.03.2024", "Football");
+        eventRepo.create(event4);
+        eventRepo.create(event5);
+        eventRepo.create(event6);
 
         Suport suport1 = new Suport(1, 1, "Problems when withdrawing", LocalDateTime.now(), "Active");
         Suport suport2 = new Suport(2, 2, "Problems when depositing", LocalDateTime.now(), "Ended");
@@ -169,63 +183,16 @@ public class CombinedConsoles {
 
         if (repoChoice == 1) {
             System.out.println("Using Files\n");
-            String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/Files/";
+            String filePath = "/Users/gabimoldovan/Documents/Facultate/an2_sem1/MAP/Bet/MAP_Wettburo/src/main/java/Files/";
 
-            betRepo = new FileRepository<>(
-                    filePath + "bets.txt",
-                    Bet::fromCSV,
-                    Bet::toCSV,
-                    Bet::getBet_id
-            );
-
-            eventRepo = new FileRepository<>(
-                    filePath + "events.txt",
-                    Event::fromCSV,
-                    Event::toCSV,
-                    Event::getEvent_id
-            );
-
-            playerRepo = new FileRepository<>(
-                    filePath + "players.txt",
-                    Player::fromCSV,
-                    Player::toCSV,
-                    Player::getUser_id
-            );
-
-            transactionsRepo = new FileRepository<>(
-                    filePath + "transactions.txt",
-                    Transactions::fromCSV,
-                    Transactions::toCSV,
-                    Transactions::getTransaction_id
-            );
-
-            adminRepo = new FileRepository<>(
-                    filePath + "admins.txt",
-                    Admin::fromCSV,
-                    Admin::toCSV,
-                    Admin::getUser_id
-            );
-
-            oddsRepo = new FileRepository<>(
-                    filePath + "odds.txt",
-                    Odds::fromCSV,
-                    Odds::toCSV,
-                    Odds::getOdd_id
-            );
-
-            suportRepo = new FileRepository<>(
-                    filePath + "suport.txt",
-                    Suport::fromCSV,
-                    Suport::toCSV,
-                    Suport::getSuport_id
-            );
-
-            statisticsRepo = new FileRepository<>(
-                    filePath + "statistics.txt",
-                    Statistics::fromCSV,
-                    Statistics::toCSV,
-                    Statistics::getStat_id
-            );
+            betRepo = new FileRepository<>(filePath + "bets.txt");
+            eventRepo = new FileRepository<>(filePath + "events.txt");
+            playerRepo = new FileRepository<>(filePath + "players.txt");
+            transactionsRepo = new FileRepository<>(filePath + "transactions.txt");
+            adminRepo = new FileRepository<>(filePath + "admins.txt");
+            oddsRepo = new FileRepository<>(filePath + "odds.txt");
+            suportRepo = new FileRepository<>(filePath + "suport.txt");
+            statisticsRepo = new FileRepository<>(filePath + "statistics.txt");
         }
         else if (repoChoice == 2) {
             System.out.println("Using Memory\n");

@@ -1,6 +1,8 @@
 package ModelLayer;
 
-public class EventOdd {
+import java.util.Objects;
+
+public class EventOdd implements HasId{
 
     private int event_id;
     private String odd_id;
@@ -32,5 +34,29 @@ public class EventOdd {
                 "event_id=" + event_id +
                 ", odd_id='" + odd_id + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EventOdd)) return false;
+        EventOdd eventOdd = (EventOdd) o;
+        return event_id == eventOdd.event_id &&
+                Objects.equals(odd_id, eventOdd.odd_id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(event_id, odd_id);
+    }
+
+    @Override
+    public int getId() {
+        return event_id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.event_id = id;
     }
 }
